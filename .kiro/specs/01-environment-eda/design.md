@@ -17,7 +17,7 @@ data/raw/*  ──verify SHA256──▶  io/profile.py ──▶ reports/eda_pr
      ▼
 data_prep/bridges.py ──▶ data/interim/compound_bridge.parquet
                          data/interim/cellline_bridge.parquet
-                         reports/eda_profile.md §Bridges
+                         reports/eda_bridges.md
      ▼
 notebooks/01_dss3_target.ipynb, 02_ccle_features.ipynb ──▶ reports/figures/*, §Target, §Features
      ▼
