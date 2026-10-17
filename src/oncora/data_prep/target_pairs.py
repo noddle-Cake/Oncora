@@ -190,10 +190,10 @@ def render_report(pairs: pl.DataFrame, demo: pl.DataFrame, stats: dict, *, activ
     top = (
         pairs.filter(pl.col("label") == 1)
         .group_by("target_chembl_id", "target_name", "target_gene_symbol").len()
-        .sort("len", descending=True).head(10)
+        .sort(["len", "target_chembl_id"], descending=[True, False]).head(10)
     )
     demo_names = ", ".join(DEMO_HOLDOUT.values())
-    demo_top = demo.filter(pl.col("label") == 1).sort("pchembl_median", descending=True).head(8)
+    demo_top = demo.filter(pl.col("label") == 1).sort(["pchembl_median", "target_chembl_id"], descending=[True, False]).head(8)
     lines = [
         "# Compound–target modeling table",
         "",
