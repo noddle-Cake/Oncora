@@ -49,8 +49,12 @@ TAB_LABELS = ["Targets", "Cell lines", "Measured response", "Database annotation
 STAGES = [(0.00, "Reading the structure…"), (0.12, "Scoring 1,360 protein targets…"),
           (0.34, "Ranking every CCLE cancer cell line…"), (0.55, "Checking ChEMBL, LINCS and measured responses…"),
           (0.74, "Writing the cited explanation…")]
-SCROLL_TO_EXPLORE = ("<script>setTimeout(() => window.parent.document.getElementById('explore')"
-                     "?.scrollIntoView({behavior: 'smooth', block: 'start'}), 150);</script>")
+# Selects a results tab (by its label) and scrolls the page to the results. Done in the browser because
+# a tabs widget's `default` only applies when it changes, so a repeat jump would otherwise do nothing.
+JUMP_JS = ("<script>setTimeout(() => {{ const d = window.parent.document;"
+           " [...d.querySelectorAll('button[role=tab]')].find(b => b.innerText.trim() === {tab})?.click();"
+           " d.getElementById('explore')?.scrollIntoView({{behavior: 'smooth', block: 'start'}}); }}, 150);"
+           "</script><!-- {nonce} -->")
 
 
 def call_api(smiles: str, use_llm: bool) -> tuple[int, dict]:
@@ -310,7 +314,7 @@ def predict(smiles: str, use_llm: bool) -> None:
 def _jump(tab: str) -> None:
     """Open a results tab and scroll down to it (from the explore card near the top)."""
     st.session_state.jump_tab = tab
-    st.session_state.scroll_explore = True
+    st.session_state.jump_nonce = st.session_state.get("jump_nonce", 0) + 1
 
 
 # A shared link (?smiles=…) loads its prediction on arrival; it must land before the input renders.
@@ -420,11 +424,10 @@ with right:
 st.write("")
 md('<div id="explore" class="explore-head"><div class="explore-head__title">Explore the evidence</div>'
    '<div class="explore-head__sub">Select any target, cell line or compound to open its linked panel.</div></div>')
-# A jump from the explore card re-creates the tabs with that tab selected (a new default is a new widget);
-# otherwise the reader's own tab choice is kept across reruns.
-tabs = st.tabs(TAB_LABELS, default=st.session_state.get("jump_tab"))
-if st.session_state.pop("scroll_explore", False):
-    st.iframe(SCROLL_TO_EXPLORE, height=1)     # a fixed, trusted snippet: scroll the page to the results
+tabs = st.tabs(TAB_LABELS)
+if tab := st.session_state.pop("jump_tab", None):
+    # The nonce makes every jump a new snippet, so the browser runs it even when the same tab is asked for again.
+    st.iframe(JUMP_JS.format(tab=json.dumps(tab), nonce=st.session_state.jump_nonce), height=1)
 
 with tabs[0], st.container(border=True):
     md('<div class="onc-muted">Calibrated probability that the compound is active (pChEMBL ≥ 6) on each target. '
