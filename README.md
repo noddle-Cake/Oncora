@@ -21,6 +21,18 @@ Raw data goes in `data/raw/` (not committed). Verify it with:
 uv run python -m oncora.io.checksums
 ```
 
+## One-time: ChEMBL export
+
+ChEMBL ships as a PostgreSQL dump. It is restored once (8 tables, no indexes), exported to
+`data/interim/chembl/*.parquet`, and the database is dropped. Later stages need no Postgres.
+
+```bash
+brew install postgresql@16
+pg_ctl -D /opt/homebrew/var/postgresql@16 -l data/interim/chembl/postgres.log start
+uv run python -m oncora.io.chembl_export all      # extract, restore, export, spot-check, cleanup (~3 min)
+pg_ctl -D /opt/homebrew/var/postgresql@16 stop
+```
+
 ## Project docs
 
 - `.kiro/steering/`: product, tech, structure, data sources, rigor rules
