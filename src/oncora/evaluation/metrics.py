@@ -111,6 +111,29 @@ def bootstrap_ci(metric_fn, n_groups_index: dict, *, n: int = 200, seed: int = 0
     return float(np.quantile(stats, alpha / 2)), float(np.quantile(stats, 1 - alpha / 2))
 
 
+def bootstrap_ci_multi(metrics_fn, n_groups_index: dict, keys, *, n: int = 200, seed: int = 0,
+                       alpha: float = 0.05) -> dict:
+    """Percentile CIs for several metrics at once.
+
+    metrics_fn(row_indices) returns a dict of metrics, so one resample costs one pass instead of
+    one pass per metric.
+    """
+    rng = np.random.default_rng(seed)
+    groups = list(n_groups_index.values())
+    collected: dict[str, list[float]] = {k: [] for k in keys}
+    for _ in range(n):
+        pick = rng.integers(0, len(groups), len(groups))
+        out = metrics_fn(np.concatenate([groups[i] for i in pick]))
+        for k in keys:
+            collected[k].append(out.get(k, float("nan")))
+    ci = {}
+    for k, vals in collected.items():
+        arr = np.asarray(vals, dtype=np.float64)
+        arr = arr[np.isfinite(arr)]
+        ci[k] = (float(np.quantile(arr, alpha / 2)), float(np.quantile(arr, 1 - alpha / 2))) if arr.size else (float("nan"),) * 2
+    return ci
+
+
 def group_index(groups: np.ndarray) -> dict:
     df = pl.DataFrame({"g": groups}).with_row_index("i")
     return {g: np.asarray(idx) for g, idx in df.group_by("g", maintain_order=True).agg(pl.col("i")).iter_rows()}

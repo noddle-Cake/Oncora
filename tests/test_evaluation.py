@@ -104,3 +104,13 @@ def test_collapse_target_pairs():
     assert out["G1"]["inchi_key"] == "k1a" and out["G1"]["n_merged"] == 2
     assert out["G2"]["label"] == 1 and out["G2"]["negative_source"] is None         # measured beats sampled
     assert out["G3"]["label"] == 0 and out["G3"]["negative_source"] == "sampled"
+
+
+def test_bootstrap_multi_matches_single():
+    from oncora.evaluation.metrics import bootstrap_ci_multi
+    groups = np.repeat(["a", "b", "c", "d"], 5)
+    vals = np.repeat([1.0, 2.0, 3.0, 4.0], 5)
+    idx = group_index(groups)
+    single = bootstrap_ci(lambda i: vals[i].mean(), idx, n=100, seed=0)
+    multi = bootstrap_ci_multi(lambda i: {"mean": vals[i].mean()}, idx, ["mean"], n=100, seed=0)
+    assert multi["mean"] == pytest.approx(single)

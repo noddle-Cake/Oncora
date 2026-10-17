@@ -1,0 +1,9 @@
+{
+ "target_model:model/compound": {
+  "pr_auc_macro": 0.8564404199521347,
+  "pr_auc_weighted": 0.9126677829988054,
+  "roc_auc_macro": 0.9351268939651417,
+  "top1": 0.59955,
+  "top10": 0.8865
+ }
+}
