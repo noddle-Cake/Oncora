@@ -22,6 +22,7 @@ Never commit raw data or the ChEMBL dump.
 | Small-molecule metadata | `…/Small_Molecule_Metadata.txt` | TSV, 41,508 rows | `sm_name`, `sm_lincs_id`, `sm_smiles_parent`, `sm_inchi_key_parent`, … |
 | Instance info | `…/instinfo.txt` | **655 MB** TSV, 2.92 M rows | `sample_id`, `pert_id`, `cell_iname`, dose/time, QC fields |
 | Field definitions | `…/DataFieldDefinitions.xlsx` | XLSX | LINCS column dictionary |
+| L1000 Level 4 signatures | `data/raw/lincs/level4_beta_trt_cp_n1805898x12328.gctx` | **~80 GB** GCTX (HDF5); **1,805,898 profiles × 12,328 genes**; `trt_cp` (compound perturbation), plate-normalized z-scores | matrix: rows = `rid` (Entrez gene ids, join via `geneinfo.txt`); cols = `cid` (sample/instance ids, join via `instinfo.sample_id` → `pert_id`) |
 
 Annotation files use `""` (a literal pair of quotes) for missing values. Treat it as null.
 
@@ -58,8 +59,11 @@ Annotation files use `""` (a literal pair of quotes) for missing values. Treat i
 - **985** `ACH-` IDs appear in both CCLE and the sensitivity file.
 - **CCLE has duplicate models:** 1,775 rows but **1,719 distinct `ModelID`s**. Filter to
   `IsDefaultEntryForModel = Yes` (exactly 1,719 rows) to get one profile per cell line.
-- L1000 Level-4 signature matrices are **absent** (annotations only). Signatures are never a
-  required inference input (A2).
+- L1000 Level-4 `trt_cp` signatures are **present** (`level4_beta_trt_cp_n1805898x12328.gctx`,
+  1,805,898 × 12,328). **A2 revised:** signatures are available as an **optional evidence/interpretation
+  source only**. They are **never a required inference input** — a new SMILES pasted by a user has no
+  signature, so the sensitivity model's compound features stay structure-only (FR-10). Do not add any
+  signature-derived column to a model whose inference path must serve unseen compounds.
 
 ## Identity bridges
 
@@ -91,3 +95,9 @@ Candidate resolutions (decide in spec 01, task 6):
 - Never load `instinfo.txt` whole; query it with DuckDB or scan it lazily with Polars.
 - 32 GB allows the CCLE matrix in memory, but read it once, convert to Parquet in `data/interim/`,
   and use the Parquet from then on.
+- **Never materialize the GCTX whole.** `level4_beta_trt_cp_n1805898x12328.gctx` is an HDF5 matrix;
+  full load ≈ 1.81M × 12,328 floats ≈ ~90 GB in RAM — it will not fit. Read it with `cmapPy`
+  (`cmapPy.pandasGEXpress.parse` with explicit `rid`/`cid` subsetting) or `h5py`, slicing only the
+  genes (`rid`) and profiles (`cid`) you need. Resolve the `cid` → `pert_id` link via
+  `instinfo.sample_id`, and `rid` → symbol via `geneinfo.txt`. Confirm free disk space before the
+  download completes (≥ ~100 GB headroom including derived slabs); gitignore it (`*.gctx`).

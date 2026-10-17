@@ -49,6 +49,21 @@
   - Learn: dimensionality reduction and feature selection
   - _Requirements: 4.4, 4.5_
 
+- [ ] 5.3 Profile the L1000 Level 4 GCTX (new file; optional-evidence only, A2 revised)
+  - Add a GCTX reader dependency (`cmapPy`, or `h5py` for a lighter dependency) — do NOT load the
+    matrix whole; it is ~90 GB in RAM
+  - Confirm disk headroom (≥ ~100 GB) and that `*.gctx` is gitignored
+  - Read only metadata + a small slab: confirm shape (1,805,898 × 12,328), `rid`/`cid` axes, and a
+    sample of z-score values; verify `rid` joins to `geneinfo.txt` (Entrez) and `cid` joins to
+    `instinfo.sample_id` → `pert_id`
+  - Quantify how many of the 972 DSS3 `pert_id`s have at least one `trt_cp` profile (the compounds
+    for which signature-based evidence is even possible)
+  - Write findings into `reports/eda_signatures.md`
+  - Record in the decision log that signatures are evidence-only and NEVER a sensitivity-model
+    inference feature (FR-10 / A2 revised in `steering/data-sources.md`)
+  - Learn: HDF5/GCTX out-of-core access, subsetting by row/column indices
+  - _Requirements: 4.5, 5.3_
+
 - [ ] 6. Architecture-commit checkpoint
   - Write `reports/eda_summary.md` with a decision log (transform, threshold, gene subset, conflict rule, A4 source)
   - Get the developer's sign-off; copy the decisions into `steering/data-sources.md`

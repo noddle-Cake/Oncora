@@ -22,7 +22,7 @@ expression features, so that I can rank cell lines for compounds never measured.
 1. THE training row SHALL be `concat(compound_features(inchi_key), cellline_features(model_id)) → transformed DSS3`.
 2. THE trainer SHALL use the DSS3 transform recorded at the spec 01 checkpoint (log1p or rank) and SHALL document why.
 3. THE trainer SHALL train a LightGBM regressor on the transformed target and a parallel LightGBM classifier at the recorded sensitive/resistant threshold.
-4. Compound features SHALL NOT include any LINCS signature or measured biological profile. A test SHALL assert the feature columns come only from the compound and cell-line feature configs.
+4. Compound features SHALL NOT include any LINCS signature or measured biological profile — this holds even though the L1000 Level 4 `trt_cp` GCTX is now present in the workspace, because a new SMILES at inference has no signature (FR-10, A2 revised). A test SHALL assert the feature columns come only from the compound and cell-line feature configs and that no column derives from the GCTX.
 5. The cell-line feature gene list SHALL be fit on training cell lines only, within each fold.
 6. Each run SHALL be logged to MLflow.
 
