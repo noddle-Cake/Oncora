@@ -23,6 +23,6 @@
   - Learn: ROC vs. PR under imbalance, rank correlation, bootstrap CIs
   - _Requirements: 5.3_
 
-- [ ] 4. Evaluation report
+- [x] 4. Evaluation report
   - Implement `EvalReport` (md/json, `beats_baselines`); smoke-run the baselines alone on both modeling tables to produce the first floor numbers
   - _Requirements: 6.1, 6.2_

@@ -1,0 +1,141 @@
+{
+ "title": "Sensitivity baselines (floor)",
+ "task": "sensitivity",
+ "results": [
+  {
+   "name": "global_mean",
+   "split": "compound",
+   "metrics": {
+    "spearman_overall": NaN,
+    "spearman_per_cell_line": NaN,
+    "spearman_per_compound": NaN,
+    "rmse_transformed": 0.2937650088656102,
+    "roc_auc_within_top10": 0.5,
+    "pr_auc_within_top10": 0.10022128860524038,
+    "prevalence_within_top10": 0.10022128860524038,
+    "roc_auc_global_p90": 0.5,
+    "pr_auc_global_p90": 0.10634681376479266,
+    "prevalence_global_p90": 0.10634681376479266
+   },
+   "ci": {}
+  },
+  {
+   "name": "cell_line_mean",
+   "split": "compound",
+   "metrics": {
+    "spearman_overall": 0.20631074407878283,
+    "spearman_per_cell_line": NaN,
+    "spearman_per_compound": 0.2752482365478779,
+    "rmse_transformed": 0.2860553640185071,
+    "roc_auc_within_top10": 0.6454004701707696,
+    "pr_auc_within_top10": 0.19245014152082707,
+    "prevalence_within_top10": 0.10022128860524038,
+    "roc_auc_global_p90": 0.6143749428964342,
+    "pr_auc_global_p90": 0.18469919629201653,
+    "prevalence_global_p90": 0.10634681376479266
+   },
+   "ci": {}
+  },
+  {
+   "name": "global_mean",
+   "split": "scaffold",
+   "metrics": {
+    "spearman_overall": NaN,
+    "spearman_per_cell_line": NaN,
+    "spearman_per_compound": NaN,
+    "rmse_transformed": 0.2959919244097584,
+    "roc_auc_within_top10": 0.5,
+    "pr_auc_within_top10": 0.09967622324567496,
+    "prevalence_within_top10": 0.09967622324567496,
+    "roc_auc_global_p90": 0.5,
+    "pr_auc_global_p90": 0.1220307107060043,
+    "prevalence_global_p90": 0.1220307107060043
+   },
+   "ci": {}
+  },
+  {
+   "name": "cell_line_mean",
+   "split": "scaffold",
+   "metrics": {
+    "spearman_overall": 0.16123970593736905,
+    "spearman_per_cell_line": NaN,
+    "spearman_per_compound": 0.28662070014197727,
+    "rmse_transformed": 0.29190685933809907,
+    "roc_auc_within_top10": 0.6367421843993765,
+    "pr_auc_within_top10": 0.1610060628349928,
+    "prevalence_within_top10": 0.09967622324567496,
+    "roc_auc_global_p90": 0.5568859308819577,
+    "pr_auc_global_p90": 0.14421216434306128,
+    "prevalence_global_p90": 0.1220307107060043
+   },
+   "ci": {}
+  }
+ ],
+ "primary": [
+  "spearman_per_cell_line",
+  "spearman_per_compound",
+  "pr_auc_within_top10"
+ ],
+ "manifests": {
+  "compound": {
+   "strategy": "compound",
+   "seed": 42,
+   "n_folds": 5,
+   "group_counts": [
+    187,
+    189,
+    189,
+    187,
+    186
+   ],
+   "row_counts": [
+    93543,
+    93530,
+    93528,
+    93528,
+    93596
+   ],
+   "partition_hashes": [
+    "e8ecf28d092516fe",
+    "3fb2fb27edf5b23d",
+    "ad6cd6db253ccb81",
+    "bbfe7afdb82d0c69",
+    "ebc338ad38f6107d"
+   ]
+  },
+  "scaffold": {
+   "strategy": "scaffold",
+   "seed": 42,
+   "n_folds": 5,
+   "group_counts": [
+    134,
+    152,
+    152,
+    155,
+    155
+   ],
+   "row_counts": [
+    93583,
+    93559,
+    93555,
+    93513,
+    93515
+   ],
+   "partition_hashes": [
+    "d6eaeee6af777620",
+    "d08732aa39be3f80",
+    "31236adee8191bbc",
+    "0bebba4f83a5d49c",
+    "209ce3e3dfcb9a38"
+   ]
+  }
+ },
+ "notes": [
+  "Headline set (D-03): 467,725 rows, 938 compounds.",
+  "global_mean predicts a constant, so every \u03c1 is undefined (\u2014).",
+  "cell_line_mean is constant within a cell line across compounds, so per-cell-line \u03c1 is undefined: it carries no compound information. Its per-compound \u03c1 is the selectivity bar a model must clear."
+ ],
+ "model": "model",
+ "beats_baselines": {},
+ "accepted": false
+}

@@ -22,4 +22,6 @@ run oncora.data_prep.target_pairs          # processed/target_pairs.parquet
 run oncora.data_prep.sensitivity_table     # processed/sensitivity.parquet
 run oncora.features.build                  # processed/compound_features.parquet (~3.5 min first time, cached after)
 
+run oncora.evaluation.floor                # reports/eval/baselines_*.md
+
 echo "Done. Modeling tables are in data/processed/."

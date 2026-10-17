@@ -1,0 +1,63 @@
+{
+ "title": "Target baselines (floor)",
+ "task": "target",
+ "results": [
+  {
+   "name": "prior_popularity",
+   "split": "compound",
+   "metrics": {
+    "n_targets_evaluated": 1360,
+    "pr_auc_macro": 0.22472201455358312,
+    "pr_auc_weighted": 0.23335307280754505,
+    "roc_auc_macro": 0.5,
+    "roc_auc_weighted": 0.5,
+    "prevalence_macro": 0.22472201455358312,
+    "pooled_pr_auc": 0.23615893905014115,
+    "top1": 0.01315,
+    "top5": 0.0518,
+    "top10": 0.10235
+   },
+   "ci": {}
+  }
+ ],
+ "primary": [
+  "pr_auc_macro",
+  "pr_auc_weighted"
+ ],
+ "manifests": {
+  "compound": {
+   "strategy": "compound",
+   "seed": 42,
+   "n_folds": 5,
+   "group_counts": [
+    208920,
+    208920,
+    208921,
+    208921,
+    208920
+   ],
+   "row_counts": [
+    847022,
+    847022,
+    847022,
+    847022,
+    847021
+   ],
+   "partition_hashes": [
+    "ba7c98213593b203",
+    "e2582831ed5b46d2",
+    "58847b6419149676",
+    "7950ae73ad14f289",
+    "9a89a35dc095b008"
+   ]
+  }
+ },
+ "notes": [
+  "4,235,109 collapsed pairs, 1,360 targets; test 847,022 rows.",
+  "The prior is constant within a target, so per-target ROC-AUC = 0.5 and per-target PR-AUC = that target's test prevalence (prevalence_macro).",
+  "Top-k uses popularity ranking over 20,000 sampled test compounds with \u2265 1 known positive."
+ ],
+ "model": "model",
+ "beats_baselines": {},
+ "accepted": false
+}

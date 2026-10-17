@@ -81,7 +81,7 @@ def sensitivity_metrics(y_t: np.ndarray, pred_t: np.ndarray, compounds: np.ndarr
     """y_t / pred_t are on the transformed scale; labels maps label name -> boolean array.
     Per-group ρ is undefined for a constant prediction within a group; such groups are skipped."""
     out = {
-        "spearman_overall": float(spearmanr(y_t, pred_t).statistic),
+        "spearman_overall": float(spearmanr(y_t, pred_t).statistic) if np.ptp(pred_t) > 0 else float("nan"),
         "spearman_per_cell_line": _mean(per_group_spearman(y_t, pred_t, lines, min_group)),
         "spearman_per_compound": _mean(per_group_spearman(y_t, pred_t, compounds, min_group)),
         "rmse_transformed": float(np.sqrt(np.mean((y_t - pred_t) ** 2))),

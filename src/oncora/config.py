@@ -65,6 +65,14 @@ CELLLINE_FEATURES = "landmark"
 # --- Spec 03 ------------------------------------------------------------------------------
 NEAR_SEEN_TANIMOTO = 0.99        # FR-4: flag queries this similar to a training compound
 
+# --- Spec 04: evaluation protocol --------------------------------------------------------
+TEST_FRAC = 0.2                  # group holdout share for test
+VAL_FRAC = 0.1                   # share of the remaining groups used for early stopping/calibration
+BOOTSTRAP_N = 200                # compound-level bootstrap resamples for CIs
+TOPK_MAX_COMPOUNDS = 20_000      # test compounds sampled for the target top-k metric
+GLOBAL_SENSITIVE_QUANTILE = 0.90 # comparison label (D-05)
+REPORTS_EVAL = REPORTS / "eval"
+
 # LINCS annotation files write missing values as a literal pair of double quotes.
 NULL_TOKENS = ("", '""')
 
