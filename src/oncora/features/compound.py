@@ -85,3 +85,43 @@ def feature_matrix(table: pl.DataFrame, keys: list[str], cfg: CompoundFeatureCon
     fp = unpack_fingerprints(sub["fp"].to_list(), cfg.n_bits).astype(np.float32)
     desc = sub.select([f"desc_{d}" for d in cfg.descriptors]).to_numpy().astype(np.float32)
     return np.hstack([fp, desc])
+
+
+class FeatureStore:
+    """Compact in-memory compound features for fast row gathering during training/inference.
+
+    Holds bit-packed fingerprints (256 bytes/compound) and descriptors; `matrix(keys)` unpacks
+    only the requested rows. 1.1M compounds take ~0.3 GB.
+    """
+
+    def __init__(self, keys: list[str], packed: np.ndarray, desc: np.ndarray, cfg: CompoundFeatureConfig):
+        self.cfg = cfg
+        self.packed = packed
+        self.desc = desc
+        self._index = pl.DataFrame({"inchi_key": keys}).with_row_index("_row")
+
+    @classmethod
+    def from_table(cls, table: pl.DataFrame, cfg: CompoundFeatureConfig) -> "FeatureStore":
+        table = table.filter("ok")
+        packed = np.frombuffer(b"".join(table["fp"].to_list()), dtype=np.uint8).reshape(table.height, -1)
+        desc = table.select([f"desc_{d}" for d in cfg.descriptors]).to_numpy().astype(np.float32)
+        return cls(table["inchi_key"].to_list(), packed, desc, cfg)
+
+    @classmethod
+    def load(cls, path: Path) -> "FeatureStore":
+        cfg = CompoundFeatureConfig.from_dict(read_provenance(path)["config"]["features"])
+        return cls.from_table(pl.read_parquet(path), cfg)
+
+    def rows(self, keys: list[str]) -> np.ndarray:
+        idx = pl.DataFrame({"inchi_key": keys}).join(self._index, on="inchi_key", how="left", maintain_order="left")["_row"]
+        if idx.null_count():
+            raise KeyError(f"{idx.null_count()} compounds have no features")
+        return idx.to_numpy()
+
+    def matrix(self, keys: list[str]) -> np.ndarray:
+        r = self.rows(keys)
+        fp = np.unpackbits(self.packed[r], axis=1, count=self.cfg.n_bits).astype(np.float32)
+        return np.hstack([fp, self.desc[r]])
+
+    def packed_rows(self, keys: list[str]) -> np.ndarray:
+        return self.packed[self.rows(keys)]

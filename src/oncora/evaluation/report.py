@@ -27,6 +27,7 @@ class EvalReport:
     manifests: dict[str, dict] = field(default_factory=dict)
     notes: list[str] = field(default_factory=list)
     model: str = "model"
+    comparisons: list[str] = field(default_factory=list)   # shown, but not part of the AC-3 gate
 
     def _get(self, name: str, split: str) -> EvalResult | None:
         return next((r for r in self.results if r.name == name and r.split == split), None)
@@ -47,8 +48,9 @@ class EvalReport:
         return out
 
     def accepted(self) -> bool:
-        """AC-3: on the compound split, beat every baseline on at least one primary metric."""
-        verdict = self.beats_baselines().get("compound", {})
+        """AC-3: on the compound split, beat every trivial baseline on at least one primary metric.
+        Comparison models (e.g. logistic regression) are reported but do not gate acceptance."""
+        verdict = {b: v for b, v in self.beats_baselines().get("compound", {}).items() if b not in self.comparisons}
         return bool(verdict) and all(any(v.values()) for v in verdict.values())
 
     def to_markdown(self) -> str:
@@ -79,7 +81,8 @@ class EvalReport:
                       "baseline's point estimate.", ""]
             for split, per_b in verdict.items():
                 for b, per_m in per_b.items():
-                    lines.append(f"- {split} vs. **{b}**: " + ", ".join(
+                    tag = " (comparison model, not gating)" if b in self.comparisons else ""
+                    lines.append(f"- {split} vs. **{b}**{tag}: " + ", ".join(
                         f"{k} {'✅' if ok else '❌'}" for k, ok in per_m.items()))
             lines += ["", f"**Accepted: {'yes' if self.accepted() else 'no'}**", ""]
         if self.notes:

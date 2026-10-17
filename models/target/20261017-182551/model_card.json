@@ -1,0 +1,181 @@
+{
+ "model": "compound_to_target",
+ "run_id": "20261017-182551",
+ "created_at": "2026-10-17T18:41:49.373130+00:00",
+ "algorithm": "per-target LightGBM binary classifier + per-target calibration",
+ "hyperparameters": {
+  "n_estimators": 500,
+  "learning_rate": 0.05,
+  "num_leaves": 31,
+  "colsample_bytree": 0.5,
+  "min_child_samples": 10,
+  "subsample": 0.8,
+  "subsample_freq": 1,
+  "verbose": -1,
+  "early_stopping_rounds": 30,
+  "seed": 42
+ },
+ "features": {
+  "compound": {
+   "radius": 2,
+   "n_bits": 2048,
+   "descriptors": [
+    "MolWt",
+    "MolLogP",
+    "TPSA",
+    "NumHDonors",
+    "NumHAcceptors",
+    "NumRotatableBonds",
+    "RingCount",
+    "NumAromaticRings",
+    "FractionCSP3",
+    "HeavyAtomCount"
+   ],
+   "rdkit_version": "2026.09.1"
+  }
+ },
+ "training_data": {
+  "table": "data/processed/target_pairs.parquet (collapsed per standardized parent)",
+  "rows": 4235109,
+  "targets": 1360,
+  "label_policy": {
+   "active_pchembl": 6.0,
+   "min_positives_per_target": 30,
+   "neg_ratio": 3,
+   "seed": 42,
+   "demo_holdout": {
+    "XGALLCVXEZPNRQ": "gefitinib"
+   },
+   "negative_assumption": "Sampled negatives are compounds active on some other target but never measured on this one; they are assumed inactive. Some will be unmeasured true actives (label noise biased toward under-estimating precision)."
+  },
+  "sources": [
+   {
+    "path": "data/interim/chembl_activities.parquet",
+    "sha256": null
+   },
+   {
+    "path": "data/interim/chembl/target_dictionary.parquet",
+    "sha256": null
+   },
+   {
+    "path": "data/interim/chembl/target_components.parquet",
+    "sha256": null
+   },
+   {
+    "path": "data/interim/chembl/component_sequences.parquet",
+    "sha256": null
+   },
+   {
+    "path": "data/interim/chembl/component_synonyms.parquet",
+    "sha256": null
+   }
+  ]
+ },
+ "split": {
+  "strategy": "compound",
+  "seed": 42,
+  "n_folds": 5,
+  "group_counts": [
+   208920,
+   208920,
+   208921,
+   208921,
+   208920
+  ],
+  "row_counts": [
+   847022,
+   847022,
+   847022,
+   847022,
+   847021
+  ],
+  "partition_hashes": [
+   "ba7c98213593b203",
+   "e2582831ed5b46d2",
+   "58847b6419149676",
+   "7950ae73ad14f289",
+   "9a89a35dc095b008"
+  ],
+  "group_key": "standardized connectivity block (D-01)",
+  "rows": {
+   "train": 3049278,
+   "val": 338809,
+   "test": 847022
+  }
+ },
+ "calibration_methods": {
+  "platt": 650,
+  "isotonic": 207,
+  "identity": 503
+ },
+ "metrics": {
+  "model": {
+   "n_targets_evaluated": 1360,
+   "pr_auc_macro": 0.8564404199521347,
+   "pr_auc_weighted": 0.9126677829988054,
+   "roc_auc_macro": 0.9351268939651417,
+   "roc_auc_weighted": 0.9628594883561433,
+   "prevalence_macro": 0.22472201455358312,
+   "pooled_pr_auc": 0.9338506311273854,
+   "top1": 0.59955,
+   "top5": 0.8528,
+   "top10": 0.8865,
+   "brier_calibrated": 0.042153872549533844,
+   "brier_raw": 0.04162731021642685,
+   "ci": {
+    "pr_auc_macro": [
+     0.8543035075609102,
+     0.8683327297946638
+    ],
+    "roc_auc_macro": [
+     0.9314392226554232,
+     0.9418409931766042
+    ],
+    "pr_auc_weighted": [
+     0.910943086664245,
+     0.9159362517981348
+    ]
+   }
+  },
+  "logreg_ecfp": {
+   "n_targets_evaluated": 1360,
+   "pr_auc_macro": 0.8523503175926342,
+   "pr_auc_weighted": 0.8956872064347366,
+   "roc_auc_macro": 0.9344521337307466,
+   "roc_auc_weighted": 0.9562694643608355,
+   "prevalence_macro": 0.22472201455358312,
+   "pooled_pr_auc": 0.9232102074510268,
+   "ci": {
+    "pr_auc_macro": [
+     0.8492077004520919,
+     0.8647142021697917
+    ],
+    "roc_auc_macro": [
+     0.9295553878208174,
+     0.9408468829843694
+    ],
+    "pr_auc_weighted": [
+     0.893848620407505,
+     0.8992661338732146
+    ]
+   }
+  },
+  "prior_popularity": {
+   "n_targets_evaluated": 1360,
+   "pr_auc_macro": 0.22472201455358312,
+   "pr_auc_weighted": 0.23335307280754505,
+   "roc_auc_macro": 0.5,
+   "roc_auc_weighted": 0.5,
+   "prevalence_macro": 0.22472201455358312,
+   "pooled_pr_auc": 0.23615893905014115,
+   "top1": 0.01315,
+   "top5": 0.0518,
+   "top10": 0.10235,
+   "ci": {}
+  }
+ },
+ "accepted": true,
+ "shipped_model": "evaluated model (fit on train; val for early stopping/calibration)",
+ "training_seconds": 975,
+ "intended_use": "Computational research predictions, not validated clinical conclusions."
+}

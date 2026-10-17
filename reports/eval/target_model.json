@@ -1,0 +1,140 @@
+{
+ "title": "Compound \u2192 target model",
+ "task": "target",
+ "results": [
+  {
+   "name": "model",
+   "split": "compound",
+   "metrics": {
+    "n_targets_evaluated": 1360,
+    "pr_auc_macro": 0.8564404199521347,
+    "pr_auc_weighted": 0.9126677829988054,
+    "roc_auc_macro": 0.9351268939651417,
+    "roc_auc_weighted": 0.9628594883561433,
+    "prevalence_macro": 0.22472201455358312,
+    "pooled_pr_auc": 0.9338506311273854,
+    "top1": 0.59955,
+    "top5": 0.8528,
+    "top10": 0.8865,
+    "brier_calibrated": 0.042153872549533844,
+    "brier_raw": 0.04162731021642685
+   },
+   "ci": {
+    "pr_auc_macro": [
+     0.8543035075609102,
+     0.8683327297946638
+    ],
+    "roc_auc_macro": [
+     0.9314392226554232,
+     0.9418409931766042
+    ],
+    "pr_auc_weighted": [
+     0.910943086664245,
+     0.9159362517981348
+    ]
+   }
+  },
+  {
+   "name": "logreg_ecfp",
+   "split": "compound",
+   "metrics": {
+    "n_targets_evaluated": 1360,
+    "pr_auc_macro": 0.8523503175926342,
+    "pr_auc_weighted": 0.8956872064347366,
+    "roc_auc_macro": 0.9344521337307466,
+    "roc_auc_weighted": 0.9562694643608355,
+    "prevalence_macro": 0.22472201455358312,
+    "pooled_pr_auc": 0.9232102074510268
+   },
+   "ci": {
+    "pr_auc_macro": [
+     0.8492077004520919,
+     0.8647142021697917
+    ],
+    "roc_auc_macro": [
+     0.9295553878208174,
+     0.9408468829843694
+    ],
+    "pr_auc_weighted": [
+     0.893848620407505,
+     0.8992661338732146
+    ]
+   }
+  },
+  {
+   "name": "prior_popularity",
+   "split": "compound",
+   "metrics": {
+    "n_targets_evaluated": 1360,
+    "pr_auc_macro": 0.22472201455358312,
+    "pr_auc_weighted": 0.23335307280754505,
+    "roc_auc_macro": 0.5,
+    "roc_auc_weighted": 0.5,
+    "prevalence_macro": 0.22472201455358312,
+    "pooled_pr_auc": 0.23615893905014115,
+    "top1": 0.01315,
+    "top5": 0.0518,
+    "top10": 0.10235
+   },
+   "ci": {}
+  }
+ ],
+ "primary": [
+  "pr_auc_macro",
+  "pr_auc_weighted"
+ ],
+ "manifests": {
+  "compound": {
+   "strategy": "compound",
+   "seed": 42,
+   "n_folds": 5,
+   "group_counts": [
+    208920,
+    208920,
+    208921,
+    208921,
+    208920
+   ],
+   "row_counts": [
+    847022,
+    847022,
+    847022,
+    847022,
+    847021
+   ],
+   "partition_hashes": [
+    "ba7c98213593b203",
+    "e2582831ed5b46d2",
+    "58847b6419149676",
+    "7950ae73ad14f289",
+    "9a89a35dc095b008"
+   ]
+  }
+ },
+ "notes": [
+  "4,235,109 collapsed pairs, 1,360 targets (0 skipped: single class in train).",
+  "Per-target ROC/PR-AUC use raw scores (calibration is monotone but isotonic steps create ties); pooled PR-AUC and top-k use calibrated probabilities, which are comparable across targets.",
+  "Brier score on test: raw 0.0416 \u2192 calibrated 0.0422.",
+  "Top-k over 20,000 sampled test compounds with \u2265 1 known positive, against all targets.",
+  "CIs: 95% percentile bootstrap over test compounds (50 resamples). In a resample, a small target whose test set becomes single-class drops out of the macro average, which nudges the bootstrap distribution slightly upward; read the point estimate as the reference.",
+  "Calibration: identity below 10 validation compounds per class, regularized Platt (pulled toward identity) below 100, isotonic above. Rankings break isotonic ties by raw score.",
+  "Sampled negatives are assumed inactive (see target_pairs provenance); measured precision is therefore a lower bound if some sampled negatives are untested actives."
+ ],
+ "model": "model",
+ "comparisons": [
+  "logreg_ecfp"
+ ],
+ "beats_baselines": {
+  "compound": {
+   "logreg_ecfp": {
+    "pr_auc_macro": true,
+    "pr_auc_weighted": true
+   },
+   "prior_popularity": {
+    "pr_auc_macro": true,
+    "pr_auc_weighted": true
+   }
+  }
+ },
+ "accepted": true
+}

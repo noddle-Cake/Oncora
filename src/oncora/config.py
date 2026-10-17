@@ -4,6 +4,7 @@ Other modules import from here instead of hard-coding values, so a run is fully 
 this file plus the raw data checksums (NFR-2).
 """
 
+import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -72,6 +73,35 @@ BOOTSTRAP_N = 200                # compound-level bootstrap resamples for CIs
 TOPK_MAX_COMPOUNDS = 20_000      # test compounds sampled for the target top-k metric
 GLOBAL_SENSITIVE_QUANTILE = 0.90 # comparison label (D-05)
 REPORTS_EVAL = REPORTS / "eval"
+MLFLOW_URI = f"sqlite:///{ROOT / 'mlruns' / 'mlflow.db'}"
+
+# --- Spec 05: target model ----------------------------------------------------------------
+TARGET_LGBM = {
+    "n_estimators": 500, "learning_rate": 0.05, "num_leaves": 31, "colsample_bytree": 0.5,
+    "min_child_samples": 10, "subsample": 0.8, "subsample_freq": 1, "verbose": -1,
+}
+TARGET_EARLY_STOPPING = 30
+TARGET_TOP_N = 20
+
+# --- Spec 06: sensitivity model -----------------------------------------------------------
+SENS_LGBM = {
+    "n_estimators": 2000, "learning_rate": 0.05, "num_leaves": 63, "colsample_bytree": 0.3,
+    "min_child_samples": 50, "subsample": 0.8, "subsample_freq": 1, "verbose": -1,
+}
+SENS_EARLY_STOPPING = 50
+SENS_TOP_N = 25
+CANCER_TOP_K = 3            # aggregate a disease by the mean of its top-k predicted lines
+CANCER_MIN_LINES = 3        # fewer lines than this -> flagged low-support
+
+# --- Spec 07: interpretation / LLM (D5, NFR-9, NFR-10) ------------------------------------
+LLM_ENABLED = os.environ.get("ONCORA_LLM_ENABLED", "1") == "1"
+LLM_MODEL = os.environ.get("ONCORA_LLM_MODEL", "claude-opus-5-5")
+LLM_EFFORT = "low"          # restating a small bundle needs little reasoning
+LLM_MAX_TOKENS = 2000
+LLM_TIMEOUT_S = 30.0
+LLM_USAGE_LOG = REPORTS / "llm_usage.jsonl"
+EVIDENCE_TOP_TARGETS = 10
+EVIDENCE_TOP_LINES = 25
 
 # LINCS annotation files write missing values as a literal pair of double quotes.
 NULL_TOKENS = ("", '""')

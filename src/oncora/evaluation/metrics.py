@@ -77,7 +77,8 @@ def _mean(x: np.ndarray) -> float:
 
 
 def sensitivity_metrics(y_t: np.ndarray, pred_t: np.ndarray, compounds: np.ndarray, lines: np.ndarray,
-                        labels: dict[str, np.ndarray] | None = None, min_group: int = 5) -> dict:
+                        labels: dict[str, np.ndarray] | None = None, min_group: int = 5,
+                        label_scores: dict[str, np.ndarray] | None = None) -> dict:
     """y_t / pred_t are on the transformed scale; labels maps label name -> boolean array.
     Per-group ρ is undefined for a constant prediction within a group; such groups are skipped."""
     out = {
@@ -87,8 +88,9 @@ def sensitivity_metrics(y_t: np.ndarray, pred_t: np.ndarray, compounds: np.ndarr
         "rmse_transformed": float(np.sqrt(np.mean((y_t - pred_t) ** 2))),
     }
     for name, lab in (labels or {}).items():
-        out[f"roc_auc_{name}"] = _safe(roc_auc_score, lab, pred_t)
-        out[f"pr_auc_{name}"] = _safe(average_precision_score, lab, pred_t)
+        score = (label_scores or {}).get(name, pred_t)   # e.g. a dedicated classifier's probability
+        out[f"roc_auc_{name}"] = _safe(roc_auc_score, lab, score)
+        out[f"pr_auc_{name}"] = _safe(average_precision_score, lab, score)
         out[f"prevalence_{name}"] = float(np.mean(lab))
     return out
 
