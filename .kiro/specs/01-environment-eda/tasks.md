@@ -15,16 +15,16 @@
   - Test with a tampered temp file
   - _Requirements: 2.6_
 
-- [ ] 3. Schema and quality profiler
-- [ ] 3.1 Implement `io/profile.py` with DuckDB-backed `profile_table` and markdown rendering
+- [x] 3. Schema and quality profiler
+- [x] 3.1 Implement `io/profile.py` with DuckDB-backed `profile_table` and markdown rendering
   - Handle the `""` null token; detect ID patterns (`ACH-`, `BRD-`)
   - Use SQL aggregates only for `instinfo.txt`
   - _Requirements: 2.1, 2.3, 2.4_
-- [ ] 3.2 Profile all sources and write `reports/eda_profile.md`
+- [x] 3.2 Profile all sources and write `reports/eda_profile.md`
   - Check the numbers against `steering/data-sources.md`; record any drift
   - Learn: data profiling, columnar/out-of-core processing
   - _Requirements: 2.2, 2.5_
-- [ ] 3.3 Convert the CCLE matrix and DSS3 file to interim Parquet
+- [x] 3.3 Convert the CCLE matrix and DSS3 file to interim Parquet
   - Filter CCLE to `IsDefaultEntryForModel = Yes`; write gene sidecar with parsed symbol/Entrez
   - _Requirements: 2.3_
 

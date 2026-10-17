@@ -1,6 +1,6 @@
 # Implementation Plan — 02 Data Pipeline
 
-- [ ] 1. Provenance and integrity helpers
+- [x] 1. Provenance and integrity helpers
   - Implement `data_prep/provenance.py` (`write_parquet`, `read_provenance`, `assert_table`)
   - Unit-test the metadata round-trip and each assertion failure
   - _Requirements: 5.1, 5.2_
