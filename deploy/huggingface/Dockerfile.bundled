@@ -4,9 +4,10 @@
 # stage_space.sh copies this file to the staged folder as `Dockerfile`.
 FROM python:3.11-slim-bookworm
 
-# libgomp1: LightGBM's OpenMP runtime. libxrender1/libxext6: RDKit molecule drawing.
+# libgomp1: LightGBM's OpenMP runtime. libxrender1/libxext6/libexpat1: RDKit molecule drawing
+# (the amd64 image Hugging Face builds lacks libexpat; arm64 happens to have it).
 RUN apt-get update \
- && apt-get install -y --no-install-recommends ca-certificates curl libgomp1 libxrender1 libxext6 \
+ && apt-get install -y --no-install-recommends ca-certificates curl libgomp1 libxrender1 libxext6 libexpat1 \
  && rm -rf /var/lib/apt/lists/*
 COPY --from=ghcr.io/astral-sh/uv:0.13.1 /uv /usr/local/bin/uv
 
@@ -26,6 +27,8 @@ RUN uv sync --frozen --no-dev --no-install-project
 COPY --chown=user . .
 RUN uv sync --frozen --no-dev \
  && uv run --no-sync python -m oncora.serve.artifacts verify
+# Fail the build, not the live page, if a system library the UI or models load is missing.
+RUN uv run --no-sync python -c "from rdkit.Chem import Draw; import lightgbm, streamlit, oncora.serve.app"
 
 EXPOSE 7860
 CMD ["bash", "deploy/start.sh"]
