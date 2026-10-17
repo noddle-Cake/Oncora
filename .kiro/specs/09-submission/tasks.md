@@ -1,6 +1,7 @@
 # Implementation Plan — 09 Evaluation Hardening & Submission
 
-- [ ] 1. Demo compound holdout (do this before the final training runs in 05/06)
+- [x] 1. Demo compound holdout (do this before the final training runs in 05/06)
+  - Chosen: **gefitinib** (connectivity `XGALLCVXEZPNRQ`): clean DSS3 scale, 1,110 cell lines of ground truth, EGFR as its top ChEMBL active (pChEMBL 7.76), annotated MoA "EGFR inhibitor"
   - Pick the demo drug; add its InChIKey to `config.DEMO_HOLDOUT`; confirm it is excluded from both modeling tables
   - _Requirements: 1.1, 1.2_
 

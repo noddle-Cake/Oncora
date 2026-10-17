@@ -22,10 +22,10 @@
 - [x] 3.3 Unit tests for the censoring and dedup rules
   - _Requirements: 2.4, 2.5_
 
-- [ ] 4. Target-pair label construction
-- [ ] 4.1 Implement `build_target_pairs` with the threshold, measured negatives, seeded sampled negatives, and minimum-positives filter
+- [x] 4. Target-pair label construction
+- [x] 4.1 Implement `build_target_pairs` with the threshold, measured negatives, seeded sampled negatives, and minimum-positives filter
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
-- [ ] 4.2 Write the label policy to provenance; unit-test determinism and collision-freedom
+- [x] 4.2 Write the label policy to provenance; unit-test determinism and collision-freedom
   - Learn: positive/negative framing, "absence ≠ inactive"
   - _Requirements: 3.5_
 

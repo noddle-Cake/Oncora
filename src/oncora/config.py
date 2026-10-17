@@ -43,6 +43,12 @@ ACTIVE_PCHEMBL = 6.0             # active ⇔ pChEMBL ≥ 6 (≤ 1 µM)
 NEG_RATIO = 3                    # target negatives : positives, topped up by sampling
 MIN_POSITIVES_PER_TARGET = 30
 
+# --- Spec 09: unseen-compound demo -------------------------------------------------------
+# Connectivity blocks removed from every modeling table before training, so the demo compound
+# is truly unseen by both models (stereo variants included). Its labels are kept aside for
+# comparison in processed/demo_holdout_*.parquet.
+DEMO_HOLDOUT = {"XGALLCVXEZPNRQ": "gefitinib"}
+
 # --- Spec 01 checkpoint decisions (reports/eda_summary.md) ---------------------------------
 # D-01: splits group on the InChIKey connectivity block (first 14 chars), not the full key.
 SPLIT_GROUP_KEY = "connectivity"
