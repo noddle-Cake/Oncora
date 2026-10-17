@@ -49,7 +49,8 @@
   - Learn: dimensionality reduction and feature selection
   - _Requirements: 4.4, 4.5_
 
-- [ ] 5.3 Profile the L1000 Level 4 GCTX (new file; optional-evidence only, A2 revised)
+- [x] 5.3 Profile the L1000 Level 4 GCTX (new file; optional-evidence only, A2 revised)
+  - Done: `oncora.data_prep.signatures` (extract) + `oncora.eda.signatures` → `reports/eda_signatures.md`
   - Add a GCTX reader dependency (`cmapPy`, or `h5py` for a lighter dependency) — do NOT load the
     matrix whole; it is ~90 GB in RAM
   - Confirm disk headroom (≥ ~100 GB) and that `*.gctx` is gitignored

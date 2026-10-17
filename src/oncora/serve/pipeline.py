@@ -17,7 +17,12 @@ from oncora.config import DISCLAIMER, SENS_TOP_N, TARGET_TOP_N
 from oncora.interpret import explain
 from oncora.interpret.annotations import AnnotationIndex, ExpressionLookup
 from oncora.interpret.builder import build_bundle
-from oncora.models.sensitivity.aggregate import DiseaseMapMissing, aggregate, load_disease_map
+from oncora.interpret.signatures import SignatureIndex
+from oncora.models.sensitivity.aggregate import (
+    DiseaseMapMissing,
+    aggregate,
+    load_disease_map,
+)
 from oncora.models.sensitivity.predict import CellLinePrediction, load_sensitivity_model
 from oncora.models.target.predict import load_target_model
 
@@ -35,6 +40,7 @@ class OncoraPipeline:
         self.cfg = self.target.cfg
         self.annotations = AnnotationIndex.load()
         self.expression = ExpressionLookup()
+        self.signatures = SignatureIndex.load_optional()   # None without the optional L1000 extract (D-09)
         try:
             self.disease_map = load_disease_map()
             self.sensitivity.set_cell_line_names(
@@ -87,7 +93,7 @@ class OncoraPipeline:
                 near_seen=near, model_runs=self.model_versions,
                 selectivity_learned=self.sensitivity.card.get("learned_selectivity"),
                 annotations=self.annotations, expression=self.expression,
-                heavy_atoms=parsed.mol.GetNumHeavyAtoms())
+                heavy_atoms=parsed.mol.GetNumHeavyAtoms(), signatures=self.signatures)
         with timed("explain"):
             summary = explain(bundle, use_llm=explain_with_llm)
 

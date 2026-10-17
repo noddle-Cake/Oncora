@@ -1,8 +1,16 @@
 """Assemble an EvidenceBundle from model outputs and database annotations (spec 07, Req 1–2)."""
 
 from oncora.chem.similarity import NearestNeighbor
-from oncora.config import EVIDENCE_TOP_LINES, EVIDENCE_TOP_TARGETS, MIN_RELIABLE_HEAVY_ATOMS
-from oncora.interpret.annotations import AnnotationIndex, ExpressionLookup, target_annotation_overlap
+from oncora.config import (
+    EVIDENCE_TOP_LINES,
+    EVIDENCE_TOP_TARGETS,
+    MIN_RELIABLE_HEAVY_ATOMS,
+)
+from oncora.interpret.annotations import (
+    AnnotationIndex,
+    ExpressionLookup,
+    target_annotation_overlap,
+)
 from oncora.interpret.bundle import (
     Applicability,
     CancerTypeEvidence,
@@ -15,6 +23,7 @@ from oncora.interpret.bundle import (
     TargetEvidence,
     r3,
 )
+from oncora.interpret.signatures import SignatureIndex, signature_target_overlap
 
 EXPRESSION_TARGETS = 3   # top predicted targets checked for expression in the top predicted lines
 
@@ -28,7 +37,8 @@ def build_bundle(*, input_smiles: str, canonical_smiles: str, inchi_key: str,
                  targets: list, cell_lines: list, cancer_types: list, cancer_types_note: str | None,
                  near_seen: dict[str, NearestNeighbor], model_runs: dict[str, str],
                  selectivity_learned: bool | None, annotations: AnnotationIndex,
-                 expression: ExpressionLookup | None = None, heavy_atoms: int | None = None) -> EvidenceBundle:
+                 expression: ExpressionLookup | None = None, heavy_atoms: int | None = None,
+                 signatures: SignatureIndex | None = None) -> EvidenceBundle:
     t_ev = [TargetEvidence(rank=t.rank, target_chembl_id=t.target_chembl_id, name=t.pref_name,
                            gene_symbol=t.gene_symbol, score=r3(t.score)) for t in targets[:EVIDENCE_TOP_TARGETS]]
     c_ev = [CellLineEvidence(rank=c.rank, model_id=c.model_id, name=c.cell_line_name,
@@ -50,7 +60,11 @@ def build_bundle(*, input_smiles: str, canonical_smiles: str, inchi_key: str,
                   "reliably: known targets of small compounds such as aspirin and paracetamol rank in "
                   "the hundreds. Treat the target ranking as unreliable for this input."))
     ann = annotations.lookup(inchi_key)
-    derived = Derived(target_annotation_overlap=target_annotation_overlap([t.gene_symbol for t in t_ev], ann))
+    if signatures is not None:
+        ann.measured_signature = signatures.lookup(inchi_key)
+    predicted_genes = [t.gene_symbol for t in t_ev]
+    derived = Derived(target_annotation_overlap=target_annotation_overlap(predicted_genes, ann),
+                      signature_target_overlap=signature_target_overlap(predicted_genes, ann.measured_signature))
     if expression is not None and c_ev:
         genes = [t.gene_symbol for t in t_ev[:EXPRESSION_TARGETS] if t.gene_symbol]
         derived.target_expression = expression.target_expression(genes, [c.model_id for c in c_ev])

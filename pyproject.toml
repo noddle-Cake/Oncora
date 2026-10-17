@@ -8,6 +8,7 @@ dependencies = [
     "anthropic>=1.15.0",
     "duckdb>=1.5.6",
     "fastapi>=0.143.3",
+    "h5py>=3.16.0",
     "lightgbm>=4.7.0",
     "matplotlib>=3.11.2",
     "mlflow>=3.17.1",

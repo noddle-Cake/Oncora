@@ -27,6 +27,8 @@ Rules:
 - Every claim must cite the bundle paths it relies on, e.g. "predictions.targets[0].score".
 - Put model outputs in section "prediction", database facts in section "annotation", and links between them in "cross".
 - Never state or imply that one model's prediction proves or causes another's; co-occurrence is correlational.
+- annotations.measured_signature is measured lab data, not a prediction. A similar measured response
+  (its neighbors) suggests but does not prove a shared mechanism. If it is not reproducible, call it inconclusive.
 - When you mention a number, copy it exactly as written in the bundle.
 - Do not add a disclaimer; the system appends it.
 - Write 4 to 8 claims, each one or two plain sentences."""

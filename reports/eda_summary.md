@@ -36,9 +36,10 @@ Evidence: [`eda_profile.md`](eda_profile.md) · [`eda_bridges.md`](eda_bridges.m
 
 ## Open items
 
-- **Spec 01 task 5.3: profile the L1000 Level 4 GCTX.** Waiting for the ~80 GB download to
-  finish and move to `data/raw/lincs/`. It will be profiled (shape, `rid`/`cid` joins, DSS3
-  compound coverage) into `reports/eda_signatures.md`. D-09 holds whatever the profile finds.
+- ~~Spec 01 task 5.3: profile the L1000 Level 4 GCTX.~~ **Resolved:** profiled and validated in
+  [`eda_signatures.md`](eda_signatures.md). 951 / 960 DSS3 compounds have a measured signature,
+  extracted to a 75 MB consensus table. D-09 holds: signatures are evidence in the bundle
+  (`annotations.measured_signature`), never a model feature.
 - **A4 / D-07: waiting for `Model.csv`.** Until it is added, spec 06 Requirement 4 (cancer-type
   ranking) is blocked. Everything else can proceed. When it arrives: add it to `SHA256SUMS`,
   extend the cell-line bridge, and re-run `oncora.data_prep.bridges`.

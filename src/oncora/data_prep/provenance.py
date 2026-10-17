@@ -42,11 +42,19 @@ def source_entry(path: Path) -> dict[str, str | None]:
     """Describe a source file. Raw files take their digest from SHA256SUMS (already verified);
     derived files point at their own provenance instead."""
     path = Path(path)
-    try:
-        rel = str(path.resolve().relative_to(DATA_RAW.resolve()))
-        return {"path": f"data/raw/{rel}", "sha256": read_manifest(MANIFEST).get(rel)}
-    except ValueError:
-        return {"path": str(path.resolve().relative_to(ROOT.resolve())), "sha256": None}
+    # Compare unresolved paths first, so a symlinked data directory still maps to data/raw/...
+    for p, raw, root in ((path.absolute(), DATA_RAW.absolute(), ROOT.absolute()),
+                         (path.resolve(), DATA_RAW.resolve(), ROOT.resolve())):
+        try:
+            rel = str(p.relative_to(raw))
+            return {"path": f"data/raw/{rel}", "sha256": read_manifest(MANIFEST).get(rel)}
+        except ValueError:
+            pass
+        try:
+            return {"path": str(p.relative_to(root)), "sha256": None}
+        except ValueError:
+            pass
+    raise ValueError(f"{path} is outside the project root {ROOT}")
 
 
 def write_parquet(
