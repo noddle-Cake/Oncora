@@ -87,6 +87,35 @@ class ChemblActive(BaseModel):
     pchembl: float
 
 
+class GeneResponse(BaseModel):
+    gene_symbol: str
+    z: float = Field(description="consensus z-score of the landmark gene (positive = up-regulated)")
+
+
+class SignatureNeighbor(BaseModel):
+    inchi_key: str
+    names: list[str]
+    moa: list[str]
+    targets: list[str]
+    correlation: float = Field(description="Pearson r between the two measured consensus signatures")
+
+
+class MeasuredSignature(BaseModel):
+    """What LINCS L1000 *measured* when cells were treated with this compound (D-09: never a prediction)."""
+    kind: Literal["annotation"] = "annotation"
+    source: str = "LINCS L1000 Level 4 trt_cp, 978 landmark genes, consensus over cell lines"
+    match_level: Literal["exact", "connectivity"]
+    n_profiles: int
+    n_cell_lines: int
+    reproducibility: float | None = Field(
+        description="correlation between signatures from two disjoint halves of the cell lines; null with one line")
+    reproducible: bool
+    up: list[GeneResponse]
+    down: list[GeneResponse]
+    neighbors: list[SignatureNeighbor] = Field(
+        default_factory=list, description="other profiled compounds whose measured response is most similar")
+
+
 class Annotations(BaseModel):
     matched: bool
     match_level: Literal["exact", "connectivity", "none"]
@@ -96,6 +125,7 @@ class Annotations(BaseModel):
     moa: list[str] = []
     targets: list[str] = []
     chembl_actives: list[ChemblActive] = []
+    measured_signature: MeasuredSignature | None = None
 
 
 class TargetExpression(BaseModel):
@@ -109,6 +139,9 @@ class Derived(BaseModel):
     target_annotation_overlap: list[str] = Field(
         default_factory=list, description="predicted target genes that also appear in database annotations")
     target_expression: list[TargetExpression] = []
+    signature_target_overlap: list[str] = Field(
+        default_factory=list,
+        description="predicted target genes that are annotated targets of compounds with a similar measured response")
     relationship: str = ("The target and sensitivity predictions come from independently trained models; "
                          "their co-occurrence is correlational evidence, not proof.")
 

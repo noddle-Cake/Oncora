@@ -10,6 +10,10 @@
   - _Requirements: 2.1, 2.2, 2.3_
 - [x] 1.4 Determinism and path-resolution tests
   - _Requirements: 1.5, 1.6_
+- [x] 1.5 Attach measured L1000 signatures as annotation evidence (STRETCH): top up/down landmark genes,
+  reproducibility, "responds like" neighbors, and `derived.signature_target_overlap`; skipped silently without the extract
+  - Learn: consensus signatures, reproducibility filtering, connectivity-style similarity
+  - _Requirements: 1.4_
 
 - [x] 2. Template renderer
   - Per-claim citations, separate sections, disclaimer; offline test

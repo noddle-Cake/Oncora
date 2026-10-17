@@ -22,7 +22,7 @@ Never commit raw data or the ChEMBL dump.
 | Small-molecule metadata | `…/Small_Molecule_Metadata.txt` | TSV, 41,508 rows | `sm_name`, `sm_lincs_id`, `sm_smiles_parent`, `sm_inchi_key_parent`, … |
 | Instance info | `…/instinfo.txt` | **655 MB** TSV, 2.92 M rows | `sample_id`, `pert_id`, `cell_iname`, dose/time, QC fields |
 | Field definitions | `…/DataFieldDefinitions.xlsx` | XLSX | LINCS column dictionary |
-| L1000 Level 4 signatures | `data/raw/lincs/level4_beta_trt_cp_n1805898x12328.gctx` | **~80 GB** GCTX (HDF5); **1,805,898 profiles × 12,328 genes**; `trt_cp` (compound perturbation), plate-normalized z-scores | matrix: rows = `rid` (Entrez gene ids, join via `geneinfo.txt`); cols = `cid` (sample/instance ids, join via `instinfo.sample_id` → `pert_id`) |
+| L1000 Level 4 signatures | `data/raw/lincs/level4_beta_trt_cp_n1805898x12328.gctx` | **~89 GB** GCTX (HDF5; optional, evidence only); **1,805,898 profiles × 12,328 genes**; `trt_cp` (compound perturbation), plate-normalized z-scores | matrix: rows = `rid` (Entrez gene ids, join via `geneinfo.txt`); cols = `cid` (sample/instance ids, join via `instinfo.sample_id` → `pert_id`) |
 
 Annotation files use `""` (a literal pair of quotes) for missing values. Treat it as null.
 
@@ -64,6 +64,23 @@ Annotation files use `""` (a literal pair of quotes) for missing values. Treat i
   source only**. They are **never a required inference input** — a new SMILES pasted by a user has no
   signature, so the sensitivity model's compound features stay structure-only (FR-10). Do not add any
   signature-derived column to a model whose inference path must serve unseen compounds.
+
+## L1000 signatures (spec 01 task 5.3; `reports/eda_signatures.md`)
+
+- The GCTX is one **uncompressed, unchunked** float32 HDF5 dataset `0/DATA/0/matrix` stored as
+  **(profiles, genes)** = (1,805,898, 12,328), ~89 GB, SHA256 `a78b9edb…11e6` (recorded in the
+  extract's provenance; deliberately **not** in `SHA256SUMS`, because it is optional). `0/META/COL/id` =
+  `instinfo.sample_id` (all but 33 match), `0/META/ROW/id` = Entrez ids; all 978 landmarks are present.
+- All profiles are `trt_cp`; 1.31 M pass QC; 34,419 `pert_id`s across 231 cell lines; 74% at 24 h.
+- `oncora.data_prep.signatures` streams it once (~90 s, ~6 GB RAM) into
+  `data/interim/l1000_consensus.parquet` (~75 MB): **20,145 compounds**, 978 landmark genes, consensus =
+  mean over cell lines of per-line mean z (QC pass, dose ≥ 1 µM), with a half-split reproducibility score.
+  **After this step the 89 GB file is not needed** by any stage.
+- Coverage: 951 / 960 DSS3 compounds have a signature (722 reproducible); gefitinib has 858 eligible
+  profiles in 118 lines (reproducibility 0.86).
+- Validated: same-MoA compounds respond alike (AUC 0.67 at reproducibility ≥ 0.3), also among
+  structurally dissimilar pairs (0.65), and similar responders kill similar cell lines (Mantel ρ ≈ 0.1,
+  p < 0.005). Used only as `annotations.measured_signature` evidence (D-09).
 
 ## ChEMBL 37 export (spec 02, task 2)
 
@@ -136,3 +153,5 @@ Confirmed by `reports/eda_bridges.md`: **0 / 985** trainable lines can be mapped
   genes (`rid`) and profiles (`cid`) you need. Resolve the `cid` → `pert_id` link via
   `instinfo.sample_id`, and `rid` → symbol via `geneinfo.txt`. Confirm free disk space before the
   download completes (≥ ~100 GB headroom including derived slabs); gitignore it (`*.gctx`).
+  Because each profile is one contiguous row, a full sequential pass in ~0.8 GB row blocks is the fast
+  path (`oncora.data_prep.signatures`); downstream code reads the extract, never the GCTX.

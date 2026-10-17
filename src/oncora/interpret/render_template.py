@@ -78,6 +78,35 @@ def render(bundle: EvidenceBundle) -> EvidenceSummary:
                             text="No LINCS or ChEMBL annotation matches this structure; it is novel to these sources.",
                             cites=["annotations.matched"]))
 
+    if (s := a.measured_signature) is not None:
+        base = "measured_signature"
+        who = "this compound" if s.match_level == "exact" else "a compound with the same skeleton"
+        genes = "; ".join(part for part in (
+            ("up: " + ", ".join(f"{g.gene_symbol} (z {_fmt(g.z)})" for g in s.up[:5])) if s.up else "",
+            ("down: " + ", ".join(f"{g.gene_symbol} (z {_fmt(g.z)})" for g in s.down[:5])) if s.down else "",
+        ) if part)
+        rep = (f"reproducibility r {_fmt(s.reproducibility)} across halves of its cell lines"
+               if s.reproducibility is not None else "measured in a single cell line, so reproducibility is unknown")
+        text = (f"LINCS L1000 measured the expression response of cells treated with {who} "
+                f"({s.n_profiles} profiles in {s.n_cell_lines} cell lines; {rep}). Strongest landmark genes, {genes}.")
+        if not s.reproducible:
+            text += " The response is not reproducible enough to interpret, so treat it as inconclusive."
+        claims.append(Claim(section="annotation", text=text,
+                            cites=[f"annotations.{base}.n_profiles", f"annotations.{base}.reproducibility",
+                                   f"annotations.{base}.up", f"annotations.{base}.down"]))
+        if s.neighbors:
+            named = ", ".join(f"{(n.names or [n.inchi_key])[0]} ({'; '.join(n.moa) if n.moa else 'no MoA annotated'}; "
+                              f"r {_fmt(n.correlation)})" for n in s.neighbors)
+            claims.append(Claim(section="annotation",
+                                text=f"Its measured response most resembles: {named}. A similar response suggests, "
+                                     "but does not prove, a shared mechanism.",
+                                cites=[f"annotations.{base}.neighbors[{i}].correlation" for i in range(len(s.neighbors))]))
+    if d.signature_target_overlap:
+        claims.append(Claim(section="cross",
+                            text="Predicted targets that are also annotated targets of compounds with a similar "
+                                 f"measured response: {', '.join(d.signature_target_overlap)}. The structure-based "
+                                 "prediction and the measured cell response point the same way, as independent evidence.",
+                            cites=["derived.signature_target_overlap"]))
     if d.target_annotation_overlap:
         claims.append(Claim(section="cross",
                             text=f"Predicted targets that databases also report: {', '.join(d.target_annotation_overlap)}.",

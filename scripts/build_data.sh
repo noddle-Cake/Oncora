@@ -24,4 +24,15 @@ run oncora.features.build                  # processed/compound_features.parquet
 
 run oncora.evaluation.floor                # reports/eval/baselines_*.md
 
+# Optional evidence (D-09): L1000 signatures. Extract when the 89 GB GCTX is present (~1.5 min);
+# once extracted the GCTX may be deleted, and the report is rebuilt from the 75 MB extract.
+if [ -f data/raw/lincs/level4_beta_trt_cp_n1805898x12328.gctx ]; then
+  run oncora.data_prep.signatures          # interim/l1000_consensus.parquet
+fi
+if [ -f data/interim/l1000_consensus.parquet ]; then
+  run oncora.eda.signatures                # reports/eda_signatures.md
+else
+  echo "==> skipping L1000 signatures (optional; no GCTX or extract)"
+fi
+
 echo "Done. Modeling tables are in data/processed/."

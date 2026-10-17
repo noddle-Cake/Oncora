@@ -29,6 +29,9 @@ RAW = {
     "instinfo": f"{_LINCS}/instinfo.txt",
     "sm_metadata": f"{_LINCS}/Small_Molecule_Metadata.txt",
     "field_definitions": f"{_LINCS}/DataFieldDefinitions.xlsx",
+    # Optional (D-09): evidence only, never a model feature. Not in SHA256SUMS, so a rebuild
+    # neither re-hashes 89 GB nor fails without it; its digest lives in the derived table's provenance.
+    "l1000_level4": "lincs/level4_beta_trt_cp_n1805898x12328.gctx",
 }
 
 
@@ -106,6 +109,12 @@ LLM_USAGE_LOG = REPORTS / "llm_usage.jsonl"
 MIN_RELIABLE_HEAVY_ATOMS = 20
 EVIDENCE_TOP_TARGETS = 10
 EVIDENCE_TOP_LINES = 25
+
+# --- L1000 measured signatures (D-09: evidence only; reports/eda_signatures.md) -------------
+SIG_MIN_DOSE_UM = 1.0       # sub-µM profiles are mostly near-null and dilute the consensus
+SIG_TOP_GENES = 10          # strongest up- and down-regulated landmark genes shown as evidence
+SIG_NEIGHBORS = 5           # "responds like" compounds shown as evidence
+SIG_MIN_REPRODUCIBILITY = 0.3   # half-split correlation needed to call a response reproducible
 
 # LINCS annotation files write missing values as a literal pair of double quotes.
 NULL_TOKENS = ("", '""')
