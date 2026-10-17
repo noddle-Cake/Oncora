@@ -10,9 +10,10 @@
 #   docker run --rm -p 7860:7860 oncora          # then open http://localhost:7860
 FROM python:3.11-slim-bookworm
 
-# libgomp1: LightGBM's OpenMP runtime. libxrender1/libxext6: RDKit molecule drawing.
+# libgomp1: LightGBM's OpenMP runtime. libxrender1/libxext6/libexpat1: RDKit molecule drawing
+# (the amd64 image Hugging Face builds lacks libexpat; arm64 happens to have it).
 RUN apt-get update \
- && apt-get install -y --no-install-recommends git ca-certificates curl libgomp1 libxrender1 libxext6 \
+ && apt-get install -y --no-install-recommends git ca-certificates curl libgomp1 libxrender1 libxext6 libexpat1 \
  && rm -rf /var/lib/apt/lists/*
 COPY --from=ghcr.io/astral-sh/uv:0.13.1 /uv /usr/local/bin/uv
 
@@ -41,6 +42,8 @@ RUN uv sync --frozen --no-dev
 RUN --mount=type=secret,id=GITHUB_TOKEN,mode=0444,required=true \
     GITHUB_TOKEN="$(cat /run/secrets/GITHUB_TOKEN)" \
     uv run --no-sync python -m oncora.serve.artifacts fetch --repo "${ONCORA_REPO}" --tag "${ARTIFACTS_TAG}"
+# Fail the build, not the live page, if a system library the UI or models load is missing.
+RUN uv run --no-sync python -c "from rdkit.Chem import Draw; import lightgbm, streamlit, oncora.serve.app"
 
 EXPOSE 7860
 CMD ["bash", "deploy/start.sh"]
