@@ -21,7 +21,7 @@ import numpy as np
 import polars as pl
 
 from oncora.config import (
-    DATA_INTERIM,
+    DATA_SERVING,
     SIG_MIN_REPRODUCIBILITY,
     SIG_NEIGHBORS,
     SIG_TOP_GENES,
@@ -33,9 +33,9 @@ from oncora.interpret.bundle import (
     r3,
 )
 
-CONSENSUS = DATA_INTERIM / "l1000_consensus.parquet"
-GENES = DATA_INTERIM / "l1000_genes.parquet"
-BRIDGE = DATA_INTERIM / "compound_bridge.parquet"
+CONSENSUS = DATA_SERVING / "l1000_consensus.parquet"
+GENES = DATA_SERVING / "l1000_genes.parquet"
+BRIDGE = DATA_SERVING / "compound_bridge.parquet"
 
 
 def _unit_rows(x: np.ndarray) -> np.ndarray:

@@ -10,14 +10,14 @@ from dataclasses import dataclass
 
 import polars as pl
 
-from oncora.config import ACTIVE_PCHEMBL, DATA_INTERIM, DATA_PROCESSED
+from oncora.config import DATA_SERVING
 from oncora.interpret.bundle import Annotations, ChemblActive, TargetExpression, r3
 
-COMPOUND_BRIDGE = DATA_INTERIM / "compound_bridge.parquet"
-CHEMBL_ACTIVITIES = DATA_INTERIM / "chembl_activities.parquet"
-TARGET_PAIRS = DATA_PROCESSED / "target_pairs.parquet"
-CCLE = DATA_INTERIM / "ccle_expression.parquet"
-CCLE_GENES = DATA_INTERIM / "ccle_genes.parquet"
+# Inference-time tables, cut down from the build tables by `oncora.serve.artifacts tables`.
+COMPOUND_BRIDGE = DATA_SERVING / "compound_bridge.parquet"
+CHEMBL_ACTIVES = DATA_SERVING / "chembl_actives.parquet"    # pChEMBL >= 6, gene symbol pre-joined
+CCLE = DATA_SERVING / "ccle_expression.parquet"             # target-model genes only
+CCLE_GENES = DATA_SERVING / "ccle_genes.parquet"
 
 
 @dataclass
@@ -33,13 +33,10 @@ class AnnotationIndex:
                  .agg(pl.col("connectivity").first(),
                       *(pl.col(c).list.explode(keep_nulls=False, empty_as_null=False).unique().sort().alias(a)
                         for c, a in (("cmap_names", "names"), ("moas", "moa"), ("targets", "targets")))))
-        genes = (pl.read_parquet(TARGET_PAIRS, columns=["target_chembl_id", "target_gene_symbol"])
-                 .unique("target_chembl_id"))
-        chembl = (pl.read_parquet(CHEMBL_ACTIVITIES, columns=["inchi_key", "connectivity", "target_chembl_id",
-                                                              "target_name", "pchembl_median"])
-                  .filter(pl.col("pchembl_median") >= ACTIVE_PCHEMBL)
-                  .join(genes, on="target_chembl_id", how="left"))
-        return cls(lincs, chembl)
+        if not CHEMBL_ACTIVES.exists():
+            raise FileNotFoundError(f"{CHEMBL_ACTIVES} missing: run `python -m oncora.serve.artifacts tables` "
+                                    "(after a data build) or `scripts/fetch_artifacts.sh` (from a release)")
+        return cls(lincs, pl.read_parquet(CHEMBL_ACTIVES))
 
     def lookup(self, inchi_key: str, max_chembl: int = 10) -> Annotations:
         for level, col, key in (("exact", "inchi_key", inchi_key), ("connectivity", "connectivity", inchi_key[:14])):

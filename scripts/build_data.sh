@@ -35,4 +35,6 @@ else
   echo "==> skipping L1000 signatures (optional; no GCTX or extract)"
 fi
 
-echo "Done. Modeling tables are in data/processed/."
+run oncora.serve.artifacts tables          # data/serving/: the small tables the API reads at inference
+
+echo "Done. Modeling tables are in data/processed/, serving tables in data/serving/."
