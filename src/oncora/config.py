@@ -37,6 +37,12 @@ def raw_path(name: str) -> Path:
 
 SEED = 42
 
+# --- Spec 02: ChEMBL label policy (DR-5, DR-6) --------------------------------------------
+CHEMBL_MIN_CONFIDENCE = 8        # direct (9) or homologous (8) single-protein assignment
+ACTIVE_PCHEMBL = 6.0             # active ⇔ pChEMBL ≥ 6 (≤ 1 µM)
+NEG_RATIO = 3                    # target negatives : positives, topped up by sampling
+MIN_POSITIVES_PER_TARGET = 30
+
 # --- Spec 01 checkpoint decisions (reports/eda_summary.md) ---------------------------------
 # D-01: splits group on the InChIKey connectivity block (first 14 chars), not the full key.
 SPLIT_GROUP_KEY = "connectivity"

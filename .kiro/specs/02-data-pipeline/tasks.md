@@ -13,13 +13,13 @@
   - Learn: relational → columnar ETL
   - _Requirements: 1.2, 1.4, 1.5_
 
-- [ ] 3. ChEMBL activity filtering
-- [ ] 3.1 Implement `filter_activities` with assay-type, confidence, organism, and validity filters
+- [x] 3. ChEMBL activity filtering
+- [x] 3.1 Implement `filter_activities` with assay-type, confidence, organism, and validity filters
   - _Requirements: 2.1, 2.2, 2.6_
-- [ ] 3.2 Implement the censoring policy and dedup; report before/after counts
+- [x] 3.2 Implement the censoring policy and dedup; report before/after counts
   - Learn: assay heterogeneity, pChEMBL, censored measurements
   - _Requirements: 2.3, 2.4, 2.5_
-- [ ] 3.3 Unit tests for the censoring and dedup rules
+- [x] 3.3 Unit tests for the censoring and dedup rules
   - _Requirements: 2.4, 2.5_
 
 - [ ] 4. Target-pair label construction
