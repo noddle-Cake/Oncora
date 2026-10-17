@@ -18,14 +18,14 @@
   - Learn: ECFP fingerprints, Bemis–Murcko scaffolds
   - _Requirements: 2.3, 3.2_
 
-- [ ] 3. Near-seen detection (STRETCH)
+- [x] 3. Near-seen detection (STRETCH)
   - Implement `chem/similarity.py::TrainingIndex`; test a known molecule against itself → 1.0
   - Learn: Tanimoto similarity
   - _Requirements: 4.1, 4.2_
 
-- [ ] 4. Cell-line expression features
-- [ ] 4.1 Implement `fit_cellline_features` / `transform` with train-only fitting and a persisted gene list
+- [x] 4. Cell-line expression features
+- [x] 4.1 Implement `fit_cellline_features` / `transform` with train-only fitting and a persisted gene list
   - _Requirements: 5.1, 5.2, 5.3_
-- [ ] 4.2 Verify coverage of the 985 overlapping lines and the feature count; leakage unit test
+- [x] 4.2 Verify coverage of the 985 overlapping lines and the feature count; leakage unit test
   - Learn: high-dimensional feature selection, train/inference parity
   - _Requirements: 5.2, 5.4_
