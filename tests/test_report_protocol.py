@@ -19,6 +19,10 @@ def test_verdict_uses_ci_lower_bound():
     assert ok.beats_baselines()["compound"]["cell_line_mean"] == {"rho": True, "auc": False}
     assert ok.accepted()
     assert not _report(model_lo=0.25).accepted()     # point estimate higher, but CI overlaps
+    r = _report(model_lo=0.35)
+    r.results.append(EvalResult("logreg", "compound", {"rho": 0.9, "auc": 0.9}))
+    r.comparisons = ["logreg"]
+    assert r.accepted()                              # losing to a comparison model does not gate
     md = ok.to_markdown()
     assert "Accepted: yes" in md and "**0.500** [0.350, 0.600]" in md
 

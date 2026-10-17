@@ -26,16 +26,19 @@ def sensitivity_labels(test: pl.DataFrame, global_thr: float, top_frac: float) -
 
 
 def evaluate_sensitivity(test: pl.DataFrame, pred_t: np.ndarray, rt: RankTransform, global_thr: float,
-                         top_frac: float, *, with_ci: bool = False, n_boot: int = BOOTSTRAP_N):
+                         top_frac: float, *, with_ci: bool = False, n_boot: int = BOOTSTRAP_N,
+                         label_scores: dict[str, np.ndarray] | None = None):
     y_t = rt.transform(test["dss3"].to_numpy())
     comp, line = test["group"].to_numpy(), test["model_id"].to_numpy()
     labels = sensitivity_labels(test, global_thr, top_frac)
-    metrics = sensitivity_metrics(y_t, pred_t, comp, line, labels)
+    label_scores = label_scores or {}
+    metrics = sensitivity_metrics(y_t, pred_t, comp, line, labels, label_scores=label_scores)
     ci = {}
     if with_ci:
         def boot(idx, key):
             return sensitivity_metrics(y_t[idx], pred_t[idx], comp[idx], line[idx],
-                                       {k: v[idx] for k, v in labels.items()})[key]
+                                       {k: v[idx] for k, v in labels.items()},
+                                       label_scores={k: v[idx] for k, v in label_scores.items()})[key]
         index = group_index(comp)
         ci = {k: bootstrap_ci(lambda idx, k=k: boot(idx, k), index, n=n_boot, seed=SEED) for k in SENSITIVITY_CI_METRICS}
     return metrics, ci
