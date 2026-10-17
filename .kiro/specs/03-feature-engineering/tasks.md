@@ -1,11 +1,11 @@
 # Implementation Plan — 03 Feature Engineering
 
-- [ ] 1. SMILES validation and standardization
-- [ ] 1.1 Implement `chem/validate.py::parse_smiles` with captured RDKit error messages
+- [x] 1. SMILES validation and standardization
+- [x] 1.1 Implement `chem/validate.py::parse_smiles` with captured RDKit error messages
   - _Requirements: 1.1, 1.2, 1.3_
-- [ ] 1.2 Implement `chem/standardize.py` and emit canonical SMILES and InChIKey
+- [x] 1.2 Implement `chem/standardize.py` and emit canonical SMILES and InChIKey
   - _Requirements: 2.1, 2.2_
-- [ ] 1.3 Unit tests: invalid inputs, equivalence, idempotence, salt stripping
+- [x] 1.3 Unit tests: invalid inputs, equivalence, idempotence, salt stripping
   - Learn: molecular graphs, canonical forms, InChIKey as identity
   - _Requirements: 1.2, 2.2, 2.3_
 
