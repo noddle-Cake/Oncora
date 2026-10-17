@@ -119,17 +119,46 @@ def fit_strategy(df: pl.DataFrame, strategy: str, store: FeatureStore, *, n_jobs
 
 
 def selectivity_verdict(report: EvalReport, split: str = "compound") -> tuple[bool, str]:
-    model = report._get("model", split)
-    base = report._get("cell_line_mean", split)
-    key = "spearman_per_compound"
-    lo = model.ci.get(key, (float("nan"),))[0]
-    learned = bool(np.isfinite(lo) and lo > base.metrics[key])
-    msg = (f"Selectivity ({split} split): model per-compound ρ {model.metrics[key]:.3f} "
-           f"(95% CI lower {lo:.3f}) vs cell-line-mean {base.metrics[key]:.3f}: "
-           + ("**the model ranks cell lines for a new compound better than the line-average ranking.**" if learned else
-              "**not better than the line-average ranking; per-compound cell-line rankings mostly reflect "
-              "compound potency plus each line's general sensitivity, not learned selectivity.**"))
-    return learned, msg
+    """Does the model rank cell lines for a *specific* compound better than the line-average ranking?
+
+    Two selectivity metrics, which can disagree:
+    - per-compound Spearman ρ: ordering the whole list of lines for one compound;
+    - within-top-10% PR-AUC: picking out that compound's most responsive lines.
+    The second is the product question; the first is stricter. A model beats the baseline on a
+    metric only if its 95% CI lower bound exceeds the baseline's point estimate.
+    """
+    model, base = report._get("model", split), report._get("cell_line_mean", split)
+    abl = report._get("compound_only", split)
+
+    def beats(key):
+        lo = model.ci.get(key, (float("nan"),))[0]
+        return bool(np.isfinite(lo) and lo > base.metrics[key]), lo
+
+    rho_beats, rho_lo = beats("spearman_per_compound")
+    pr_beats, pr_lo = beats("pr_auc_within_top10")
+    learned = rho_beats or pr_beats
+    parts = [
+        f"Selectivity ({split} split): ranking a compound's top-decile lines, PR-AUC "
+        f"{model.metrics['pr_auc_within_top10']:.3f} (95% CI lower {pr_lo:.3f}) vs cell-line-mean "
+        f"{base.metrics['pr_auc_within_top10']:.3f}" + (" — **better**" if pr_beats else " — not better") + ". "
+        f"Ordering the full list of lines, per-compound ρ {model.metrics['spearman_per_compound']:.3f} "
+        f"(CI lower {rho_lo:.3f}) vs {base.metrics['spearman_per_compound']:.3f}"
+        + (" — **better**." if rho_beats else " — not better.")
+    ]
+    if abl is not None:
+        parts.append(
+            f"The compound-only ablation scores {abl.metrics['pr_auc_within_top10']:.3f} on that PR-AUC, at the "
+            f"{abl.metrics['prevalence_within_top10']:.3f} prevalence floor, because it cannot vary across lines"
+            + (": the model's margin therefore comes from the cell-line expression features."
+               if pr_beats else "."))
+    parts.append(
+        "**The model identifies which lines respond most to a given compound better than the line-average "
+        "ranking does, but does not order the full list better.** Read the top of the list as the usable "
+        "signal, not the tail." if (pr_beats and not rho_beats) else
+        ("**Cell-line rankings carry compound-specific signal.**" if learned else
+         "**Cell-line rankings mostly reflect compound potency plus each line's general sensitivity, not "
+         "learned selectivity.**"))
+    return learned, " ".join(parts)
 
 
 def save_artifact(run_dir: Path, fitted: dict, store: FeatureStore) -> None:

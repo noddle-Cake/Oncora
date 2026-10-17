@@ -1,0 +1,295 @@
+{
+ "model": "compound_cellline_to_sensitivity",
+ "run_id": "20261017-185802",
+ "created_at": "2026-10-17T18:58:02.607008+00:00",
+ "algorithm": "LightGBM regressor (rank-transformed DSS3) + LightGBM classifier (within-compound top 10%)",
+ "hyperparameters": {
+  "n_estimators": 2000,
+  "learning_rate": 0.05,
+  "num_leaves": 63,
+  "colsample_bytree": 0.3,
+  "min_child_samples": 50,
+  "subsample": 0.8,
+  "subsample_freq": 1,
+  "verbose": -1,
+  "early_stopping_rounds": 50,
+  "seed": 42
+ },
+ "best_iterations": {
+  "regressor": 69,
+  "classifier": 604
+ },
+ "features": {
+  "compound": {
+   "radius": 2,
+   "n_bits": 2048,
+   "descriptors": [
+    "MolWt",
+    "MolLogP",
+    "TPSA",
+    "NumHDonors",
+    "NumHAcceptors",
+    "NumRotatableBonds",
+    "RingCount",
+    "NumAromaticRings",
+    "FractionCSP3",
+    "HeavyAtomCount"
+   ],
+   "rdkit_version": "2026.09.1"
+  },
+  "cell_line": {
+   "strategy": "landmark",
+   "n_genes": 978
+  }
+ },
+ "training_data": {
+  "table": "data/processed/sensitivity.parquet (headline: ~mixed_scale)",
+  "rows": 467725,
+  "compounds": 938,
+  "cell_lines": 977,
+  "mixed_scale_handling": "excluded (D-03); rescaled analysis in notes"
+ },
+ "split": {
+  "strategy": "compound",
+  "seed": 42,
+  "n_folds": 5,
+  "group_counts": [
+   187,
+   189,
+   189,
+   187,
+   186
+  ],
+  "row_counts": [
+   93543,
+   93530,
+   93528,
+   93528,
+   93596
+  ],
+  "partition_hashes": [
+   "e8ecf28d092516fe",
+   "3fb2fb27edf5b23d",
+   "ad6cd6db253ccb81",
+   "bbfe7afdb82d0c69",
+   "ebc338ad38f6107d"
+  ],
+  "rows": {
+   "train": 336780,
+   "val": 37402,
+   "test": 93543
+  }
+ },
+ "labels": {
+  "transform": "rank under training DSS3 (D-04)",
+  "sensitive": "top 10% of a compound's lines and DSS3 > 0 (D-05)",
+  "global_threshold_p90": 0.33840336219619194
+ },
+ "metrics": {
+  "model/compound": {
+   "spearman_overall": 0.4793806660291135,
+   "spearman_per_cell_line": 0.4179850592038878,
+   "spearman_per_compound": 0.26977512508683876,
+   "rmse_transformed": 0.25848369382960146,
+   "roc_auc_within_top10": 0.7008077407090582,
+   "pr_auc_within_top10": 0.23778755156701956,
+   "prevalence_within_top10": 0.10022128860524038,
+   "roc_auc_global_p90": 0.8503026274778414,
+   "pr_auc_global_p90": 0.46147271984662186,
+   "prevalence_global_p90": 0.11174540051099495,
+   "ci": {
+    "spearman_overall": [
+     0.36819682965868333,
+     0.5752692528064527
+    ],
+    "spearman_per_cell_line": [
+     0.27487076233655117,
+     0.5275266072512709
+    ],
+    "spearman_per_compound": [
+     0.2536853230998464,
+     0.2853787119709989
+    ],
+    "pr_auc_within_top10": [
+     0.2208292369748503,
+     0.25728988306822304
+    ],
+    "roc_auc_within_top10": [
+     0.6872032592387476,
+     0.714690379111723
+    ]
+   }
+  },
+  "compound_only/compound": {
+   "spearman_overall": 0.40598477267187355,
+   "spearman_per_cell_line": 0.3768856196047782,
+   "spearman_per_compound": NaN,
+   "rmse_transformed": 0.274100273975071,
+   "roc_auc_within_top10": 0.5020515071444414,
+   "pr_auc_within_top10": 0.10060473801271216,
+   "prevalence_within_top10": 0.10022128860524038,
+   "roc_auc_global_p90": 0.8169609631116834,
+   "pr_auc_global_p90": 0.4008295306232093,
+   "prevalence_global_p90": 0.11174540051099495,
+   "ci": {
+    "spearman_overall": [
+     0.2860361177488366,
+     0.5056810397828926
+    ],
+    "spearman_per_cell_line": [
+     0.2132347269675874,
+     0.4959510415409692
+    ],
+    "spearman_per_compound": [
+     NaN,
+     NaN
+    ],
+    "pr_auc_within_top10": [
+     0.10028877282594646,
+     0.10087208336881996
+    ],
+    "roc_auc_within_top10": [
+     0.49950416660752694,
+     0.5056834381198119
+    ]
+   }
+  },
+  "cell_line_mean/compound": {
+   "spearman_overall": 0.20630128817345336,
+   "spearman_per_cell_line": NaN,
+   "spearman_per_compound": 0.27515001594536675,
+   "rmse_transformed": 0.2883371015320059,
+   "roc_auc_within_top10": 0.6453859987960587,
+   "pr_auc_within_top10": 0.19237663665440294,
+   "prevalence_within_top10": 0.10022128860524038,
+   "roc_auc_global_p90": 0.6140349566261083,
+   "pr_auc_global_p90": 0.19204218387802235,
+   "prevalence_global_p90": 0.11174540051099495,
+   "ci": {}
+  },
+  "global_mean/compound": {
+   "spearman_overall": NaN,
+   "spearman_per_cell_line": NaN,
+   "spearman_per_compound": NaN,
+   "rmse_transformed": 0.2960836495898402,
+   "roc_auc_within_top10": 0.5,
+   "pr_auc_within_top10": 0.10022128860524038,
+   "prevalence_within_top10": 0.10022128860524038,
+   "roc_auc_global_p90": 0.5,
+   "pr_auc_global_p90": 0.11174540051099495,
+   "prevalence_global_p90": 0.11174540051099495,
+   "ci": {}
+  },
+  "model/scaffold": {
+   "spearman_overall": 0.32995258285986545,
+   "spearman_per_cell_line": 0.1947158413961351,
+   "spearman_per_compound": 0.287342376211889,
+   "rmse_transformed": 0.2835689669484558,
+   "roc_auc_within_top10": 0.6808767024275831,
+   "pr_auc_within_top10": 0.20536699065115369,
+   "prevalence_within_top10": 0.09967622324567496,
+   "roc_auc_global_p90": 0.6970527443393894,
+   "pr_auc_global_p90": 0.2131268729194561,
+   "prevalence_global_p90": 0.1214429971255463,
+   "ci": {
+    "spearman_overall": [
+     0.2544246159521576,
+     0.41201425300395433
+    ],
+    "spearman_per_cell_line": [
+     0.08224815541897951,
+     0.340122861938736
+    ],
+    "spearman_per_compound": [
+     0.27124126720907205,
+     0.3046927115474742
+    ],
+    "pr_auc_within_top10": [
+     0.191736537104648,
+     0.2248665910136866
+    ],
+    "roc_auc_within_top10": [
+     0.6693664013737489,
+     0.6941413299388158
+    ]
+   }
+  },
+  "compound_only/scaffold": {
+   "spearman_overall": 0.37586273842310775,
+   "spearman_per_cell_line": 0.23156608589495062,
+   "spearman_per_compound": NaN,
+   "rmse_transformed": 0.2827082330250542,
+   "roc_auc_within_top10": 0.5049216703143168,
+   "pr_auc_within_top10": 0.100671113673026,
+   "prevalence_within_top10": 0.09967622324567496,
+   "roc_auc_global_p90": 0.6997202098865702,
+   "pr_auc_global_p90": 0.20811082147444343,
+   "prevalence_global_p90": 0.1214429971255463,
+   "ci": {
+    "spearman_overall": [
+     0.2956072447796927,
+     0.4575608169537103
+    ],
+    "spearman_per_cell_line": [
+     0.10426435571081018,
+     0.37437149729150343
+    ],
+    "spearman_per_compound": [
+     NaN,
+     NaN
+    ],
+    "pr_auc_within_top10": [
+     0.1002515288354895,
+     0.10100562454148657
+    ],
+    "roc_auc_within_top10": [
+     0.4999884641873609,
+     0.5103526491158458
+    ]
+   }
+  },
+  "cell_line_mean/scaffold": {
+   "spearman_overall": 0.1612781752717771,
+   "spearman_per_cell_line": NaN,
+   "spearman_per_compound": 0.28673639595502615,
+   "rmse_transformed": 0.2932167366959094,
+   "roc_auc_within_top10": 0.6370864310621609,
+   "pr_auc_within_top10": 0.1611628098925913,
+   "prevalence_within_top10": 0.09967622324567496,
+   "roc_auc_global_p90": 0.5572136835321229,
+   "pr_auc_global_p90": 0.14359235048080865,
+   "prevalence_global_p90": 0.1214429971255463,
+   "ci": {}
+  },
+  "global_mean/scaffold": {
+   "spearman_overall": NaN,
+   "spearman_per_cell_line": NaN,
+   "spearman_per_compound": NaN,
+   "rmse_transformed": 0.2973014697213109,
+   "roc_auc_within_top10": 0.5,
+   "pr_auc_within_top10": 0.09967622324567496,
+   "prevalence_within_top10": 0.09967622324567496,
+   "roc_auc_global_p90": 0.5,
+   "pr_auc_global_p90": 0.1214429971255463,
+   "prevalence_global_p90": 0.1214429971255463,
+   "ci": {}
+  }
+ },
+ "accepted": true,
+ "learned_selectivity": true,
+ "shipped_model": "compound-split model (fit on train; val for early stopping)",
+ "training_seconds": 361,
+ "intended_use": "Computational research predictions, not validated clinical conclusions.",
+ "mixed_scale_analysis": {
+  "spearman_overall": 0.40441631512547294,
+  "spearman_per_cell_line": 0.3754893397087186,
+  "spearman_per_compound": 0.3184425804537602,
+  "rmse_transformed": 0.24882180446154142,
+  "roc_auc_within_top10": 0.7056240137421613,
+  "pr_auc_within_top10": 0.23639361727861674,
+  "prevalence_within_top10": 0.10042803362384611,
+  "roc_auc_global_p90": 0.8023190956685422,
+  "pr_auc_global_p90": 0.4499733630341171,
+  "prevalence_global_p90": 0.08743231396008458
+ }
+}

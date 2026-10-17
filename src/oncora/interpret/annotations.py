@@ -8,7 +8,6 @@ They are never model output and never training labels for this query.
 
 from dataclasses import dataclass
 
-import numpy as np
 import polars as pl
 
 from oncora.config import ACTIVE_PCHEMBL, DATA_INTERIM, DATA_PROCESSED
@@ -90,6 +89,6 @@ class ExpressionLookup:
             ranks = df.select("model_id", (pl.col(col).rank("average") / pl.len()).alias("pct"))
             top = ranks.filter(pl.col("model_id").is_in(top_lines))["pct"]
             if top.len():
-                out.append(TargetExpression(gene_symbol=g, mean_percentile_in_top_lines=r3(float(np.mean(top))),
+                out.append(TargetExpression(gene_symbol=g, mean_percentile_in_top_lines=r3(float(top.mean())),
                                             n_top_lines=top.len()))
         return out

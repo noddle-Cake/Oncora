@@ -1,24 +1,24 @@
 # Implementation Plan — 06 Compound → Sensitivity Model
 
-- [ ] 1. Design matrix
+- [x] 1. Design matrix
   - Implement `build_design_matrix` with index-based assembly (no joined DataFrame) and `assert_structure_only`; tests
   - Learn: pairwise (drug × cell) modeling, memory-efficient feature assembly
   - _Requirements: 1.1, 1.4_
 
-- [ ] 2. Training
-- [ ] 2.1 Implement the fold loop with per-fold cell-line gene-subset fitting
+- [x] 2. Training
+- [x] 2.1 Implement the fold loop with per-fold cell-line gene-subset fitting
   - _Requirements: 1.5_
-- [ ] 2.2 Train the LightGBM regressor on the transformed DSS3 and the thresholded classifier; MLflow logging
+- [x] 2.2 Train the LightGBM regressor on the transformed DSS3 and the thresholded classifier; MLflow logging
   - Learn: regression on skewed targets, variance-stabilizing transforms
   - _Requirements: 1.2, 1.3, 1.6_
 
-- [ ] 3. Evaluation on compound and scaffold splits
+- [x] 3. Evaluation on compound and scaffold splits
   - Overall, per-compound, and per-cell-line ρ; RMSE; thresholded AUC; CIs; global-mean and cell-line-mean baselines; acceptance verdict
   - Learn: rank correlation, why per-cell-line ρ isolates compound learning
   - Compound-only ablation; selectivity verdict (per-compound ρ vs. cell-line-mean)
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7_
 
-- [ ] 4. Inference and artifact
+- [x] 4. Inference and artifact
   - Final fit; save the artifact bundle; implement `SensitivityModel.predict` and `load_sensitivity_model`; round-trip test; time single-SMILES inference
   - _Requirements: 3.1, 3.2, 3.3, 5.1, 5.2_
 
