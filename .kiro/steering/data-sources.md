@@ -76,6 +76,21 @@ CELL LINE: CCLE ModelID (ACH-…) == sensitivity cell_line (ACH-…)
            ACH-… ──?──▶ primary_disease / lineage      ← OPEN (A4)
 ```
 
+## Checkpoint decisions (spec 01 task 6, signed off 2026-10-17)
+
+Full log with rationale: `reports/eda_summary.md`. Values live in `src/oncora/config.py`.
+
+| # | Decision |
+|---|---|
+| D-01 | Split group key = InChIKey connectivity block (`inchi_key[:14]`) |
+| D-02 | compoundinfo duplicates collapse to one row per `pert_id` (lists of targets, MoAs, names) |
+| D-03 | The 22 mixed-scale DSS3 compounds are excluded from headline training/eval; one rescaled (×0.01) sensitivity analysis |
+| D-04 | Regression target = rank-transformed DSS3; headline Spearman ρ |
+| D-05 | "Sensitive" = top 10% of a compound's cell lines; global p90 (≥ 0.359) as comparison |
+| D-06 | Cell-line features = 978 LINCS landmark genes, standardized on training folds |
+| D-07 | Cell line → disease via DepMap `Model.csv` at `data/raw/depmap/Model.csv` (**pending: the developer is adding it**) |
+| D-08 | Report potency (per-cell-line ρ) and selectivity (per-compound ρ) separately; compound-only ablation |
+
 ## Open item A4: cell line → disease mapping
 
 `cellinfo.txt` has **no `ACH-` IDs** and covers only 240 LINCS cell lines (138 with a
@@ -84,7 +99,7 @@ workspace maps the 985 trainable `ACH-` lines to a disease**, which FR-11 needs.
 
 Confirmed by `reports/eda_bridges.md`: **0 / 985** trainable lines can be mapped from workspace files.
 
-Candidate resolutions (decide in spec 01, task 6):
+**Decided (D-07): option 1.** Candidates considered:
 1. Add DepMap `Model.csv` from the same release as the expression file (`ModelID` →
    `OncotreeLineage`, `OncotreePrimaryDisease`, `CCLEName`, `RRID`). This is the most direct fix.
 2. Map via Cellosaurus (`ACH-` → RRID → disease) using a Cellosaurus export.

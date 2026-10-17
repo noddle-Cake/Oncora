@@ -32,7 +32,8 @@
 - [ ] 5. Sensitivity modeling table
   - Implement `build_sensitivity`: InChIKey merge, CCLE restriction, shape report, tests
   - Apply the `DEMO_HOLDOUT` exclusion to both tables (choose the compound in spec 09 task 1 first)
-  - _Requirements: 4.1, 4.2, 4.3, 4.4_
+  - Add `connectivity` and `mixed_scale` columns (D-01, D-03)
+  - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
 - [ ] 6. Wire up the stage CLIs and add a pipeline run note to `reports/eda_summary.md`
   - _Requirements: 5.3_

@@ -62,6 +62,7 @@ expression-backed cell lines, so that the sensitivity model can train and genera
 1. THE table SHALL contain `(inchi_key, pert_id, model_id, dss3)` only for cell lines present in the CCLE default-entry matrix.
 2. WHEN multiple `pert_id`s share an InChIKey THEN their rows SHALL be merged per cell line using the median DSS3, and the merge count SHALL be reported.
 3. THE system SHALL report the final shape (rows, compounds, cell lines).
+5. THE table SHALL carry `connectivity` (InChIKey[:14], decision D-01) and a boolean `mixed_scale` flag marking compounds with any DSS3 ≥ `config.DSS3_SCALE_BREAK` (D-03). Rows SHALL NOT be dropped here, so spec 06 can run both the headline (excluded) and the sensitivity (rescaled) analyses.
 4. Rows whose InChIKey is listed in `config.DEMO_HOLDOUT` SHALL be excluded from **both** modeling tables (target pairs and sensitivity) and written to `processed/demo_holdout.parquet` for the spec 09 demo comparison.
 
 ### Requirement 5: Integrity and provenance (NFR-6, NFR-7)

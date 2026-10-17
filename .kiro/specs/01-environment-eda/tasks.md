@@ -64,7 +64,7 @@
   - Learn: HDF5/GCTX out-of-core access, subsetting by row/column indices
   - _Requirements: 4.5, 5.3_
 
-- [ ] 6. Architecture-commit checkpoint
+- [x] 6. Architecture-commit checkpoint
   - Write `reports/eda_summary.md` with a decision log (transform, threshold, gene subset, conflict rule, A4 source)
   - Get the developer's sign-off; copy the decisions into `steering/data-sources.md`
   - _Requirements: 5.1, 5.2, 5.3, 5.4_
