@@ -15,7 +15,7 @@ No new modeling. This spec packages evidence. Each artifact here answers a speci
 
 1. Prefer an approved drug with well-known targets that is in `compoundinfo.txt` (so annotations
    exist) and, ideally, in the DSS3 set. Its sensitivity profile is ground truth if it is held out.
-2. Hold it out **before** training: add its InChIKey to `config.DEMO_HOLDOUT` and exclude it from
+2. Hold it out **before** training: add its connectivity block to `config.DEMO_HOLDOUT` (currently gefitinib) and exclude it from
    both modeling tables at build time (spec 02). This makes it unseen for both models while keeping its labels for comparison.
 3. `demo_unseen.py` asserts the InChIKey is absent from both `train_index.parquet` files before running.
 
