@@ -101,18 +101,15 @@ def main() -> None:
         "",
     ]
     if sens_card:
-        learned = sens_card.get("learned_selectivity")
+        # Quote the trained run's own verdict rather than re-deriving a coarser one here.
+        verdict = next((n for n in (sens.get("notes") or []) if n.startswith("Selectivity")), None)
         lines += [
             f"{sens_card['training_data']['rows']:,} rows, {sens_card['training_data']['compounds']} compounds, "
             f"{sens_card['training_data']['cell_lines']} cell lines. Accepted: **{sens_card['accepted']}**.",
             "",
-            "**Does the model learn selectivity?** " + (
-                "Yes: on unseen compounds it ranks cell lines better than the line-average ranking."
-                if learned else
-                "**No.** Its per-compound cell-line ranking does not beat ranking lines by their average "
-                "sensitivity. The cell-line rankings it shows reflect compound potency plus each line's "
-                "general responsiveness, not learned compound-specific selectivity. The UI and the API "
-                "say so explicitly."),
+            "**Does the model learn selectivity?**",
+            "",
+            verdict or "See `reports/eval/sensitivity_model.md`.",
             "",
             f"A compound-features-only ablation reaches per-cell-line ρ {fmt(abl.get('spearman_per_cell_line'))} "
             "(it cannot vary across lines, so its per-compound ρ is undefined), which isolates how much of "
@@ -177,6 +174,10 @@ def main() -> None:
         "state-of-the-art.",
         "6. **Selectivity is the hard part.** Compound identity explains roughly 70% of sensitivity variance and "
         "cell-line identity only 4–5%, so ranking lines *within* a compound is much harder than ranking compounds.",
+        "7. **The sensitivity model is not mechanistic.** In the demo, its top-ranked lines for gefitinib are "
+        "EGFR-low (15th percentile) even though measured sensitivity correlates positively with EGFR expression "
+        "(ρ = 0.219). Its ranking carries real but weak signal that is not explained by the predicted target "
+        "(`reports/demo/commentary.md`).",
         "",
         f"> **{DISCLAIMER}**",
         "",

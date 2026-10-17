@@ -1,4 +1,14 @@
 {
+ "sensitivity_model:model/compound": {
+  "pr_auc_within_top10": 0.23778755156701956,
+  "spearman_per_cell_line": 0.4179850592038878,
+  "spearman_per_compound": 0.26977512508683876
+ },
+ "sensitivity_model:model/scaffold": {
+  "pr_auc_within_top10": 0.20536699065115369,
+  "spearman_per_cell_line": 0.1947158413961351,
+  "spearman_per_compound": 0.287342376211889
+ },
  "target_model:model/compound": {
   "pr_auc_macro": 0.8564404199521347,
   "pr_auc_weighted": 0.9126677829988054,

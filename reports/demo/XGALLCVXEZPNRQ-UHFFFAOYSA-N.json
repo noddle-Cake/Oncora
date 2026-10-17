@@ -1,0 +1,998 @@
+{
+ "generated_at": "2026-10-17T18:58:30+00:00",
+ "compound": "gefitinib",
+ "smiles": "COc1cc2ncnc(Nc3ccc(F)c(Cl)c3)c2cc1OCCCN1CCOCC1",
+ "unseen_verified": true,
+ "prediction": {
+  "valid": true,
+  "input_smiles": "COc1cc2ncnc(Nc3ccc(F)c(Cl)c3)c2cc1OCCCN1CCOCC1",
+  "canonical_smiles": "COc1cc2ncnc(Nc3ccc(F)c(Cl)c3)c2cc1OCCCN1CCOCC1",
+  "inchi_key": "XGALLCVXEZPNRQ-UHFFFAOYSA-N",
+  "targets": [
+   {
+    "target_chembl_id": "CHEMBL203",
+    "pref_name": "Epidermal growth factor receptor",
+    "gene_symbol": "EGFR",
+    "uniprot": "P00533",
+    "score": 1.0,
+    "rank": 1
+   },
+   {
+    "target_chembl_id": "CHEMBL5147",
+    "pref_name": "Ephrin type-B receptor 4",
+    "gene_symbol": "EPHB4",
+    "uniprot": "P54760",
+    "score": 0.9626197574510433,
+    "rank": 2
+   },
+   {
+    "target_chembl_id": "CHEMBL2068",
+    "pref_name": "Ephrin type-A receptor 2",
+    "gene_symbol": "EPHA2",
+    "uniprot": "P29317",
+    "score": 0.9337088946381572,
+    "rank": 3
+   },
+   {
+    "target_chembl_id": "CHEMBL3009",
+    "pref_name": "Receptor tyrosine-protein kinase erbB-4",
+    "gene_symbol": "ERBB4",
+    "uniprot": "Q15303",
+    "score": 0.8454506247225368,
+    "rank": 4
+   },
+   {
+    "target_chembl_id": "CHEMBL5014",
+    "pref_name": "Receptor-interacting serine/threonine-protein kinase 2",
+    "gene_symbol": "RIPK2",
+    "uniprot": "O43353",
+    "score": 0.843574339605446,
+    "rank": 5
+   },
+   {
+    "target_chembl_id": "CHEMBL4848",
+    "pref_name": "Eukaryotic translation initiation factor 4E",
+    "gene_symbol": "EIF4E",
+    "uniprot": "P06730",
+    "score": 0.827958516510887,
+    "rank": 6
+   },
+   {
+    "target_chembl_id": "CHEMBL5838",
+    "pref_name": "Receptor tyrosine-protein kinase erbB-3",
+    "gene_symbol": "ERBB3",
+    "uniprot": "P21860",
+    "score": 0.798296295403392,
+    "rank": 7
+   },
+   {
+    "target_chembl_id": "CHEMBL1868",
+    "pref_name": "Vascular endothelial growth factor receptor 1",
+    "gene_symbol": "FLT1",
+    "uniprot": "P17948",
+    "score": 0.7693022023079498,
+    "rank": 8
+   },
+   {
+    "target_chembl_id": "CHEMBL2721",
+    "pref_name": "Excitatory amino acid transporter 3",
+    "gene_symbol": "SLC1A1",
+    "uniprot": "P43005",
+    "score": 0.7387237320782569,
+    "rank": 9
+   },
+   {
+    "target_chembl_id": "CHEMBL3475",
+    "pref_name": "Plasminogen activator inhibitor 1",
+    "gene_symbol": "SERPINE1",
+    "uniprot": "P05121",
+    "score": 0.7327472120557119,
+    "rank": 10
+   },
+   {
+    "target_chembl_id": "CHEMBL4852",
+    "pref_name": "Mitogen-activated protein kinase kinase kinase kinase 5",
+    "gene_symbol": "MAP4K5",
+    "uniprot": "Q9Y4K4",
+    "score": 0.7203633414658924,
+    "rank": 11
+   },
+   {
+    "target_chembl_id": "CHEMBL2073",
+    "pref_name": "Tyrosine-protein kinase Yes",
+    "gene_symbol": "YES1",
+    "uniprot": "P07947",
+    "score": 0.6658298821004532,
+    "rank": 12
+   },
+   {
+    "target_chembl_id": "CHEMBL1293222",
+    "pref_name": "Nucleotide-binding oligomerization domain-containing protein 1",
+    "gene_symbol": "NOD1",
+    "uniprot": "Q9Y239",
+    "score": 0.6502061278183039,
+    "rank": 13
+   },
+   {
+    "target_chembl_id": "CHEMBL267",
+    "pref_name": "Proto-oncogene tyrosine-protein kinase Src",
+    "gene_symbol": "SRC",
+    "uniprot": "P12931",
+    "score": 0.6428571428571429,
+    "rank": 14
+   },
+   {
+    "target_chembl_id": "CHEMBL4134",
+    "pref_name": "Ephrin type-A receptor 8",
+    "gene_symbol": "EPHA8",
+    "uniprot": "P29322",
+    "score": 0.6202392753333067,
+    "rank": 15
+   },
+   {
+    "target_chembl_id": "CHEMBL3905",
+    "pref_name": "Tyrosine-protein kinase Lyn",
+    "gene_symbol": "LYN",
+    "uniprot": "P07948",
+    "score": 0.6044779393762172,
+    "rank": 16
+   },
+   {
+    "target_chembl_id": "CHEMBL1955",
+    "pref_name": "Vascular endothelial growth factor receptor 3",
+    "gene_symbol": "FLT4",
+    "uniprot": "P35916",
+    "score": 0.5621635623227316,
+    "rank": 17
+   },
+   {
+    "target_chembl_id": "CHEMBL1824",
+    "pref_name": "Receptor tyrosine-protein kinase erbB-2",
+    "gene_symbol": "ERBB2",
+    "uniprot": "P04626",
+    "score": 0.5555555555555556,
+    "rank": 18
+   },
+   {
+    "target_chembl_id": "CHEMBL3378",
+    "pref_name": "Tumor necrosis factor receptor superfamily member 1A",
+    "gene_symbol": "TNFRSF1A",
+    "uniprot": "P19438",
+    "score": 0.5289922655285532,
+    "rank": 19
+   },
+   {
+    "target_chembl_id": "CHEMBL6191",
+    "pref_name": "Mitogen-activated protein kinase kinase kinase 19",
+    "gene_symbol": "MAP3K19",
+    "uniprot": "Q56UN5",
+    "score": 0.5246001730668816,
+    "rank": 20
+   }
+  ],
+  "sensitive_cell_lines": [
+   {
+    "model_id": "ACH-001492",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6764741226377444,
+    "predicted_dss3": 0.1439470447508296,
+    "p_sensitive": 0.13853477566830516,
+    "rank": 1
+   },
+   {
+    "model_id": "ACH-000938",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6754280583848137,
+    "predicted_dss3": 0.14351942031869935,
+    "p_sensitive": 0.35902389334741264,
+    "rank": 2
+   },
+   {
+    "model_id": "ACH-000362",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6739642283217268,
+    "predicted_dss3": 0.1429071525076363,
+    "p_sensitive": 0.30982079987205746,
+    "rank": 3
+   },
+   {
+    "model_id": "ACH-000964",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6738679416163468,
+    "predicted_dss3": 0.14286937073266373,
+    "p_sensitive": 0.1958177989648917,
+    "rank": 4
+   },
+   {
+    "model_id": "ACH-000198",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6727775616443407,
+    "predicted_dss3": 0.14241182004267247,
+    "p_sensitive": 0.5490619695798816,
+    "rank": 5
+   },
+   {
+    "model_id": "ACH-000786",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6720278310789102,
+    "predicted_dss3": 0.1420758200537683,
+    "p_sensitive": 0.239797635070213,
+    "rank": 6
+   },
+   {
+    "model_id": "ACH-000045",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6720228425140632,
+    "predicted_dss3": 0.1420735638180468,
+    "p_sensitive": 0.35257702059680357,
+    "rank": 7
+   },
+   {
+    "model_id": "ACH-000070",
+    "cell_line_name": null,
+    "predicted_percentile": 0.671914968931489,
+    "predicted_dss3": 0.14203334523579106,
+    "p_sensitive": 0.38855671987311213,
+    "rank": 8
+   },
+   {
+    "model_id": "ACH-000162",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6713696873151573,
+    "predicted_dss3": 0.14181487358889705,
+    "p_sensitive": 0.28581010243670535,
+    "rank": 9
+   },
+   {
+    "model_id": "ACH-000287",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6706177685329594,
+    "predicted_dss3": 0.14150712247958797,
+    "p_sensitive": 0.22972672459734003,
+    "rank": 10
+   },
+   {
+    "model_id": "ACH-000151",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6704088297837504,
+    "predicted_dss3": 0.14141257544214822,
+    "p_sensitive": 0.10182396735056165,
+    "rank": 11
+   },
+   {
+    "model_id": "ACH-000140",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6699973274783536,
+    "predicted_dss3": 0.14125519973254602,
+    "p_sensitive": 0.3911387234967721,
+    "rank": 12
+   },
+   {
+    "model_id": "ACH-000158",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6698555054955566,
+    "predicted_dss3": 0.1412060712215439,
+    "p_sensitive": 0.1072997253450657,
+    "rank": 13
+   },
+   {
+    "model_id": "ACH-000922",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6697646044243553,
+    "predicted_dss3": 0.14116111423172,
+    "p_sensitive": 0.20793777547185005,
+    "rank": 14
+   },
+   {
+    "model_id": "ACH-000402",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6694955376114402,
+    "predicted_dss3": 0.14105338061455425,
+    "p_sensitive": 0.154765349547324,
+    "rank": 15
+   },
+   {
+    "model_id": "ACH-000602",
+    "cell_line_name": null,
+    "predicted_percentile": 0.669350399350557,
+    "predicted_dss3": 0.14099746058205656,
+    "p_sensitive": 0.24177227752626496,
+    "rank": 16
+   },
+   {
+    "model_id": "ACH-001708",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6686358702094721,
+    "predicted_dss3": 0.14067604640226225,
+    "p_sensitive": 0.19494209333842152,
+    "rank": 17
+   },
+   {
+    "model_id": "ACH-000398",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6681819392186016,
+    "predicted_dss3": 0.14049425175313524,
+    "p_sensitive": 0.24921295818718323,
+    "rank": 18
+   },
+   {
+    "model_id": "ACH-000197",
+    "cell_line_name": null,
+    "predicted_percentile": 0.668008783917569,
+    "predicted_dss3": 0.14041530507063307,
+    "p_sensitive": 0.1573941673221674,
+    "rank": 19
+   },
+   {
+    "model_id": "ACH-000782",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6679835320773863,
+    "predicted_dss3": 0.14040980774210088,
+    "p_sensitive": 0.21576345219955806,
+    "rank": 20
+   },
+   {
+    "model_id": "ACH-000918",
+    "cell_line_name": null,
+    "predicted_percentile": 0.667335224917629,
+    "predicted_dss3": 0.1401409758564997,
+    "p_sensitive": 0.15601247991878425,
+    "rank": 21
+   },
+   {
+    "model_id": "ACH-000056",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6673068629422252,
+    "predicted_dss3": 0.14013188157644646,
+    "p_sensitive": 0.28627584551957047,
+    "rank": 22
+   },
+   {
+    "model_id": "ACH-003590",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6666240006607143,
+    "predicted_dss3": 0.13981926572127687,
+    "p_sensitive": 0.11587735856425832,
+    "rank": 23
+   },
+   {
+    "model_id": "ACH-000462",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6664153767223002,
+    "predicted_dss3": 0.13972740104282477,
+    "p_sensitive": 0.2256430506971039,
+    "rank": 24
+   },
+   {
+    "model_id": "ACH-000124",
+    "cell_line_name": null,
+    "predicted_percentile": 0.6663341318148301,
+    "predicted_dss3": 0.1396960079340194,
+    "p_sensitive": 0.1309186572617813,
+    "rank": 25
+   }
+  ],
+  "cancer_types": [],
+  "cancer_types_note": "Cancer-type ranking is unavailable: no cell line \u2192 disease map is installed (add DepMap Model.csv, decision D-07). Cell-line rankings are unaffected.",
+  "evidence_summary": {
+   "renderer": "template",
+   "claims": [
+    {
+     "section": "prediction",
+     "text": "The target model ranks these proteins highest: EGFR (Epidermal growth factor receptor; score 1), EPHB4 (Ephrin type-B receptor 4; score 0.963), EPHA2 (Ephrin type-A receptor 2; score 0.934), ERBB4 (Receptor tyrosine-protein kinase erbB-4; score 0.845), RIPK2 (Receptor-interacting serine/threonine-protein kinase 2; score 0.844).",
+     "cites": [
+      "predictions.targets[0].score",
+      "predictions.targets[1].score",
+      "predictions.targets[2].score",
+      "predictions.targets[3].score",
+      "predictions.targets[4].score"
+     ]
+    },
+    {
+     "section": "prediction",
+     "text": "The closest training compound has Tanimoto similarity 0.919, so this is an unseen-compound prediction.",
+     "cites": [
+      "predictions.near_seen.target.max_tanimoto"
+     ]
+    },
+    {
+     "section": "prediction",
+     "text": "The sensitivity model predicts the strongest response in: ACH-001492 (percentile 0.676), ACH-000938 (percentile 0.675), ACH-000362 (percentile 0.674), ACH-000964 (percentile 0.674), ACH-000198 (percentile 0.673).",
+     "cites": [
+      "predictions.cell_lines[0].predicted_percentile",
+      "predictions.cell_lines[1].predicted_percentile",
+      "predictions.cell_lines[2].predicted_percentile",
+      "predictions.cell_lines[3].predicted_percentile",
+      "predictions.cell_lines[4].predicted_percentile"
+     ]
+    },
+    {
+     "section": "prediction",
+     "text": "Cancer-type ranking is unavailable: no cell line \u2192 disease map is installed (add DepMap Model.csv, decision D-07). Cell-line rankings are unaffected.",
+     "cites": [
+      "predictions.cancer_types_note"
+     ]
+    },
+    {
+     "section": "annotation",
+     "text": "This structure is listed as gefitinib with mechanism of action: EGFR inhibitor (LINCS compoundinfo).",
+     "cites": [
+      "annotations.names",
+      "annotations.moa"
+     ]
+    },
+    {
+     "section": "annotation",
+     "text": "LINCS annotates its targets as: EGFR.",
+     "cites": [
+      "annotations.targets"
+     ]
+    },
+    {
+     "section": "annotation",
+     "text": "ChEMBL records potent activity on: EGFR (pChEMBL 7.76), RIPK2 (pChEMBL 7.31), RELA (pChEMBL 7.26), GAK (pChEMBL 7.13), LYN (pChEMBL 6.8).",
+     "cites": [
+      "annotations.chembl_actives[0].pchembl",
+      "annotations.chembl_actives[1].pchembl",
+      "annotations.chembl_actives[2].pchembl",
+      "annotations.chembl_actives[3].pchembl",
+      "annotations.chembl_actives[4].pchembl"
+     ]
+    },
+    {
+     "section": "cross",
+     "text": "Predicted targets that databases also report: EGFR, ERBB4, RIPK2.",
+     "cites": [
+      "derived.target_annotation_overlap"
+     ]
+    },
+    {
+     "section": "cross",
+     "text": "EGFR expression in the 25 top predicted lines averages the 0.147 percentile of all CCLE lines.",
+     "cites": [
+      "derived.target_expression[0].mean_percentile_in_top_lines"
+     ]
+    },
+    {
+     "section": "cross",
+     "text": "EPHB4 expression in the 25 top predicted lines averages the 0.256 percentile of all CCLE lines.",
+     "cites": [
+      "derived.target_expression[1].mean_percentile_in_top_lines"
+     ]
+    },
+    {
+     "section": "cross",
+     "text": "EPHA2 expression in the 25 top predicted lines averages the 0.0923 percentile of all CCLE lines.",
+     "cites": [
+      "derived.target_expression[2].mean_percentile_in_top_lines"
+     ]
+    },
+    {
+     "section": "cross",
+     "text": "The target and sensitivity predictions come from independently trained models; their co-occurrence is correlational evidence, not proof.",
+     "cites": [
+      "derived.relationship"
+     ]
+    }
+   ],
+   "disclaimer": "These are computational research predictions, not validated clinical conclusions.",
+   "dropped_claims": 0,
+   "fallback_reason": null
+  },
+  "evidence_bundle": {
+   "query": {
+    "input_smiles": "COc1cc2ncnc(Nc3ccc(F)c(Cl)c3)c2cc1OCCCN1CCOCC1",
+    "canonical_smiles": "COc1cc2ncnc(Nc3ccc(F)c(Cl)c3)c2cc1OCCCN1CCOCC1",
+    "inchi_key": "XGALLCVXEZPNRQ-UHFFFAOYSA-N"
+   },
+   "predictions": {
+    "targets": [
+     {
+      "kind": "prediction",
+      "rank": 1,
+      "target_chembl_id": "CHEMBL203",
+      "name": "Epidermal growth factor receptor",
+      "gene_symbol": "EGFR",
+      "score": 1.0
+     },
+     {
+      "kind": "prediction",
+      "rank": 2,
+      "target_chembl_id": "CHEMBL5147",
+      "name": "Ephrin type-B receptor 4",
+      "gene_symbol": "EPHB4",
+      "score": 0.963
+     },
+     {
+      "kind": "prediction",
+      "rank": 3,
+      "target_chembl_id": "CHEMBL2068",
+      "name": "Ephrin type-A receptor 2",
+      "gene_symbol": "EPHA2",
+      "score": 0.934
+     },
+     {
+      "kind": "prediction",
+      "rank": 4,
+      "target_chembl_id": "CHEMBL3009",
+      "name": "Receptor tyrosine-protein kinase erbB-4",
+      "gene_symbol": "ERBB4",
+      "score": 0.845
+     },
+     {
+      "kind": "prediction",
+      "rank": 5,
+      "target_chembl_id": "CHEMBL5014",
+      "name": "Receptor-interacting serine/threonine-protein kinase 2",
+      "gene_symbol": "RIPK2",
+      "score": 0.844
+     },
+     {
+      "kind": "prediction",
+      "rank": 6,
+      "target_chembl_id": "CHEMBL4848",
+      "name": "Eukaryotic translation initiation factor 4E",
+      "gene_symbol": "EIF4E",
+      "score": 0.828
+     },
+     {
+      "kind": "prediction",
+      "rank": 7,
+      "target_chembl_id": "CHEMBL5838",
+      "name": "Receptor tyrosine-protein kinase erbB-3",
+      "gene_symbol": "ERBB3",
+      "score": 0.798
+     },
+     {
+      "kind": "prediction",
+      "rank": 8,
+      "target_chembl_id": "CHEMBL1868",
+      "name": "Vascular endothelial growth factor receptor 1",
+      "gene_symbol": "FLT1",
+      "score": 0.769
+     },
+     {
+      "kind": "prediction",
+      "rank": 9,
+      "target_chembl_id": "CHEMBL2721",
+      "name": "Excitatory amino acid transporter 3",
+      "gene_symbol": "SLC1A1",
+      "score": 0.739
+     },
+     {
+      "kind": "prediction",
+      "rank": 10,
+      "target_chembl_id": "CHEMBL3475",
+      "name": "Plasminogen activator inhibitor 1",
+      "gene_symbol": "SERPINE1",
+      "score": 0.733
+     }
+    ],
+    "cell_lines": [
+     {
+      "kind": "prediction",
+      "rank": 1,
+      "model_id": "ACH-001492",
+      "name": null,
+      "predicted_percentile": 0.676,
+      "p_sensitive": 0.139
+     },
+     {
+      "kind": "prediction",
+      "rank": 2,
+      "model_id": "ACH-000938",
+      "name": null,
+      "predicted_percentile": 0.675,
+      "p_sensitive": 0.359
+     },
+     {
+      "kind": "prediction",
+      "rank": 3,
+      "model_id": "ACH-000362",
+      "name": null,
+      "predicted_percentile": 0.674,
+      "p_sensitive": 0.31
+     },
+     {
+      "kind": "prediction",
+      "rank": 4,
+      "model_id": "ACH-000964",
+      "name": null,
+      "predicted_percentile": 0.674,
+      "p_sensitive": 0.196
+     },
+     {
+      "kind": "prediction",
+      "rank": 5,
+      "model_id": "ACH-000198",
+      "name": null,
+      "predicted_percentile": 0.673,
+      "p_sensitive": 0.549
+     },
+     {
+      "kind": "prediction",
+      "rank": 6,
+      "model_id": "ACH-000786",
+      "name": null,
+      "predicted_percentile": 0.672,
+      "p_sensitive": 0.24
+     },
+     {
+      "kind": "prediction",
+      "rank": 7,
+      "model_id": "ACH-000045",
+      "name": null,
+      "predicted_percentile": 0.672,
+      "p_sensitive": 0.353
+     },
+     {
+      "kind": "prediction",
+      "rank": 8,
+      "model_id": "ACH-000070",
+      "name": null,
+      "predicted_percentile": 0.672,
+      "p_sensitive": 0.389
+     },
+     {
+      "kind": "prediction",
+      "rank": 9,
+      "model_id": "ACH-000162",
+      "name": null,
+      "predicted_percentile": 0.671,
+      "p_sensitive": 0.286
+     },
+     {
+      "kind": "prediction",
+      "rank": 10,
+      "model_id": "ACH-000287",
+      "name": null,
+      "predicted_percentile": 0.671,
+      "p_sensitive": 0.23
+     },
+     {
+      "kind": "prediction",
+      "rank": 11,
+      "model_id": "ACH-000151",
+      "name": null,
+      "predicted_percentile": 0.67,
+      "p_sensitive": 0.102
+     },
+     {
+      "kind": "prediction",
+      "rank": 12,
+      "model_id": "ACH-000140",
+      "name": null,
+      "predicted_percentile": 0.67,
+      "p_sensitive": 0.391
+     },
+     {
+      "kind": "prediction",
+      "rank": 13,
+      "model_id": "ACH-000158",
+      "name": null,
+      "predicted_percentile": 0.67,
+      "p_sensitive": 0.107
+     },
+     {
+      "kind": "prediction",
+      "rank": 14,
+      "model_id": "ACH-000922",
+      "name": null,
+      "predicted_percentile": 0.67,
+      "p_sensitive": 0.208
+     },
+     {
+      "kind": "prediction",
+      "rank": 15,
+      "model_id": "ACH-000402",
+      "name": null,
+      "predicted_percentile": 0.669,
+      "p_sensitive": 0.155
+     },
+     {
+      "kind": "prediction",
+      "rank": 16,
+      "model_id": "ACH-000602",
+      "name": null,
+      "predicted_percentile": 0.669,
+      "p_sensitive": 0.242
+     },
+     {
+      "kind": "prediction",
+      "rank": 17,
+      "model_id": "ACH-001708",
+      "name": null,
+      "predicted_percentile": 0.669,
+      "p_sensitive": 0.195
+     },
+     {
+      "kind": "prediction",
+      "rank": 18,
+      "model_id": "ACH-000398",
+      "name": null,
+      "predicted_percentile": 0.668,
+      "p_sensitive": 0.249
+     },
+     {
+      "kind": "prediction",
+      "rank": 19,
+      "model_id": "ACH-000197",
+      "name": null,
+      "predicted_percentile": 0.668,
+      "p_sensitive": 0.157
+     },
+     {
+      "kind": "prediction",
+      "rank": 20,
+      "model_id": "ACH-000782",
+      "name": null,
+      "predicted_percentile": 0.668,
+      "p_sensitive": 0.216
+     },
+     {
+      "kind": "prediction",
+      "rank": 21,
+      "model_id": "ACH-000918",
+      "name": null,
+      "predicted_percentile": 0.667,
+      "p_sensitive": 0.156
+     },
+     {
+      "kind": "prediction",
+      "rank": 22,
+      "model_id": "ACH-000056",
+      "name": null,
+      "predicted_percentile": 0.667,
+      "p_sensitive": 0.286
+     },
+     {
+      "kind": "prediction",
+      "rank": 23,
+      "model_id": "ACH-003590",
+      "name": null,
+      "predicted_percentile": 0.667,
+      "p_sensitive": 0.116
+     },
+     {
+      "kind": "prediction",
+      "rank": 24,
+      "model_id": "ACH-000462",
+      "name": null,
+      "predicted_percentile": 0.666,
+      "p_sensitive": 0.226
+     },
+     {
+      "kind": "prediction",
+      "rank": 25,
+      "model_id": "ACH-000124",
+      "name": null,
+      "predicted_percentile": 0.666,
+      "p_sensitive": 0.131
+     }
+    ],
+    "cancer_types": [],
+    "cancer_types_note": "Cancer-type ranking is unavailable: no cell line \u2192 disease map is installed (add DepMap Model.csv, decision D-07). Cell-line rankings are unaffected.",
+    "near_seen": {
+     "target": {
+      "flag": false,
+      "max_tanimoto": 0.919,
+      "nearest_inchi_key": "STNFCUFBMSVMBL-UHFFFAOYSA-N"
+     },
+     "sensitivity": {
+      "flag": false,
+      "max_tanimoto": 0.653,
+      "nearest_inchi_key": "OGNYUTNQZVRGMN-UHFFFAOYSA-N"
+     }
+    },
+    "model_runs": {
+     "target": "20261017-182551",
+     "sensitivity": "20261017-185802"
+    },
+    "selectivity_learned": true
+   },
+   "annotations": {
+    "matched": true,
+    "match_level": "exact",
+    "source_compoundinfo": "LINCS compoundinfo.txt (cmap_name, target, moa)",
+    "source_chembl": "ChEMBL 37 activities (median pChEMBL >= 6, single human protein)",
+    "names": [
+     "gefitinib"
+    ],
+    "moa": [
+     "EGFR inhibitor"
+    ],
+    "targets": [
+     "EGFR"
+    ],
+    "chembl_actives": [
+     {
+      "kind": "annotation",
+      "target_chembl_id": "CHEMBL203",
+      "name": "Epidermal growth factor receptor",
+      "gene_symbol": "EGFR",
+      "pchembl": 7.76
+     },
+     {
+      "kind": "annotation",
+      "target_chembl_id": "CHEMBL5014",
+      "name": "Receptor-interacting serine/threonine-protein kinase 2",
+      "gene_symbol": "RIPK2",
+      "pchembl": 7.31
+     },
+     {
+      "kind": "annotation",
+      "target_chembl_id": "CHEMBL5533",
+      "name": "Transcription factor p65",
+      "gene_symbol": "RELA",
+      "pchembl": 7.26
+     },
+     {
+      "kind": "annotation",
+      "target_chembl_id": "CHEMBL4355",
+      "name": "Cyclin-G-associated kinase",
+      "gene_symbol": "GAK",
+      "pchembl": 7.13
+     },
+     {
+      "kind": "annotation",
+      "target_chembl_id": "CHEMBL3905",
+      "name": "Tyrosine-protein kinase Lyn",
+      "gene_symbol": "LYN",
+      "pchembl": 6.8
+     },
+     {
+      "kind": "annotation",
+      "target_chembl_id": "CHEMBL6191",
+      "name": "Mitogen-activated protein kinase kinase kinase 19",
+      "gene_symbol": "MAP3K19",
+      "pchembl": 6.62
+     },
+     {
+      "kind": "annotation",
+      "target_chembl_id": "CHEMBL4223",
+      "name": "Tyrosine-protein kinase FRK",
+      "gene_symbol": "FRK",
+      "pchembl": 6.6
+     },
+     {
+      "kind": "annotation",
+      "target_chembl_id": "CHEMBL3009",
+      "name": "Receptor tyrosine-protein kinase erbB-4",
+      "gene_symbol": "ERBB4",
+      "pchembl": 6.59
+     },
+     {
+      "kind": "annotation",
+      "target_chembl_id": "CHEMBL4718",
+      "name": "MAP kinase-interacting serine/threonine-protein kinase 1",
+      "gene_symbol": "MKNK1",
+      "pchembl": 6.54
+     },
+     {
+      "kind": "annotation",
+      "target_chembl_id": "CHEMBL3357",
+      "name": "Interleukin-1 receptor-associated kinase 1",
+      "gene_symbol": "IRAK1",
+      "pchembl": 6.5
+     }
+    ]
+   },
+   "derived": {
+    "target_annotation_overlap": [
+     "EGFR",
+     "ERBB4",
+     "RIPK2"
+    ],
+    "target_expression": [
+     {
+      "kind": "derived",
+      "gene_symbol": "EGFR",
+      "mean_percentile_in_top_lines": 0.147,
+      "n_top_lines": 25
+     },
+     {
+      "kind": "derived",
+      "gene_symbol": "EPHB4",
+      "mean_percentile_in_top_lines": 0.256,
+      "n_top_lines": 25
+     },
+     {
+      "kind": "derived",
+      "gene_symbol": "EPHA2",
+      "mean_percentile_in_top_lines": 0.0923,
+      "n_top_lines": 25
+     }
+    ],
+    "relationship": "The target and sensitivity predictions come from independently trained models; their co-occurrence is correlational evidence, not proof."
+   },
+   "disclaimer": "These are computational research predictions, not validated clinical conclusions."
+  },
+  "near_seen": {
+   "target": {
+    "flag": false,
+    "max_tanimoto": 0.919,
+    "nearest_inchi_key": "STNFCUFBMSVMBL-UHFFFAOYSA-N"
+   },
+   "sensitivity": {
+    "flag": false,
+    "max_tanimoto": 0.653,
+    "nearest_inchi_key": "OGNYUTNQZVRGMN-UHFFFAOYSA-N"
+   }
+  },
+  "selectivity_learned": true,
+  "model_versions": {
+   "target": "20261017-182551",
+   "sensitivity": "20261017-185802"
+  },
+  "timings_ms": {
+   "parse": 2.3,
+   "featurize": 1.0,
+   "targets": 69.0,
+   "sensitivity": 25.6,
+   "cancer_types": 0.0,
+   "near_seen": 87.4,
+   "evidence": 247.9,
+   "explain": 2.9
+  },
+  "disclaimer": "These are computational research predictions, not validated clinical conclusions."
+ },
+ "ground_truth_comparison": {
+  "n_cell_lines_compared": 929,
+  "spearman_rho": 0.1374,
+  "p_value": 2.6550072059265295e-05,
+  "median_measured_dss3_all": 0.1461,
+  "median_measured_dss3_top20_predicted": 0.2059
+ },
+ "known_targets_held_out": [
+  {
+   "target_chembl_id": "CHEMBL203",
+   "target_name": "Epidermal growth factor receptor",
+   "pchembl_median": 7.76
+  },
+  {
+   "target_chembl_id": "CHEMBL5014",
+   "target_name": "Receptor-interacting serine/threonine-protein kinase 2",
+   "pchembl_median": 7.31
+  },
+  {
+   "target_chembl_id": "CHEMBL5533",
+   "target_name": "Transcription factor p65",
+   "pchembl_median": 7.26
+  },
+  {
+   "target_chembl_id": "CHEMBL4355",
+   "target_name": "Cyclin-G-associated kinase",
+   "pchembl_median": 7.135
+  },
+  {
+   "target_chembl_id": "CHEMBL3905",
+   "target_name": "Tyrosine-protein kinase Lyn",
+   "pchembl_median": 6.8
+  },
+  {
+   "target_chembl_id": "CHEMBL6191",
+   "target_name": "Mitogen-activated protein kinase kinase kinase 19",
+   "pchembl_median": 6.62
+  },
+  {
+   "target_chembl_id": "CHEMBL4223",
+   "target_name": "Tyrosine-protein kinase FRK",
+   "pchembl_median": 6.6
+  },
+  {
+   "target_chembl_id": "CHEMBL3009",
+   "target_name": "Receptor tyrosine-protein kinase erbB-4",
+   "pchembl_median": 6.595
+  },
+  {
+   "target_chembl_id": "CHEMBL4718",
+   "target_name": "MAP kinase-interacting serine/threonine-protein kinase 1",
+   "pchembl_median": 6.54
+  },
+  {
+   "target_chembl_id": "CHEMBL3357",
+   "target_name": "Interleukin-1 receptor-associated kinase 1",
+   "pchembl_median": 6.5
+  }
+ ]
+}
