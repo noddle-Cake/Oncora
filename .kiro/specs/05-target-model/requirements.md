@@ -22,7 +22,8 @@ produce scored target rankings for any SMILES.
 1. THE trainer SHALL train on `processed/target_pairs.parquet` only, inheriting its label policy (threshold, negatives).
 2. THE trainer SHALL train one LightGBM binary classifier per qualifying target on compound features, with seeded hyperparameters from config.
 3. THE trainer SHALL also train a logistic-regression-on-ECFP comparison model under the same splits.
-4. THE split SHALL be **globally** compound-disjoint: a test InChIKey is excluded from training for every target.
+4. THE split SHALL be **globally** compound-disjoint by standardized connectivity block: a test compound is excluded from training for every target.
+6. BEFORE splitting, rows with the same standardized connectivity block and target SHALL be collapsed to one: measured rows take precedence over sampled negatives, and the label is recomputed from the median measured pChEMBL (censored-only groups stay inactive).
 5. Each run SHALL be logged to MLflow (params, metrics, artifacts).
 
 ### Requirement 2: Scoring and ranking (FR-5)

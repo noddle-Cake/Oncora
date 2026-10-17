@@ -20,5 +20,6 @@ run oncora.eda.features                    # reports/eda_features.md
 run oncora.data_prep.chembl_filter         # interim/chembl_activities.parquet
 run oncora.data_prep.target_pairs          # processed/target_pairs.parquet
 run oncora.data_prep.sensitivity_table     # processed/sensitivity.parquet
+run oncora.features.build                  # processed/compound_features.parquet (~3.5 min first time, cached after)
 
 echo "Done. Modeling tables are in data/processed/."

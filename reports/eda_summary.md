@@ -24,7 +24,7 @@ Evidence: [`eda_profile.md`](eda_profile.md) · [`eda_bridges.md`](eda_bridges.m
 
 | # | Decision | Choice | Rationale | Affects |
 |---|---|---|---|---|
-| D-01 | Split group key | **InChIKey connectivity block** (`inchi_key[:14]`) | Stereoisomers have identical achiral fingerprints; a full-key split would leak | 02, 04, 05, 06 |
+| D-01 | Split group key | **Connectivity block of the standardized parent** (`std_inchi_key[:14]`; refined in spec 03 after featurization showed 3,945 salt-form groups) | Stereoisomers and salt forms have identical features; splitting them would leak | 02, 04, 05, 06 |
 | D-02 | `pert_id` duplicates in compoundinfo | **Collapse to one row per `pert_id`**; targets, MoAs and names as lists; raise if structures ever conflict | Duplicates are one row per (target, MoA); structure never conflicts | 02, 07 |
 | D-03 | Mixed-scale DSS3 compounds (22) | **Exclude from headline training and evaluation**; list them in the model card; one sensitivity analysis with values ≥ 1 rescaled by 1/100 | A row's scale cannot be recovered; including them corrupts labels | 02, 06, 09 |
 | D-04 | Regression target | **Rank-transformed DSS3**; headline metric Spearman ρ | Robust to the zero spike and any residual scale differences | 06 |

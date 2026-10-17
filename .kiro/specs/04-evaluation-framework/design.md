@@ -38,7 +38,8 @@ def scaffold_folds(df, *, n_folds, seed, scaffold_col="scaffold", key="connectiv
 def holdout(df, *, strategy, test_frac, seed) -> (train_idx, test_idx, SplitManifest)
 def assert_disjoint(df, folds, col) -> None   # raises LeakageError
 ```
-- Compound folds: `GroupKFold`-style over unique connectivity blocks (`inchi_key[:14]`) after a seeded shuffle.
+- Compound folds: `GroupKFold`-style over unique standardized connectivity blocks (`std_inchi_key[:14]`, joined from
+  `compound_features.parquet`) after a seeded shuffle. Standardization also merges salt forms.
   The connectivity block, not the full InChIKey, is the group: stereoisomers (e.g. dexamethasone/betamethasone)
   have identical achiral ECFP features, and compoundinfo SMILES often lack the stereo their InChIKeys carry.
 - Scaffold folds: largest-first greedy assignment of scaffold groups to the currently smallest

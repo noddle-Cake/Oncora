@@ -18,7 +18,7 @@ saw, so that the results reflect real unseen-compound performance.
 
 #### Acceptance Criteria
 
-1. THE splitter SHALL partition rows by the **InChIKey connectivity block** (the first 14 characters) so that no connectivity block appears in more than one of train, validation, or test. Stereoisomers share a block and have identical achiral fingerprints, so splitting by the full key would leak (see `reports/eda_bridges.md`).
+1. THE splitter SHALL partition rows by the **connectivity block of the standardized parent** (`std_inchi_key[:14]` from `compound_features.parquet`) so that no connectivity block appears in more than one of train, validation, or test. Stereoisomers share a block and have identical achiral fingerprints, so splitting by the full key would leak (see `reports/eda_bridges.md`).
 2. THE splitter SHALL support k-fold grouped CV and a single holdout, both seeded.
 3. FOR the sensitivity data, all rows of a compound (across every cell line) SHALL fall in the same partition.
 4. THE splitter SHALL return indices together with a manifest (seed, strategy, group counts, InChIKey hash per partition) for the model card.
