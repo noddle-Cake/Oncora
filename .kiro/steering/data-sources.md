@@ -65,6 +65,25 @@ Annotation files use `""` (a literal pair of quotes) for missing values. Treat i
   signature, so the sensitivity model's compound features stay structure-only (FR-10). Do not add any
   signature-derived column to a model whose inference path must serve unseen compounds.
 
+## ChEMBL 37 export (spec 02, task 2)
+
+Exported once to `data/interim/chembl/*.parquet` (~0.5 GB, gitignored). Row counts are in
+`export_manifest.csv` with the tar's SHA256. `molfile` and protein `sequence` columns are dropped.
+
+| Table | Rows |
+|---|---|
+| activities | 24,527,044 |
+| assays | 1,970,438 |
+| molecule_dictionary | 2,921,148 |
+| compound_structures | 2,897,819 |
+| component_synonyms | 121,157 |
+| target_dictionary | 18,552 |
+| target_components | 17,284 |
+| component_sequences | 12,986 |
+
+Spot check: imatinib (CHEMBL941) ranks ABL1/ABL2, PDGFRα/β, DDR1/2, CSF1R, LCK and NQO2 (a known
+off-target) among its most potent human single-protein targets.
+
 ## Identity bridges
 
 ```

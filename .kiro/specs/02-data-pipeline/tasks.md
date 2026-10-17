@@ -5,10 +5,10 @@
   - Unit-test the metadata round-trip and each assertion failure
   - _Requirements: 5.1, 5.2_
 
-- [ ] 2. ChEMBL restore and export
-- [ ] 2.1 Implement `io/chembl_export.py` (extract, restore, export via DuckDB postgres extension, spot check)
+- [x] 2. ChEMBL restore and export
+- [x] 2.1 Implement `io/chembl_export.py` (extract, restore, export via DuckDB postgres extension, spot check)
   - _Requirements: 1.1, 1.3_
-- [ ] 2.2 **Get developer approval**, install PostgreSQL, run the restore and export, record the row counts
+- [x] 2.2 **Get developer approval**, install PostgreSQL, run the restore and export, record the row counts
   - Spot-check CHEMBL941 (imatinib) → ABL1/KIT/PDGFR among its targets
   - Learn: relational → columnar ETL
   - _Requirements: 1.2, 1.4, 1.5_
