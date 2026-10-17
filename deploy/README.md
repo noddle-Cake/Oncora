@@ -30,6 +30,19 @@ so no data or models are uploaded to Hugging Face by hand.
    Hugging Face builds the image (a few minutes) and serves it at
    `https://huggingface.co/spaces/<your-hf-username>/oncora`.
 
+## Alternative: self-contained upload (no GitHub token)
+
+Upload the code and the artifact bundle into the (private) Space, so its build never touches
+GitHub. This is how the live Space is deployed:
+
+```bash
+./scripts/fetch_artifacts.sh                 # or extract a locally packaged bundle
+deploy/stage_space.sh /tmp/oncora-space      # code (git archive of HEAD) + bundle + card + Dockerfile.bundled
+hf repos create "$SPACE" --repo-type space --space-sdk docker --private --exist-ok
+hf upload "$SPACE" /tmp/oncora-space . --repo-type space
+hf spaces wait "$SPACE"
+```
+
 ## Options
 
 - **Claude explanations** are off by default (`ONCORA_LLM_ENABLED=0`): a public link could

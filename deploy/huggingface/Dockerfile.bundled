@@ -1,0 +1,31 @@
+# syntax=docker/dockerfile:1.7
+# Self-contained variant of the Space image: the code and the artifact bundle are uploaded to the
+# (private) Space itself by deploy/stage_space.sh, so the build needs no GitHub access or token.
+# stage_space.sh copies this file to the staged folder as `Dockerfile`.
+FROM python:3.11-slim-bookworm
+
+# libgomp1: LightGBM's OpenMP runtime. libxrender1/libxext6: RDKit molecule drawing.
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends ca-certificates curl libgomp1 libxrender1 libxext6 \
+ && rm -rf /var/lib/apt/lists/*
+COPY --from=ghcr.io/astral-sh/uv:0.13.1 /uv /usr/local/bin/uv
+
+# Hugging Face runs Docker Spaces as uid 1000.
+RUN useradd -m -u 1000 user
+USER user
+ENV HOME=/home/user \
+    UV_PYTHON_DOWNLOADS=never \
+    UV_LINK_MODE=copy \
+    PYTHONUNBUFFERED=1 \
+    ONCORA_LLM_ENABLED=0
+WORKDIR /home/user/app
+
+# Dependencies first, so code-only updates reuse this layer.
+COPY --chown=user pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-dev --no-install-project
+COPY --chown=user . .
+RUN uv sync --frozen --no-dev \
+ && uv run --no-sync python -m oncora.serve.artifacts verify
+
+EXPOSE 7860
+CMD ["bash", "deploy/start.sh"]
