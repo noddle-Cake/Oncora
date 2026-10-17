@@ -32,9 +32,13 @@ Evidence: [`eda_profile.md`](eda_profile.md) · [`eda_bridges.md`](eda_bridges.m
 | D-06 | Cell-line features (MVP) | **978 LINCS landmark genes**, standardized on training folds; top-2,000-variance and 50–100 PCs as STRETCH comparisons | Fixed list (no selection leakage), interpretable, compact | 03, 06 |
 | D-07 | Cell line → disease (A4) | **Add DepMap `Model.csv`** (same release as the expression file) at `data/raw/depmap/Model.csv` | The only direct `ModelID` → Oncotree disease/lineage mapping | 06 (Req 4), 08 |
 | D-08 | Sensitivity evaluation framing | Report per-cell-line ρ (potency) and per-compound ρ (selectivity) separately; compound-only ablation; explicit selectivity verdict | Compound effects dominate; avoid presenting potency as selectivity | 06, 08, 09 |
+| D-09 | L1000 Level 4 signatures (A2 revised, PR #8) | **Evidence-only**: never a feature of any model that must serve unseen compounds; optionally attached as labeled evidence in the interpretation layer | A new SMILES has no measured signature at inference (FR-10) | 06, 07 |
 
 ## Open items
 
+- **Spec 01 task 5.3: profile the L1000 Level 4 GCTX.** Waiting for the ~80 GB download to
+  finish and move to `data/raw/lincs/`. It will be profiled (shape, `rid`/`cid` joins, DSS3
+  compound coverage) into `reports/eda_signatures.md`. D-09 holds whatever the profile finds.
 - **A4 / D-07: waiting for `Model.csv`.** Until it is added, spec 06 Requirement 4 (cancer-type
   ranking) is blocked. Everything else can proceed. When it arrives: add it to `SHA256SUMS`,
   extend the cell-line bridge, and re-run `oncora.data_prep.bridges`.

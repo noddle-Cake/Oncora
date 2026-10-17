@@ -90,6 +90,7 @@ Full log with rationale: `reports/eda_summary.md`. Values live in `src/oncora/co
 | D-06 | Cell-line features = 978 LINCS landmark genes, standardized on training folds |
 | D-07 | Cell line → disease via DepMap `Model.csv` at `data/raw/depmap/Model.csv` (**pending: the developer is adding it**) |
 | D-08 | Report potency (per-cell-line ρ) and selectivity (per-compound ρ) separately; compound-only ablation |
+| D-09 | L1000 Level 4 signatures are evidence-only, never a model feature for unseen compounds |
 
 ## Open item A4: cell line → disease mapping
 
