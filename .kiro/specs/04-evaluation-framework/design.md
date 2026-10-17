@@ -63,6 +63,16 @@ They share a `fit(train_df)` / `predict(df)` interface with the models.
 - `EvalReport.from_results(model_results, baseline_results, manifests) -> EvalReport`
 - `.to_markdown()`, `.to_json()`, `.beats_baselines() -> dict[str, bool]`
 
+### `src/oncora/evaluation/protocol.py` (as built)
+- One seeded group holdout per strategy: `TEST_FRAC = 0.2` of groups as test, then `VAL_FRAC = 0.1` of the
+  remaining groups as validation (early stopping and calibration only). `Partition.fit = train ∪ val` for refits.
+- A fixed holdout replaces k-fold CV as a compute trade-off (1,360 target classifiers; a ~470k × 3k
+  sensitivity matrix). Uncertainty comes from compound-level bootstrap CIs on test (200 resamples for
+  sensitivity, 50 for target metrics, which recompute 1,360 per-target AUCs per resample).
+- Acceptance verdict: a model beats a baseline on a metric only if its 95% CI lower bound exceeds the
+  baseline's point estimate.
+- Baselines are fit on train ∪ val (slightly generous to them). Floor numbers: `reports/eval/baselines_*.md`.
+
 ## Data Models
 
 `reports/eval/<model>/<run_id>.{md,json}`. The JSON contains metrics by split, CIs, the
