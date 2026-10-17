@@ -19,9 +19,12 @@ app/style.css (University of Miami green and orange; orange is fill-only, see th
 
 import html
 import json
+import math
 import os
+import time
 import urllib.error
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import streamlit as st
@@ -38,6 +41,15 @@ EXAMPLES = {
     "Invalid example": "C1CC(",
 }
 SHOW_TARGETS, SHOW_LINES = 20, 25
+TAB_LABELS = ["Targets", "Cell lines", "Measured response", "Database annotations", "Cancer types", "Details"]
+# What the progress bar says while the API works. It is paced, not measured: the API answers in one
+# call, so the bar eases toward 95% on a time constant matched to typical latency (longer when Claude
+# writes the explanation) and completes when the response lands.
+STAGES = [(0.00, "Reading the structure…"), (0.12, "Scoring 1,360 protein targets…"),
+          (0.34, "Ranking every CCLE cancer cell line…"), (0.55, "Checking ChEMBL, LINCS and measured responses…"),
+          (0.74, "Writing the cited explanation…")]
+SCROLL_TO_EXPLORE = ("<script>setTimeout(() => window.parent.document.getElementById('explore')"
+                     "?.scrollIntoView({behavior: 'smooth', block: 'start'}), 150);</script>")
 
 
 def call_api(smiles: str, use_llm: bool) -> tuple[int, dict]:
@@ -273,9 +285,31 @@ md('<div class="onc-header"><span class="onc-header__name">Oncora</span>'
    "linked evidence</span></div>")
 
 def predict(smiles: str, use_llm: bool) -> None:
-    with st.spinner("Scoring 1,360 targets and every CCLE cell line…"):
-        st.session_state.result = call_api(smiles, use_llm)
+    """Call the API in the background while a progress bar walks through the pipeline's stages."""
+    stages = STAGES if use_llm else STAGES[:-1] + [(0.74, "Assembling the evidence…")]
+    tau = 3.5 if use_llm else 1.2            # seconds; typical response time sets the pace
+    bar = st.progress(0.0, text=stages[0][1])
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        future = pool.submit(call_api, smiles, use_llm)
+        t0, p = time.monotonic(), 0.0
+        # Shown for at least ~0.9 s so a fast answer reads as progress, not a flicker.
+        while not future.done() or time.monotonic() - t0 < 0.9:
+            p = max(p, 0.95 * (1 - math.exp(-(time.monotonic() - t0) / tau)))
+            bar.progress(p, text=next(text for at, text in reversed(stages) if p >= at))
+            time.sleep(0.08)
+        st.session_state.result = future.result()
+    for q in (p + (1 - p) * k / 5 for k in range(1, 6)):     # glide to full rather than jump
+        bar.progress(q, text="Done")
+        time.sleep(0.05)
+    time.sleep(0.2)
+    bar.empty()
     st.session_state.result_smiles = smiles
+
+
+def _jump(tab: str) -> None:
+    """Open a results tab and scroll down to it (from the explore card near the top)."""
+    st.session_state.jump_tab = tab
+    st.session_state.scroll_explore = True
 
 
 # A shared link (?smiles=…) loads its prediction on arrival; it must land before the input renders.
@@ -334,6 +368,22 @@ cols[3].markdown(tile("Measured response (L1000)",
                       if sig else "Not profiled",
                       (f"{sig['n_cell_lines']} cell lines · {'reproducible' if sig['reproducible'] else 'inconclusive'}"
                        if sig else "no lab measurement for this structure")), unsafe_allow_html=True)
+
+# The detailed, linked results sit below the fold; this card says they exist and jumps to them.
+with st.container(key="explore-card"):
+    md('<div class="explore-card__title">Explore the linked evidence ↓</div>'
+       '<div class="explore-card__sub">Every target, cell line and compound opens a panel with its evidence and '
+       "links to related entities.</div>")
+    counts = {"Targets": len(data["targets"][:SHOW_TARGETS]),
+              "Cell lines": len(data["sensitive_cell_lines"][:SHOW_LINES]),
+              "Measured response": len(ix.neighbors) if sig else None,
+              "Database annotations": len(ix.actives) if ix.ann.get("matched") else None,
+              "Cancer types": len(data["cancer_types"]) or None}
+    names = {"Measured response": "Similar drugs", "Database annotations": "Database records"}
+    jump_cols = st.columns(len(counts))
+    for col, (tab, n) in zip(jump_cols, counts.items()):
+        col.button(f"{names.get(tab, tab)} · {n if n is not None else '—'}", key=f"jump-{tab}", on_click=_jump,
+                   args=(tab,), width="stretch", disabled=n is None)
 st.write("")
 
 left, right = st.columns([2, 3])
@@ -368,7 +418,13 @@ with right:
                    + "".join(f"<li>{esc(t)}</li>" for t in claims) + "</ul>")
 
 st.write("")
-tabs = st.tabs(["Targets", "Cell lines", "Measured response", "Database annotations", "Cancer types", "Details"])
+md('<div id="explore" class="explore-head"><div class="explore-head__title">Explore the evidence</div>'
+   '<div class="explore-head__sub">Select any target, cell line or compound to open its linked panel.</div></div>')
+# A jump from the explore card re-creates the tabs with that tab selected (a new default is a new widget);
+# otherwise the reader's own tab choice is kept across reruns.
+tabs = st.tabs(TAB_LABELS, default=st.session_state.get("jump_tab"))
+if st.session_state.pop("scroll_explore", False):
+    st.iframe(SCROLL_TO_EXPLORE, height=1)     # a fixed, trusted snippet: scroll the page to the results
 
 with tabs[0], st.container(border=True):
     md('<div class="onc-muted">Calibrated probability that the compound is active (pChEMBL ≥ 6) on each target. '
