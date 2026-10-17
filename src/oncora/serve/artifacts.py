@@ -145,6 +145,48 @@ def verify(root: Path = ROOT) -> dict:
     return manifest
 
 
+def fetch(repo: str, tag: str | None = None, token: str | None = None, root: Path = ROOT) -> dict:
+    """Download a release bundle with only a GitHub token (no `gh` CLI), check, unpack and verify it.
+
+    Used by container builds (e.g. the Hugging Face Space). `requests` drops the Authorization
+    header when GitHub redirects the asset download to its storage host, as it must.
+    """
+    import requests
+
+    token = token or os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    headers = {"Accept": "application/vnd.github+json", **({"Authorization": f"Bearer {token}"} if token else {})}
+    api = f"https://api.github.com/repos/{repo}/releases"
+    if tag:
+        release = requests.get(f"{api}/tags/{tag}", headers=headers, timeout=30)
+    else:
+        listing = requests.get(api, headers=headers, timeout=30)
+        listing.raise_for_status()
+        release = next((r for r in listing.json() if r["tag_name"].startswith("artifacts-")), None)
+        if release is None:
+            raise FileNotFoundError(f"no artifacts-* release in {repo}")
+    if not isinstance(release, dict):
+        release.raise_for_status()
+        release = release.json()
+    assets = {a["name"]: a for a in release["assets"]}
+    archive_name = next(n for n in assets if n.startswith("oncora-artifacts-") and n.endswith(".tar.gz"))
+    dl = {**headers, "Accept": "application/octet-stream"}
+    out_dir = root / "dist"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for name in (archive_name, archive_name + ".sha256"):
+        with requests.get(assets[name]["url"], headers=dl, stream=True, timeout=60) as r:
+            r.raise_for_status()
+            with open(out_dir / name, "wb") as f:
+                for chunk in r.iter_content(1 << 20):
+                    f.write(chunk)
+    expected = (out_dir / (archive_name + ".sha256")).read_text().split()[0]
+    if sha256(out_dir / archive_name) != expected:
+        raise RuntimeError(f"{archive_name}: SHA256 does not match the published .sha256")
+    with tarfile.open(out_dir / archive_name) as tar:
+        tar.extractall(root, filter="data")
+    (out_dir / archive_name).unlink()     # keep the image small; the manifest records every digest
+    return verify(root)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -153,7 +195,15 @@ def main() -> None:
     pk.add_argument("--target-run")
     pk.add_argument("--sensitivity-run")
     sub.add_parser("verify")
+    fe = sub.add_parser("fetch", help="download a release bundle using GITHUB_TOKEN (no gh CLI needed)")
+    fe.add_argument("--repo", default="noddle-Cake/Oncora")
+    fe.add_argument("--tag", help="release tag; default: the latest artifacts-* release")
     args = ap.parse_args()
+    if args.cmd == "fetch":
+        m = fetch(args.repo, args.tag)
+        print(f"OK: fetched and verified {len(m['files'])} files (target {m['model_runs']['target']}, "
+              f"sensitivity {m['model_runs']['sensitivity']})")
+        return
     if args.cmd == "tables":
         for name, n in build_tables().items():
             print(f"{name}: {n:,} rows")
