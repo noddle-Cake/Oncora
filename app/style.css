@@ -139,11 +139,48 @@ div[data-testid="stVerticalBlockBorderWrapper"]:has(> div > div[data-testid="stV
 /* Row rules inside list cards. */
 .row-rule { border: 0; border-top: 1px solid var(--border); margin: 2px 0; }
 
-/* Tabs: green underline for the active tab. */
-.stTabs [data-baseweb="tab-list"] { gap: 6px; border-bottom: 1px solid var(--border); }
-.stTabs [data-baseweb="tab"] { font-weight: 600; color: var(--text); }
-.stTabs [aria-selected="true"] { color: var(--um-green) !important; }
-.stTabs [data-baseweb="tab-highlight"] { background-color: var(--um-green) !important; }
+/* Explore card: sits right under the stat tiles, above the fold, and points at the linked results
+   below. Orange-tinted like the other cross-evidence accents; its buttons jump to a tab. */
+.st-key-explore-card {
+  background: var(--um-orange-soft);
+  border: 1px solid #f9c9a6;
+  border-left: 4px solid var(--um-orange);
+  border-radius: var(--radius);
+  padding: 14px 18px 16px;
+  margin-top: 14px;
+  box-shadow: var(--shadow);
+}
+.explore-card__title { font-size: 17px; font-weight: 700; color: var(--text-h); }
+.explore-card__sub { font-size: 13.5px; color: var(--text); margin-bottom: 4px; }
+[class*="st-key-jump-"] button {
+  background: var(--surface) !important; border: 1px solid rgba(0, 80, 48, 0.35) !important;
+  color: var(--um-green) !important; border-radius: 999px !important; font-weight: 700 !important;
+  box-shadow: var(--shadow);
+}
+[class*="st-key-jump-"] button:hover:not(:disabled) { background: var(--um-green) !important; color: #fff !important; }
+[class*="st-key-jump-"] button:hover:not(:disabled) p { color: #fff !important; }
+[class*="st-key-jump-"] button:disabled { opacity: 0.45; }
+
+/* The results section: a real heading, then the tabs as a prominent pill bar in UM green. */
+.explore-head { margin: 10px 0 8px; scroll-margin-top: 12px; }
+.explore-head__title { font-size: 22px; font-weight: 700; color: var(--text-h); display: inline-block;
+  border-bottom: 3px solid var(--um-orange); padding-bottom: 2px; }
+.explore-head__sub { font-size: 14px; color: var(--text); margin-top: 6px; }
+/* Streamlit 1.66 tabs: div[role=tablist] > div[data-testid=stTab]. */
+.stTabs div:has(> [role="tablist"]) { border-bottom: 0 !important; box-shadow: none !important; }
+.stTabs div:has(> [role="tablist"])::after, .stTabs [role="tablist"]::after { display: none !important; }
+.stTabs [role="tablist"] {
+  gap: 6px; flex-wrap: wrap; width: fit-content; max-width: 100%;
+  background: var(--surface); border: 1px solid var(--border) !important; border-radius: 999px;
+  padding: 5px; box-shadow: var(--shadow); margin-bottom: 10px;
+}
+.stTabs [data-testid="stTab"] { font-weight: 700; color: var(--text-h); border-radius: 999px !important;
+  padding: 8px 16px !important; height: auto; border: 0 !important; }
+.stTabs [data-testid="stTab"]:hover { background: var(--accent-soft); }
+.stTabs [data-testid="stTab"][aria-selected="true"] { background: var(--um-green) !important; box-shadow: none !important; }
+.stTabs [data-testid="stTab"]::before, .stTabs [data-testid="stTab"]::after { display: none !important; }
+.stTabs .react-aria-SelectionIndicator { display: none !important; }   /* the default underline; the pill replaces it */
+.stTabs [data-testid="stTab"][aria-selected="true"] p { color: #ffffff !important; }
 
 /* The sheet is Streamlit's right-hand drawer (st.dialog position="right"); only its surface is
    restyled, to the page background so the white cards inside it read as cards. */
