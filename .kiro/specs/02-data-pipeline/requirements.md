@@ -33,9 +33,9 @@ so that labels are not corrupted by mixed assay types and units.
 #### Acceptance Criteria
 
 1. THE filter SHALL keep activities from binding (`B`) and functional (`F`) assays on single-protein human targets with assay `confidence_score` ≥ a configured minimum (default 8).
-2. THE filter SHALL drop rows that have a non-null `data_validity_comment` or that are flagged as `potential_duplicate`.
+2. THE filter SHALL drop rows flagged as `potential_duplicate` and rows with a non-null `data_validity_comment`, except `Manually validated`, which confirms the value and is kept.
 3. THE system SHALL use `pchembl_value` as the standardized potency for `=` relations.
-4. WHEN `standard_relation` is `>` or `>=` and the implied pChEMBL is below the active threshold THEN the row SHALL be kept as a measured inactive. Rows with `<` or `<=` SHALL be dropped as ambiguous. The policy SHALL be recorded in provenance.
+4. WHEN `standard_relation` is `>`, `>=` or `>>` and the implied pChEMBL is below the active threshold THEN the row SHALL be kept as a measured inactive. Rows with `<` or `<=` SHALL be dropped as ambiguous. The policy SHALL be recorded in provenance.
 5. THE system SHALL deduplicate to one row per (InChIKey, target) by taking the median pChEMBL, and SHALL report the before and after counts.
 6. Every ChEMBL compound SHALL carry an InChIKey, either `standard_inchi_key` or one computed with RDKit, so that it can be compared across sources.
 
