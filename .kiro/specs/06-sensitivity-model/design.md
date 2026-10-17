@@ -8,18 +8,33 @@ for any new SMILES and any CCLE line, inference for unseen compounds needs no me
 
 ## Why two target framings
 
-DSS3 is heavily right-skewed (median ≈ 0.087, max ≈ 96, ~20% near zero).
+DSS3 is heavily right-skewed (median ≈ 0.087, ~20% exactly zero). It is also **not on a single
+scale**: every value ≥ 1 (up to 96) comes from 22 mixed-scale compounds, mostly CCLE-screen
+reference drugs. The other 950 compounds lie in [0, 0.995]. Handling follows the spec 01
+checkpoint decision (recommended: exclude from headline training, plus one rescaled
+sensitivity analysis). See `reports/eda_target.md`.
 - **Regression on a transform** (log1p or rank), measured mainly by Spearman ρ: ranking lines is the product goal, and ρ ignores the skew.
 - **Classification at a threshold**, measured by ROC/PR-AUC: gives an interpretable, imbalance-aware "sensitive vs. resistant" metric.
 
-## The baseline trap and how the metrics expose it
+## What the variance decomposition says about metrics and baselines
 
-Much of DSS3 variance is driven by the cell line (some lines are sensitive to almost everything).
-A cell-line-mean predictor therefore scores well on overall ρ and even on per-compound ρ. It gives
-every compound the same cell-line ranking, which happens to correlate with the truth. It scores
-**≈ 0 on per-cell-line ρ** (ranking compounds within a line), because it is constant across
-compounds. Per-cell-line ρ and thresholded PR-AUC are therefore the metrics that show whether the
-model learned anything from structure. The acceptance gate (Requirement 2.5) is tied to them.
+Measured in spec 01 (`reports/eda_target.md`, single-scale compounds): **compound identity
+explains ~67–73% of DSS3 variance, cell-line identity only ~4–5%**, and an additive model ~70–76%.
+The remaining ~25–30% is compound × cell-line interaction plus noise, i.e. selectivity.
+
+- **Per-cell-line ρ** (ranking compounds within a line) is dominated by overall compound potency,
+  which must be predicted from structure. The cell-line-mean baseline scores ≈ 0 here by
+  construction, so it isolates whether the model learned anything from structure. The
+  acceptance gate (Requirement 2.5) is tied to it.
+- **Per-compound ρ** (ranking lines for one compound) measures selectivity, which is smaller and
+  harder. The cell-line-mean baseline is the real competitor here. It gives every compound the
+  same line ranking, and that ranking correlates with the truth to the extent that some lines
+  are generally sensitive.
+- The cell-line-mean baseline is **weak overall** (R² ≈ 0.04). Beating it is necessary, not impressive.
+- **Compound-only ablation** (Requirement 2.6): the same model without cell-line features. It
+  predicts potency only, so its per-compound ρ is undefined/constant. If the full model's
+  per-compound ρ does not beat the cell-line-mean baseline, the cell-line rankings shown to users
+  are just potency plus line average. Say so in the UI and the writeup.
 
 ## Architecture
 
@@ -36,8 +51,8 @@ for each fold:
 EvalReport (compound split, scaffold split) ─▶ final fit on all data ─▶ artifact
 ```
 
-**Memory:** ~400k rows × (2,058 compound + G gene) features in float32. With G = 1,000 that is
-≈ 4.9 GB, which fits in 32 GB. Build the matrix by indexing two small per-entity arrays
+**Memory:** ~475k rows × (2,058 compound + G gene) features in float32. With the recommended
+G = 978 landmark genes that is ≈ 5.7 GB, which fits in 32 GB. Build the matrix by indexing two small per-entity arrays
 (`compound_feats[c_idx]`, `cell_feats[l_idx]`) instead of materializing a joined DataFrame. If
 memory gets tight, use LightGBM `Dataset` with `free_raw_data=True`, or reduce G.
 

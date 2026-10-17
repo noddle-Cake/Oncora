@@ -40,11 +40,12 @@
 - [x] 4.4 Unit tests for bridges on fixture files
   - _Requirements: 3.1, 3.3_
 
-- [ ] 5. DSS3 target and CCLE feature-space EDA
-- [ ] 5.1 Notebook `01_dss3_target`: distribution, zero mass, transforms, variance decomposition (cell line vs. compound), threshold proposal
+- [x] 5. DSS3 target and CCLE feature-space EDA
+  - Implemented as modules (`oncora.eda.target`, `oncora.eda.features`) writing `reports/eda_target.md` and `reports/eda_features.md`, not notebooks, so the analysis is reproducible and diffable
+- [x] 5.1 DSS3 target analysis: distribution, zero mass, transforms, variance decomposition (cell line vs. compound), threshold proposal
   - Learn: distribution diagnostics, variance-stabilizing transforms
   - _Requirements: 4.1, 4.2, 4.3, 4.5_
-- [ ] 5.2 Notebook `02_ccle_features`: gene variance and landmark-gene overlap; propose subset size
+- [x] 5.2 CCLE feature-space analysis: gene variance and landmark-gene overlap; propose subset size
   - Learn: dimensionality reduction and feature selection
   - _Requirements: 4.4, 4.5_
 
