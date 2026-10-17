@@ -21,6 +21,24 @@ Raw data goes in `data/raw/` (not committed). Verify it with:
 uv run python -m oncora.io.checksums
 ```
 
+## Quick start: run the app from a release (no raw data needed)
+
+Trained models and the small serving tables (~400 MB) are published as a GitHub Release asset,
+because they are too big for git.
+
+```bash
+gh auth login                       # once; the repo is private
+uv sync
+./scripts/fetch_artifacts.sh        # download, checksum, unpack, verify against MANIFEST.json
+uv run uvicorn oncora.serve.app:app             # API on :8000
+uv run streamlit run app/main.py                # UI, in a second terminal
+```
+
+Needs about 2.5 GB of RAM and 1–2 CPU cores, and no GPU. A prediction takes about 0.1–0.4 s.
+To publish a new bundle after retraining, run
+`uv run python -m oncora.serve.artifacts tables && uv run python -m oncora.serve.artifacts package`,
+then attach `dist/oncora-artifacts-*.tar.gz` and its `.sha256` file to a new `artifacts-*` release.
+
 ## One-time: ChEMBL export
 
 ChEMBL ships as a PostgreSQL dump. It is restored once (8 tables, no indexes), exported to

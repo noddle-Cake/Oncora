@@ -3,6 +3,8 @@ data/raw/*
 !data/raw/SHA256SUMS
 data/interim/
 data/processed/
+data/serving/
+dist/
 *.tar
 *.dmp
 *.gctx

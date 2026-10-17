@@ -34,8 +34,10 @@ from oncora.config import (
     SIG_MIN_REPRODUCIBILITY,
 )
 from oncora.data_prep.provenance import read_provenance
+from oncora.data_prep.signatures import GENES_OUT as GENES
+from oncora.data_prep.signatures import OUT as CONSENSUS
 from oncora.eda.common import plt, save_fig
-from oncora.interpret.signatures import CONSENSUS, GENES, SignatureIndex, _unit_rows
+from oncora.interpret.signatures import SignatureIndex, _unit_rows
 
 THRESHOLDS = (None, 0.1, 0.2, 0.3, 0.5)
 DISSIMILAR_TANIMOTO = 0.3
@@ -187,7 +189,7 @@ def showcase(index: SignatureIndex, bridge: pl.DataFrame) -> list[str]:
 def build_report() -> str:
     prov = read_provenance(CONSENSUS)
     t = pl.read_parquet(CONSENSUS)
-    index = SignatureIndex.load()
+    index = SignatureIndex.load(CONSENSUS, GENES, DATA_INTERIM / "compound_bridge.parquet")
     bridge = pl.read_parquet(DATA_INTERIM / "compound_bridge.parquet")
     smiles = dict(zip(bridge["inchi_key"], bridge["canonical_smiles"]))
     sk = one_per_skeleton(index.table.with_columns(pl.Series("signature", t["signature"])))
