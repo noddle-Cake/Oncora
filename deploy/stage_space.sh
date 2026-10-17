@@ -27,6 +27,9 @@ for rel in json.load(open("MANIFEST.json"))["files"]:
     dst.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(rel, dst)
 PY
+# The repo's .gitignore excludes models/ and data/serving/, and `hf upload` honours it. The Space
+# must receive exactly those files, so the staged folder has no .gitignore.
+rm -f "$out/.gitignore"
 cp deploy/huggingface/README.md "$out/README.md"            # the Space card must be the root README
 cp deploy/huggingface/Dockerfile.bundled "$out/Dockerfile"
 echo "Staged $(du -sh "$out" | cut -f1) in $out"
