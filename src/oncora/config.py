@@ -62,6 +62,9 @@ SENSITIVE_TOP_FRAC = 0.10
 # D-06: cell-line features = LINCS landmark genes (geneinfo feature_space == "landmark").
 CELLLINE_FEATURES = "landmark"
 
+# --- Spec 03 ------------------------------------------------------------------------------
+NEAR_SEEN_TANIMOTO = 0.99        # FR-4: flag queries this similar to a training compound
+
 # LINCS annotation files write missing values as a literal pair of double quotes.
 NULL_TOKENS = ("", '""')
 
