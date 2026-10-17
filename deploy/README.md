@@ -39,7 +39,7 @@ GitHub. This is how the live Space is deployed:
 ./scripts/fetch_artifacts.sh                 # or extract a locally packaged bundle
 deploy/stage_space.sh /tmp/oncora-space      # code (git archive of HEAD) + bundle + card + Dockerfile.bundled
 hf repos create "$SPACE" --repo-type space --space-sdk docker --private --exist-ok
-hf upload "$SPACE" /tmp/oncora-space . --repo-type space
+hf upload "$SPACE" /tmp/oncora-space . --repo-type space --delete .gitignore
 hf spaces wait "$SPACE"
 ```
 
