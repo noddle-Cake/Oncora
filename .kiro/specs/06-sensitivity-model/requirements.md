@@ -38,6 +38,8 @@ compared with strong baselines, so that I can see whether the model learned comp
 3. THE evaluation SHALL compare against the global-mean and cell-line-mean baselines and SHALL state whether the model beats each.
 4. THE report SHALL highlight per-cell-line ρ, because the cell-line-mean baseline scores ≈ 0 there by construction. That metric isolates whether the model learned anything about compounds.
 5. THE model SHALL be accepted only if it beats the cell-line-mean baseline on the compound-disjoint split on at least one compound-sensitive metric (per-cell-line ρ or thresholded PR-AUC).
+6. THE evaluation SHALL include a compound-features-only ablation and SHALL report whether the full model beats the cell-line-mean baseline on per-compound ρ (selectivity). IF it does not, THEN the report and UI SHALL state that cell-line rankings reflect compound potency plus the line's average sensitivity, not learned selectivity.
+7. Rows from mixed-scale compounds (spec 01 finding) SHALL be handled as decided at the spec 01 checkpoint, and the handling SHALL be recorded in the model card.
 
 ### Requirement 3: Inference over all cell lines (FR-9)
 

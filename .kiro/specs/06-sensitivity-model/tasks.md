@@ -15,7 +15,8 @@
 - [ ] 3. Evaluation on compound and scaffold splits
   - Overall, per-compound, and per-cell-line ρ; RMSE; thresholded AUC; CIs; global-mean and cell-line-mean baselines; acceptance verdict
   - Learn: rank correlation, why per-cell-line ρ isolates compound learning
-  - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
+  - Compound-only ablation; selectivity verdict (per-compound ρ vs. cell-line-mean)
+  - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7_
 
 - [ ] 4. Inference and artifact
   - Final fit; save the artifact bundle; implement `SensitivityModel.predict` and `load_sensitivity_model`; round-trip test; time single-SMILES inference

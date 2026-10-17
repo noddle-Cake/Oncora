@@ -35,6 +35,11 @@ Annotation files use `""` (a literal pair of quotes) for missing values. Treat i
 - `Small_Molecule_Metadata.sm_name` contains an Excel `#ERROR` value.
 - `instinfo.pert_time` uses `-666` as a placeholder for missing values.
 - DSS3 has no duplicate `(pert_id, cell_line)` pairs and no nulls. 19.9% of scores are exactly 0.
+- **DSS3 mixes scales.** All 9,711 trainable rows with DSS3 ≥ 1 (up to 96) come from **22 compounds**,
+  mostly CCLE-screen reference drugs measured in several merged studies. The other 950 compounds lie in
+  [0, 0.995]. A row's scale cannot be recovered within those 22 compounds (`reports/eda_target.md`).
+- **Compound identity explains ~67–73% of DSS3 variance; cell-line identity only ~4–5%.**
+- All 978 LINCS landmark genes are present in CCLE (by Entrez ID) (`reports/eda_features.md`).
 - CCLE values are log1p(TPM) in [0, 17.36] with no nulls. 5 genes have zero variance.
 - DuckDB takes over 60 s to parse the 19k-column CCLE CSV, while Polars takes about 3 s. Use the
   interim Parquet (`data/interim/ccle_expression.parquet`, default entries only).

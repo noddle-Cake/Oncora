@@ -23,6 +23,7 @@ Oncora/
 │  ├─ io/                # DuckDB/Polars loaders, ChEMBL export, profilers
 │  ├─ chem/              # RDKit: validate, canonicalize, fingerprints, scaffolds, descriptors
 │  ├─ data_prep/         # identity bridges, filters, joins → processed tables
+│  ├─ eda/               # reproducible EDA analyses → reports/eda_*.md + figures
 │  ├─ features/          # compound + cell-line feature builders
 │  ├─ evaluation/        # splitters, metrics, baselines
 │  ├─ models/target/     # compound → target
