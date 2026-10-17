@@ -1,0 +1,43 @@
+[project]
+name = "oncora"
+version = "0.1.0"
+description = "SMILES -> protein targets, sensitive cell lines, cancer types, with grounded explanations"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "anthropic>=1.15.0",
+    "duckdb>=1.5.6",
+    "fastapi>=0.143.3",
+    "lightgbm>=4.7.0",
+    "matplotlib>=3.11.2",
+    "mlflow>=3.17.1",
+    "numpy>=2.4.6",
+    "openpyxl>=3.1.5",
+    "pandas>=3.0.6",
+    "polars>=2.0.0",
+    "pyarrow>=25.0.1",
+    "pydantic>=2.14.1",
+    "rdkit>=2026.9.1",
+    "scikit-learn>=1.9.1",
+    "scipy>=1.17.1",
+    "streamlit>=1.66.0",
+    "uvicorn>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.4.0",
+    "pytest>=9.1.1",
+    "ruff>=0.17.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/oncora"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

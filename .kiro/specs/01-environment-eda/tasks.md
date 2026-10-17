@@ -1,6 +1,6 @@
 # Implementation Plan — 01 Environment & EDA
 
-- [ ] 1. Scaffold project and environment
+- [x] 1. Scaffold project and environment
   - Create `pyproject.toml` (Python 3.11, uv) with the pinned deps; generate `uv.lock`
   - Create the directory skeleton from `steering/structure.md`, with `__init__.py` files
   - Add `.gitignore` (raw/interim/processed data, `*.tar`, `*.dmp`, `models/` except cards, `mlruns/`, `.env`)
