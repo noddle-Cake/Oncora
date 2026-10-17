@@ -1,0 +1,25 @@
+# Data: raw inputs are provided, never committed (NFR-8)
+data/raw/*
+!data/raw/SHA256SUMS
+data/interim/
+data/processed/
+*.tar
+*.dmp
+
+# Models & tracking (keep model cards)
+models/**
+!models/**/
+!models/**/model_card.json
+mlruns/
+
+# Secrets
+.env
+
+# Python / tooling
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ipynb_checkpoints/
+.DS_Store
+.idea/workspace.xml
