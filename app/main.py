@@ -49,11 +49,11 @@ TAB_LABELS = ["Targets", "Cell lines", "Measured response", "Database annotation
 STAGES = [(0.00, "Reading the structure…"), (0.12, "Scoring 1,360 protein targets…"),
           (0.34, "Ranking every CCLE cancer cell line…"), (0.55, "Checking ChEMBL, LINCS and measured responses…"),
           (0.74, "Writing the cited explanation…")]
-# Selects a results tab (by its label) and scrolls the page to the results. Done in the browser because
+# Selects a results tab (by its label, if any) and scrolls the page to a section. Done in the browser because
 # a tabs widget's `default` only applies when it changes, so a repeat jump would otherwise do nothing.
 JUMP_JS = ("<script>setTimeout(() => {{ const d = window.parent.document;"
            " [...d.querySelectorAll('button[role=tab]')].find(b => b.innerText.trim() === {tab})?.click();"
-           " d.getElementById('explore')?.scrollIntoView({{behavior: 'smooth', block: 'start'}}); }}, 150);"
+           " d.getElementById({anchor})?.scrollIntoView({{behavior: 'smooth', block: 'start'}}); }}, 150);"
            "</script><!-- {nonce} -->")
 
 
@@ -283,9 +283,9 @@ def open_sheet(ix: Index) -> None:
 
 # --- page -------------------------------------------------------------------------------------
 
-st.set_page_config(page_title="Oncora", page_icon="🧬", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Oncora", page_icon="🧬", layout="wide", initial_sidebar_state="expanded")
 md(f"<style>{(Path(__file__).parent / 'style.css').read_text()}</style>")
-md('<div class="onc-header"><span class="onc-header__name">Oncora</span>'
+md('<div id="top" class="onc-header"><span class="onc-header__name">Oncora</span>'
    '<span class="onc-header__tag">Compound → protein targets → sensitive cancer cell lines, with cited, '
    "linked evidence</span></div>")
 
@@ -311,9 +311,9 @@ def predict(smiles: str, use_llm: bool) -> None:
     st.session_state.result_smiles = smiles
 
 
-def _jump(tab: str) -> None:
-    """Open a results tab and scroll down to it (from the explore card near the top)."""
-    st.session_state.jump_tab = tab
+def _jump(tab: str | None, anchor: str = "explore") -> None:
+    """Open a results tab (if given) and scroll to a section (from the explore card or the sidebar)."""
+    st.session_state.jump = (tab, anchor)
     st.session_state.jump_nonce = st.session_state.get("jump_nonce", 0) + 1
 
 
@@ -340,6 +340,15 @@ if go:
     st.query_params.pop("sheet", None)
     st.query_params["smiles"] = st.session_state.smiles     # the result now has a shareable address
 
+# Sidebar: the page's sections; each button scrolls there (results sections once a prediction exists).
+with st.sidebar:
+    md('<div class="onc-card-title">Sections</div>')
+    st.button("Compound input", key="nav-top", on_click=_jump, args=(None, "top"), width="stretch")
+    if "result" in st.session_state:
+        st.button("Results overview", key="nav-overview", on_click=_jump, args=(None, "overview"), width="stretch")
+        for label in TAB_LABELS:
+            st.button(label, key=f"nav-{label}", on_click=_jump, args=(label,), width="stretch")
+
 if "result" not in st.session_state:
     md('<div class="onc-muted">Pick an example or paste a SMILES string, then press Predict. Every target, cell '
        "line and compound in the results opens a linked sheet.</div>")
@@ -356,6 +365,7 @@ b = data["evidence_bundle"]
 ns = data["near_seen"]["target"]
 ap = (b.get("predictions") or {}).get("applicability")
 
+md('<div id="overview"></div>')
 # Stat tiles: one hero.
 top_t = data["targets"][0] if data["targets"] else None
 top_l = data["sensitive_cell_lines"][0] if data["sensitive_cell_lines"] else None
@@ -425,9 +435,10 @@ st.write("")
 md('<div id="explore" class="explore-head"><div class="explore-head__title">Explore the evidence</div>'
    '<div class="explore-head__sub">Select any target, cell line or compound to open its linked panel.</div></div>')
 tabs = st.tabs(TAB_LABELS)
-if tab := st.session_state.pop("jump_tab", None):
+if jump := st.session_state.pop("jump", None):
     # The nonce makes every jump a new snippet, so the browser runs it even when the same tab is asked for again.
-    st.iframe(JUMP_JS.format(tab=json.dumps(tab), nonce=st.session_state.jump_nonce), height=1)
+    st.iframe(JUMP_JS.format(tab=json.dumps(jump[0]), anchor=json.dumps(jump[1]),
+                             nonce=st.session_state.jump_nonce), height=1)
 
 with tabs[0], st.container(border=True):
     md('<div class="onc-muted">Calibrated probability that the compound is active (pChEMBL ≥ 6) on each target. '
