@@ -61,6 +61,9 @@ if go:
         st.image(Draw.MolToImage(Chem.MolFromSmiles(data["canonical_smiles"]), size=(360, 280)))
         st.code(data["canonical_smiles"], language=None)
         st.caption(f"InChIKey `{data['inchi_key']}`")
+        ap = (data.get("evidence_bundle", {}).get("predictions") or {}).get("applicability")
+        if ap and not ap["in_domain"]:
+            st.error(f"Outside validated domain: {ap['note']}")
         ns = data["near_seen"]["target"]
         if ns["flag"]:
             st.error(f"Near-seen: Tanimoto {ns['max_tanimoto']} to training compound `{ns['nearest_inchi_key']}`. "

@@ -1,9 +1,10 @@
 """Assemble an EvidenceBundle from model outputs and database annotations (spec 07, Req 1–2)."""
 
 from oncora.chem.similarity import NearestNeighbor
-from oncora.config import EVIDENCE_TOP_LINES, EVIDENCE_TOP_TARGETS
+from oncora.config import EVIDENCE_TOP_LINES, EVIDENCE_TOP_TARGETS, MIN_RELIABLE_HEAVY_ATOMS
 from oncora.interpret.annotations import AnnotationIndex, ExpressionLookup, target_annotation_overlap
 from oncora.interpret.bundle import (
+    Applicability,
     CancerTypeEvidence,
     CellLineEvidence,
     Derived,
@@ -27,7 +28,7 @@ def build_bundle(*, input_smiles: str, canonical_smiles: str, inchi_key: str,
                  targets: list, cell_lines: list, cancer_types: list, cancer_types_note: str | None,
                  near_seen: dict[str, NearestNeighbor], model_runs: dict[str, str],
                  selectivity_learned: bool | None, annotations: AnnotationIndex,
-                 expression: ExpressionLookup | None = None) -> EvidenceBundle:
+                 expression: ExpressionLookup | None = None, heavy_atoms: int | None = None) -> EvidenceBundle:
     t_ev = [TargetEvidence(rank=t.rank, target_chembl_id=t.target_chembl_id, name=t.pref_name,
                            gene_symbol=t.gene_symbol, score=r3(t.score)) for t in targets[:EVIDENCE_TOP_TARGETS]]
     c_ev = [CellLineEvidence(rank=c.rank, model_id=c.model_id, name=c.cell_line_name,
@@ -38,6 +39,16 @@ def build_bundle(*, input_smiles: str, canonical_smiles: str, inchi_key: str,
     preds = Predictions(targets=t_ev, cell_lines=c_ev, cancer_types=k_ev, cancer_types_note=cancer_types_note,
                         near_seen={k: v for k, v in ((k, _near(n)) for k, n in near_seen.items()) if v is not None},
                         model_runs=model_runs, selectivity_learned=selectivity_learned)
+    if heavy_atoms is not None:
+        in_domain = heavy_atoms >= MIN_RELIABLE_HEAVY_ATOMS
+        preds.applicability = Applicability(
+            heavy_atoms=heavy_atoms, in_domain=in_domain,
+            note=("Molecule size is within the range where target ranking was validated."
+                  if in_domain else
+                  f"This molecule has only {heavy_atoms} heavy atoms. Below "
+                  f"{MIN_RELIABLE_HEAVY_ATOMS}, fingerprint features are too sparse to place targets "
+                  "reliably: known targets of small compounds such as aspirin and paracetamol rank in "
+                  "the hundreds. Treat the target ranking as unreliable for this input."))
     ann = annotations.lookup(inchi_key)
     derived = Derived(target_annotation_overlap=target_annotation_overlap([t.gene_symbol for t in t_ev], ann))
     if expression is not None and c_ev:

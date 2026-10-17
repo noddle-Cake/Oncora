@@ -100,6 +100,10 @@ LLM_EFFORT = "low"          # restating a small bundle needs little reasoning
 LLM_MAX_TOKENS = 2000
 LLM_TIMEOUT_S = 30.0
 LLM_USAGE_LOG = REPORTS / "llm_usage.jsonl"
+# Applicability domain: below this heavy-atom count, ECFP features are too sparse to place a
+# compound's targets reliably (measured: paracetamol/aspirin rank their known targets 128-458 of
+# 1,360, while imatinib/dasatinib rank theirs 2-6). See reports/submission.md.
+MIN_RELIABLE_HEAVY_ATOMS = 20
 EVIDENCE_TOP_TARGETS = 10
 EVIDENCE_TOP_LINES = 25
 
