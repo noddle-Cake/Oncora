@@ -29,11 +29,11 @@
   - Learn: positive/negative framing, "absence ≠ inactive"
   - _Requirements: 3.5_
 
-- [ ] 5. Sensitivity modeling table
+- [x] 5. Sensitivity modeling table
   - Implement `build_sensitivity`: InChIKey merge, CCLE restriction, shape report, tests
   - Apply the `DEMO_HOLDOUT` exclusion to both tables (choose the compound in spec 09 task 1 first)
   - Add `connectivity` and `mixed_scale` columns (D-01, D-03)
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
-- [ ] 6. Wire up the stage CLIs and add a pipeline run note to `reports/eda_summary.md`
+- [x] 6. Wire up the stage CLIs and add `scripts/build_data.sh` (documented in the README)
   - _Requirements: 5.3_

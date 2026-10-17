@@ -33,6 +33,15 @@ uv run python -m oncora.io.chembl_export all      # extract, restore, export, sp
 pg_ctl -D /opt/homebrew/var/postgresql@16 stop
 ```
 
+## Rebuild the data
+
+```bash
+./scripts/build_data.sh   # ~1.5 min: checksums → profile → Parquet → bridges → EDA → ChEMBL filter → modeling tables
+```
+
+Every report in `reports/` is regenerated and should come out byte-identical; a diff means the
+data or the code changed.
+
 ## Project docs
 
 - `.kiro/steering/`: product, tech, structure, data sources, rigor rules

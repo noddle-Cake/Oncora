@@ -52,7 +52,7 @@ def mixed_scale_compounds(df: pl.DataFrame, cutoff: float = SCALE_BREAK) -> pl.D
             pl.col("dss3").max().alias("max"),
         )
         .filter(pl.col("frac_high") > 0)
-        .sort("frac_high", descending=True)
+        .sort(["frac_high", "pert_id"], descending=[True, False])
     )
 
 
