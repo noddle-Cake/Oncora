@@ -25,6 +25,20 @@ Never commit raw data or the ChEMBL dump.
 
 Annotation files use `""` (a literal pair of quotes) for missing values. Treat it as null.
 
+### Quirks found by the profiler (`reports/eda_profile.md`)
+
+- `Small_Molecule_Metadata.txt` is **not valid UTF-8**: 4 `sm_alternative_name` cells contain a
+  stray `0xBF` byte, and the rest of the file is ASCII. Read it as Latin-1.
+- `compoundinfo.txt` repeats `pert_id`s (34,419 distinct in 39,321 rows). It also uses the literal
+  string **`restricted`** in place of SMILES and InChIKeys for some compounds. Treat it as null.
+  `target`/`moa` are 79.5% null.
+- `Small_Molecule_Metadata.sm_name` contains an Excel `#ERROR` value.
+- `instinfo.pert_time` uses `-666` as a placeholder for missing values.
+- DSS3 has no duplicate `(pert_id, cell_line)` pairs and no nulls. 19.9% of scores are exactly 0.
+- CCLE values are log1p(TPM) in [0, 17.36] with no nulls. 5 genes have zero variance.
+- DuckDB takes over 60 s to parse the 19k-column CCLE CSV, while Polars takes about 3 s. Use the
+  interim Parquet (`data/interim/ccle_expression.parquet`, default entries only).
+
 ## Verified facts
 
 - Sensitivity covers **972 compounds × 1,204 cell lines**; DSS3 median ≈ 0.087, p90 ≈ 0.41,
