@@ -24,6 +24,8 @@ def render(bundle: EvidenceBundle) -> EvidenceSummary:
         claims.append(Claim(section="prediction",
                             text=f"The target model ranks these proteins highest: {named}.",
                             cites=[f"predictions.targets[{i}].score" for i in range(len(items))]))
+    if (ap := p.applicability) is not None and not ap.in_domain:
+        claims.append(Claim(section="prediction", text=ap.note, cites=["predictions.applicability.note"]))
     ns = p.near_seen.get("target")
     if ns is not None:
         text = (f"This structure is nearly identical to a training compound (Tanimoto {_fmt(ns.max_tanimoto)}), "

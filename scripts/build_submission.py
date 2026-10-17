@@ -174,7 +174,13 @@ def main() -> None:
         "state-of-the-art.",
         "6. **Selectivity is the hard part.** Compound identity explains roughly 70% of sensitivity variance and "
         "cell-line identity only 4–5%, so ranking lines *within* a compound is much harder than ranking compounds.",
-        "7. **The sensitivity model is not mechanistic.** In the demo, its top-ranked lines for gefitinib are "
+        "7. **Target accuracy depends on molecule size.** Measured known-target ranks out of 1,360: "
+        "dasatinib 2-5 and imatinib 4-6 (33-37 heavy atoms), but aspirin 128-198 and paracetamol 368-458 "
+        "(11-13 heavy atoms). ECFP features are too sparse to place small fragments, and aspirin's covalent "
+        "mechanism is not representable at all. Inputs below 20 heavy atoms are flagged as outside the "
+        "validated domain in the API, the evidence summary and the UI. The top-1 metric above is computed "
+        "over mostly drug-like test compounds and does not capture this failure mode.",
+        "8. **The sensitivity model is not mechanistic.** In the demo, its top-ranked lines for gefitinib are "
         "EGFR-low (15th percentile) even though measured sensitivity correlates positively with EGFR expression "
         "(ρ = 0.219). Its ranking carries real but weak signal that is not explained by the predicted target "
         "(`reports/demo/commentary.md`).",

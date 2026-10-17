@@ -60,6 +60,13 @@ class NearSeen(BaseModel):
     nearest_inchi_key: str | None
 
 
+class Applicability(BaseModel):
+    kind: Literal["derived"] = "derived"
+    heavy_atoms: int
+    in_domain: bool = Field(description="False when the molecule is too small for reliable target ranking")
+    note: str
+
+
 class Predictions(BaseModel):
     targets: list[TargetEvidence]
     cell_lines: list[CellLineEvidence]
@@ -67,6 +74,7 @@ class Predictions(BaseModel):
     cancer_types_note: str | None = None
     near_seen: dict[str, NearSeen]
     model_runs: dict[str, str]
+    applicability: Applicability | None = None
     selectivity_learned: bool | None = Field(
         None, description="spec 06 verdict: do per-compound cell-line rankings beat the line-average ranking?")
 

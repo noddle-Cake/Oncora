@@ -86,7 +86,8 @@ class OncoraPipeline:
                 targets=targets, cell_lines=lines, cancer_types=cancer, cancer_types_note=note,
                 near_seen=near, model_runs=self.model_versions,
                 selectivity_learned=self.sensitivity.card.get("learned_selectivity"),
-                annotations=self.annotations, expression=self.expression)
+                annotations=self.annotations, expression=self.expression,
+                heavy_atoms=parsed.mol.GetNumHeavyAtoms())
         with timed("explain"):
             summary = explain(bundle, use_llm=explain_with_llm)
 

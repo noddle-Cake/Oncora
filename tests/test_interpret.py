@@ -130,3 +130,15 @@ def test_no_key_uses_template(monkeypatch):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     monkeypatch.delenv("ANTHROPIC_AUTH_TOKEN", raising=False)
     assert explain(_bundle()).renderer == "template"
+
+
+@pytest.mark.parametrize("heavy, flagged", [(13, True), (37, False)])
+def test_applicability_domain_warns_for_small_molecules(heavy, flagged):
+    from oncora.interpret.builder import build_bundle
+    b = build_bundle(input_smiles="s", canonical_smiles="s", inchi_key=IK, targets=[], cell_lines=[],
+                     cancer_types=[], cancer_types_note=None, near_seen={}, model_runs={},
+                     selectivity_learned=None, annotations=_index(), heavy_atoms=heavy)
+    ap = b.predictions.applicability
+    assert ap.heavy_atoms == heavy and ap.in_domain is (not flagged)
+    texts = [c.text for c in render_template.render(b).section("prediction")]
+    assert any("unreliable" in t for t in texts) is flagged
