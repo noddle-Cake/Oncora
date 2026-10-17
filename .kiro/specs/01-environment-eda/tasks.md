@@ -10,7 +10,7 @@
   - Learn: reproducible environments and lockfiles
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
 
-- [ ] 2. Raw-data integrity check
+- [x] 2. Raw-data integrity check
   - Implement `io/checksums.py::verify_raw` against `data/raw/SHA256SUMS`
   - Test with a tampered temp file
   - _Requirements: 2.6_
