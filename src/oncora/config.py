@@ -37,6 +37,19 @@ def raw_path(name: str) -> Path:
 
 SEED = 42
 
+# --- Spec 01 checkpoint decisions (reports/eda_summary.md) ---------------------------------
+# D-01: splits group on the InChIKey connectivity block (first 14 chars), not the full key.
+SPLIT_GROUP_KEY = "connectivity"
+# D-03: compounds with any DSS3 >= this are mixed-scale; excluded from headline training.
+DSS3_SCALE_BREAK = 1.0
+DSS3_RESCALE_FACTOR = 0.01  # sensitivity analysis only: values >= break are multiplied by this
+# D-04 / D-05: regression on ranks; "sensitive" = top fraction of a compound's cell lines.
+DSS3_TRANSFORM = "rank"
+SENSITIVE_LABEL = "within_compound_top_frac"
+SENSITIVE_TOP_FRAC = 0.10
+# D-06: cell-line features = LINCS landmark genes (geneinfo feature_space == "landmark").
+CELLLINE_FEATURES = "landmark"
+
 # LINCS annotation files write missing values as a literal pair of double quotes.
 NULL_TOKENS = ("", '""')
 

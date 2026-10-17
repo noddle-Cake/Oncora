@@ -91,6 +91,7 @@ PG 10.15 dump format). It is needed only for the export and can be uninstalled a
 | pert_ids | list[str] |
 | model_id | str (ACH-) |
 | dss3 | float |
+| mixed_scale | bool (D-03: compound has any DSS3 ≥ 1) |
 
 Config (in `config.py`): `CHEMBL_MIN_CONFIDENCE=8`, `ACTIVE_PCHEMBL=6.0`, `NEG_RATIO=3`,
 `MIN_POSITIVES_PER_TARGET=30`.
