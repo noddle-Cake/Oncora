@@ -86,6 +86,7 @@ PG 10.15 dump format). It is needed only for the export and can be uninstalled a
 | column | type |
 |---|---|
 | inchi_key | str |
+| connectivity | str (inchi_key[:14], split group key) |
 | canonical_smiles | str |
 | pert_ids | list[str] |
 | model_id | str (ACH-) |

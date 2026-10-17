@@ -10,12 +10,14 @@ These rules apply to every modeling, evaluation, and data-prep change. A breach 
 
 - **Never use a random row split for a headline metric.** The same compound would sit in train
   and test, and the model would look good by memorizing it.
-- Headline splits are **compound-disjoint by InChIKey** for both models. The sensitivity model
-  also reports a **Bemis–Murcko scaffold-disjoint** split.
+- Headline splits are **compound-disjoint by InChIKey connectivity block** (the first 14
+  characters) for both models. Stereoisomers share that block and have identical achiral
+  fingerprints, so a full-InChIKey split would leak. The sensitivity model also reports a
+  **Bemis–Murcko scaffold-disjoint** split.
 - Sensitivity CV is **grouped by compound** (`GroupKFold`-style), never by row.
 - Fit anything learned from data (gene variance filter, scalers, descriptor normalization,
   imputation, thresholds tuned on data) **on the training fold only**.
-- Every split has an automated test that asserts zero InChIKey (and scaffold) overlap.
+- Every split has an automated test that asserts zero connectivity-block (and scaffold) overlap.
 - **No LINCS signature may be a required feature.** Compound features are derived from structure only (FR-10).
 
 ## Baselines and metrics

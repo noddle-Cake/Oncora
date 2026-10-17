@@ -28,16 +28,16 @@
   - Filter CCLE to `IsDefaultEntryForModel = Yes`; write gene sidecar with parsed symbol/Entrez
   - _Requirements: 2.3_
 
-- [ ] 4. Identity-bridge analysis
-- [ ] 4.1 Build the compound bridge and report coverage and `pert_id` conflicts
+- [x] 4. Identity-bridge analysis
+- [x] 4.1 Build the compound bridge and report coverage and `pert_id` conflicts
   - _Requirements: 3.1, 3.2, 3.5_
-- [ ] 4.2 Build the cell-line bridge and report the CCLE ∩ DSS3 overlap
+- [x] 4.2 Build the cell-line bridge and report the CCLE ∩ DSS3 overlap
   - _Requirements: 3.3, 3.5_
-- [ ] 4.3 Quantify disease/lineage coverage for the 985 overlapping lines (A4)
+- [x] 4.3 Quantify disease/lineage coverage for the 985 overlapping lines (A4)
   - Try `cellinfo.txt` via `ccle_name`; report how many lines can be mapped and which external file would close the gap
   - Learn: entity resolution, structure identity via InChIKey
   - _Requirements: 3.4_
-- [ ] 4.4 Unit tests for bridges on fixture files
+- [x] 4.4 Unit tests for bridges on fixture files
   - _Requirements: 3.1, 3.3_
 
 - [ ] 5. DSS3 target and CCLE feature-space EDA

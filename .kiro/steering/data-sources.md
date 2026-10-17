@@ -43,7 +43,13 @@ Annotation files use `""` (a literal pair of quotes) for missing values. Treat i
 
 - Sensitivity covers **972 compounds × 1,204 cell lines**; DSS3 median ≈ 0.087, p90 ≈ 0.41,
   max ≈ 96, ~20% ≈ 0 (heavily right-skewed).
-- **972 / 972** sensitivity compounds resolve to SMILES + InChIKey via `compoundinfo.txt`.
+- **972 / 972** sensitivity compounds resolve to SMILES + InChIKey via `compoundinfo.txt`
+  (none are `restricted`). They are **961 distinct molecules** by full InChIKey (11 molecules
+  appear under 2 `pert_id`s) and **958 by connectivity block**: three stereo groups, namely
+  dexamethasone/betamethasone, doxorubicin/epirubicin, and PD-0325901 with and without stereo.
+- compoundinfo `canonical_smiles` often **lose stereochemistry** that `inchi_key` carries: the
+  RDKit-recomputed InChIKey differs in the stereo block for 93 of the 972 DSS3 compounds (4% overall).
+  Group splits by `inchi_key[:14]` (see `reports/eda_bridges.md`).
 - **985** `ACH-` IDs appear in both CCLE and the sensitivity file.
 - **CCLE has duplicate models:** 1,775 rows but **1,719 distinct `ModelID`s**. Filter to
   `IsDefaultEntryForModel = Yes` (exactly 1,719 rows) to get one profile per cell line.
@@ -67,7 +73,9 @@ CELL LINE: CCLE ModelID (ACH-…) == sensitivity cell_line (ACH-…)
 `ccle_name`). The CCLE expression file has no lineage or disease columns. **No file in the
 workspace maps the 985 trainable `ACH-` lines to a disease**, which FR-11 needs.
 
-Candidate resolutions (decide in spec 01, task 5):
+Confirmed by `reports/eda_bridges.md`: **0 / 985** trainable lines can be mapped from workspace files.
+
+Candidate resolutions (decide in spec 01, task 6):
 1. Add DepMap `Model.csv` from the same release as the expression file (`ModelID` →
    `OncotreeLineage`, `OncotreePrimaryDisease`, `CCLEName`, `RRID`). This is the most direct fix.
 2. Map via Cellosaurus (`ACH-` → RRID → disease) using a Cellosaurus export.

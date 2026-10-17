@@ -18,7 +18,7 @@ saw, so that the results reflect real unseen-compound performance.
 
 #### Acceptance Criteria
 
-1. THE splitter SHALL partition rows by InChIKey so that no InChIKey appears in more than one of train, validation, or test.
+1. THE splitter SHALL partition rows by the **InChIKey connectivity block** (the first 14 characters) so that no connectivity block appears in more than one of train, validation, or test. Stereoisomers share a block and have identical achiral fingerprints, so splitting by the full key would leak (see `reports/eda_bridges.md`).
 2. THE splitter SHALL support k-fold grouped CV and a single holdout, both seeded.
 3. FOR the sensitivity data, all rows of a compound (across every cell line) SHALL fall in the same partition.
 4. THE splitter SHALL return indices together with a manifest (seed, strategy, group counts, InChIKey hash per partition) for the model card.
@@ -41,9 +41,9 @@ cannot creep in during refactoring.
 
 #### Acceptance Criteria
 
-1. THE test suite SHALL assert zero InChIKey overlap between partitions for every split strategy.
+1. THE test suite SHALL assert zero connectivity-block overlap (which implies zero full-InChIKey overlap) between partitions for every split strategy.
 2. THE test suite SHALL assert zero scaffold overlap for the scaffold strategy.
-3. THE test suite SHALL include a negative control: a random row split SHALL be detected as leaky by the same check.
+3. THE test suite SHALL include negative controls: a random row split, and a full-InChIKey split on data containing stereoisomers, SHALL both be detected as leaky by the same check.
 
 ### Requirement 4: Trivial baselines (AC-3)
 

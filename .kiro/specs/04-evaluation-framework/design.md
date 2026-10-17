@@ -31,14 +31,16 @@ class SplitManifest:
     seed: int
     n_folds: int
     group_counts: list[int]          # groups per fold
-    partition_hashes: list[str]      # sha256 of sorted InChIKeys per fold
+    partition_hashes: list[str]      # sha256 of sorted connectivity blocks per fold
 
-def compound_folds(df, *, n_folds, seed, key="inchi_key") -> tuple[list[np.ndarray], SplitManifest]
-def scaffold_folds(df, *, n_folds, seed, scaffold_col="scaffold", key="inchi_key") -> ...
+def compound_folds(df, *, n_folds, seed, key="connectivity") -> tuple[list[np.ndarray], SplitManifest]
+def scaffold_folds(df, *, n_folds, seed, scaffold_col="scaffold", key="connectivity") -> ...
 def holdout(df, *, strategy, test_frac, seed) -> (train_idx, test_idx, SplitManifest)
 def assert_disjoint(df, folds, col) -> None   # raises LeakageError
 ```
-- Compound folds: `GroupKFold`-style over unique InChIKeys after a seeded shuffle.
+- Compound folds: `GroupKFold`-style over unique connectivity blocks (`inchi_key[:14]`) after a seeded shuffle.
+  The connectivity block, not the full InChIKey, is the group: stereoisomers (e.g. dexamethasone/betamethasone)
+  have identical achiral ECFP features, and compoundinfo SMILES often lack the stereo their InChIKeys carry.
 - Scaffold folds: largest-first greedy assignment of scaffold groups to the currently smallest
   fold (by compound count), after a seeded shuffle within size ties. Empty scaffold → group = InChIKey.
 
