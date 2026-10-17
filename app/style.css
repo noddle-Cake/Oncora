@@ -1,0 +1,162 @@
+/* Oncora UI. Palette: University of Miami green (#005030) and orange (#F47321).
+
+   Green carries all interactive meaning (buttons, links, focus): 10.5:1 on white. Orange is
+   FILL-ONLY: the header stripe, rank badges and the "similar response" mark, always with dark text
+   on top, never as text on a light background (2.9:1 is well under the 4.5:1 text needs).
+   Warnings get their own darker amber so "attention" never looks like the brand accent.
+
+   Layout conventions: white cards on an off-white page, hairline borders, one soft shadow, a 12px
+   radius, one filled "hero" stat tile per row, and entities rendered as links that open a sheet. */
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&display=swap");
+
+:root {
+  --um-green: #005030;
+  --um-green-deep: #003a22;
+  --um-orange: #f47321;
+  --um-orange-soft: #fff1e7;
+  --text: #44524c;
+  --text-h: #0b2b22;
+  --bg: #f7f7f5;
+  --surface: #ffffff;
+  --border: #e3e6e1;
+  --accent-soft: rgba(0, 80, 48, 0.08);
+  --warning: #9a4a00;
+  --warning-bg: #fdf0e2;
+  --danger: #9b1c1c;
+  --danger-bg: #fdeaea;
+  --shadow: rgba(11, 43, 34, 0.05) 0 1px 2px, rgba(11, 43, 34, 0.04) 0 4px 14px;
+  --radius: 12px;
+}
+
+html, body, .stApp, .stApp button, .stApp input, .stApp textarea, .stApp select {
+  font-family: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.stApp { background: var(--bg); color: var(--text); }
+header[data-testid="stHeader"] { background: transparent; height: 0; }
+.block-container { padding-top: 0.75rem; padding-bottom: 3rem; max-width: 1320px; }
+h1, h2, h3, h4 { color: var(--text-h); letter-spacing: -0.01em; }
+
+/* Header: white bar, orange furrow stripe underneath. */
+.onc-header {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-bottom: 3px solid var(--um-orange);
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 14px 20px;
+  display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.onc-header__name { font-size: 22px; font-weight: 700; color: var(--um-green); }
+.onc-header__tag { font-size: 14px; color: var(--text); }
+
+/* Cards: Streamlit bordered containers become the app's white cards. */
+div[data-testid="stVerticalBlockBorderWrapper"]:has(> div > div[data-testid="stVerticalBlock"]) {
+  background: var(--surface);
+  border-color: var(--border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow);
+}
+.onc-card-title { font-size: 15px; font-weight: 700; color: var(--text-h); margin: 0 0 6px; }
+.onc-muted { font-size: 13px; color: var(--text); opacity: 0.8; }
+.onc-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--text); word-break: break-all; }
+
+/* Disclaimer: first thing on every results view (FR-18). */
+.onc-disclaimer {
+  background: var(--um-orange-soft);
+  border: 1px solid #f9c9a6;
+  border-left: 4px solid var(--um-orange);
+  color: var(--text-h);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px; font-weight: 600;
+  margin: 4px 0 14px;
+}
+
+/* Stat tiles; at most one hero per row. */
+.stat-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 3px;
+  box-shadow: var(--shadow);
+  height: 100%;
+}
+.stat-tile__value { font-size: clamp(19px, 2.2vw, 25px); font-weight: 700; color: var(--text-h);
+  font-variant-numeric: tabular-nums; line-height: 1.15; }
+.stat-tile__label { font-size: 13px; opacity: 0.75; }
+.stat-tile__detail { font-size: 12.5px; color: var(--text); }
+.stat-tile--hero { background: var(--um-green); border-color: var(--um-green); }
+.stat-tile--hero .stat-tile__value, .stat-tile--hero .stat-tile__label,
+.stat-tile--hero .stat-tile__detail { color: #ffffff; }
+.stat-tile--hero .stat-tile__label { opacity: 0.8; }
+.stat-tile--warning .stat-tile__value { color: var(--warning); }
+
+/* Pills: what KIND of evidence a statement is. */
+.pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 600;
+  margin: 0 4px 3px 0; white-space: nowrap; }
+.pill--prediction { background: var(--accent-soft); color: var(--um-green); }
+.pill--annotation { background: #eef1f4; color: #33424f; }
+.pill--cross { background: var(--um-orange-soft); color: var(--text-h); border: 1px solid #f9c9a6; }
+.pill--good { background: #e3f3ea; color: #0f5132; }
+.pill--warn { background: var(--warning-bg); color: var(--warning); }
+.pill--bad { background: var(--danger-bg); color: var(--danger); }
+
+/* Rank badge: orange fill, dark text. */
+.rank { display: inline-flex; align-items: center; justify-content: center; min-width: 26px; height: 22px;
+  padding: 0 6px; border-radius: 6px; background: var(--um-orange); color: #1a1208; font-weight: 700;
+  font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.rank--quiet { background: #eef0ec; color: var(--text-h); }
+
+/* Score bar, label inline to its right. */
+.barwrap { display: flex; align-items: center; gap: 10px; }
+.barwrap .bar { flex: 1; min-width: 60px; }
+.barwrap .bar-label { flex: 0 0 auto; min-width: 64px; }
+.bar { position: relative; height: 8px; border-radius: 999px; background: #eef0ec; overflow: hidden; }
+.bar > span { position: absolute; inset: 0 auto 0 0; background: var(--um-green); border-radius: 999px; }
+.bar--down > span { background: #6b7c74; }
+.bar-label { font-size: 12.5px; font-variant-numeric: tabular-nums; color: var(--text-h); }
+
+/* Evidence summary sections. */
+.claims { margin: 0; padding: 0; list-style: none; }
+.claims li { padding: 7px 0 7px 12px; border-left: 3px solid var(--border); margin: 6px 0; font-size: 14px;
+  line-height: 1.45; color: var(--text-h); }
+.claims--prediction li { border-left-color: var(--um-green); }
+.claims--annotation li { border-left-color: #8a9aa8; }
+.claims--cross li { border-left-color: var(--um-orange); }
+
+/* Entity chips: the links that open a sheet. Rendered as tertiary buttons keyed "chip-…". */
+[class*="st-key-chip-"] button {
+  padding: 0 !important; min-height: 0 !important; height: auto !important; border: 0 !important;
+  background: transparent !important; color: var(--um-green) !important; font-weight: 600 !important;
+  text-align: left; justify-content: flex-start;
+}
+[class*="st-key-chip-"] button:hover { text-decoration: underline; color: var(--um-green-deep) !important; }
+[class*="st-key-chip-"] button p { font-size: 14px !important; }
+.chip-sub { font-size: 12.5px; color: var(--text); opacity: 0.8; }
+
+/* Row rules inside list cards. */
+.row-rule { border: 0; border-top: 1px solid var(--border); margin: 2px 0; }
+
+/* Tabs: green underline for the active tab. */
+.stTabs [data-baseweb="tab-list"] { gap: 6px; border-bottom: 1px solid var(--border); }
+.stTabs [data-baseweb="tab"] { font-weight: 600; color: var(--text); }
+.stTabs [aria-selected="true"] { color: var(--um-green) !important; }
+.stTabs [data-baseweb="tab-highlight"] { background-color: var(--um-green) !important; }
+
+/* The sheet is Streamlit's right-hand drawer (st.dialog position="right"); only its surface is
+   restyled, to the page background so the white cards inside it read as cards. */
+div[data-testid="stDialog"] div[role="dialog"] { background: var(--bg); }
+.sheet-kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--um-green); margin-bottom: 2px; }
+.sheet-title { font-size: 24px; font-weight: 700; color: var(--text-h); line-height: 1.15; }
+.sheet-sub { font-size: 14px; color: var(--text); margin-bottom: 8px; }
+.sheet-section { font-size: 13px; font-weight: 700; color: var(--text-h); margin: 14px 0 4px;
+  text-transform: uppercase; letter-spacing: 0.03em; }
+.sheet-links a { color: var(--um-green); font-weight: 600; text-decoration: none; margin-right: 14px; font-size: 14px; }
+.sheet-links a:hover { text-decoration: underline; }
+.sheet-fact { font-size: 14px; color: var(--text-h); margin: 3px 0; }
+
+/* Primary button: the one loud green control. */
+.stButton button[kind="primary"] { font-weight: 700; border-radius: 8px; }

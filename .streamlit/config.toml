@@ -1,0 +1,18 @@
+# Oncora UI theme: University of Miami green carries every interactive meaning; the orange accent is
+# fill-only and lives in app/style.css (2.9:1 on white is too low for text).
+[theme]
+base = "light"
+primaryColor = "#005030"
+backgroundColor = "#f7f7f5"
+secondaryBackgroundColor = "#ffffff"
+textColor = "#0b2b22"
+font = "sans serif"
+
+[client]
+toolbarMode = "minimal"     # no developer "Deploy" menu for visitors
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
