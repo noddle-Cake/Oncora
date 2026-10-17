@@ -5,6 +5,7 @@ data/interim/
 data/processed/
 *.tar
 *.dmp
+*.gctx
 
 # Models & tracking (keep model cards)
 models/**

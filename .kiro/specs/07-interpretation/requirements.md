@@ -37,6 +37,7 @@ correlational, so that I get insight without false certainty.
 1. THE builder SHALL compute agreement between predicted target gene symbols and annotated targets, and report which ones overlap.
 2. WHERE a predicted target's gene is in the CCLE matrix, THE builder SHALL report its expression percentile in the predicted sensitive lines versus all lines (FR-16, STRETCH).
 3. All cross-evidence SHALL be phrased and typed as correlational. No field or rendered sentence SHALL assert that one model's output proves another's.
+4. WHERE the L1000 Level 4 `trt_cp` GCTX is available AND the query compound (by InChIKey → `pert_id` via `compoundinfo`/`instinfo`) has one or more measured signatures, THE builder MAY attach, as `kind = "annotation"` evidence, a compact summary of that compound's own measured expression response (e.g. top up/down-regulated genes), clearly labeled as **measured signature for this compound**, not a prediction (FR-16, STRETCH). This path SHALL be skipped silently when the GCTX is absent or the compound has no profile, and SHALL never be a precondition for producing the bundle. It reads only the needed `rid`/`cid` slab, never the whole matrix.
 
 ### Requirement 3: Template renderer (FR-13a, NFR-9, AC-7)
 
