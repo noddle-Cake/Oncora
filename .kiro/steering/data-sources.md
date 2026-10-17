@@ -101,7 +101,7 @@ Full log with rationale: `reports/eda_summary.md`. Values live in `src/oncora/co
 
 | # | Decision |
 |---|---|
-| D-01 | Split group key = InChIKey connectivity block (`inchi_key[:14]`) |
+| D-01 | Split group key = connectivity block of the **standardized parent** (`std_inchi_key[:14]` from `compound_features.parquet`): covers stereoisomers *and* salt forms |
 | D-02 | compoundinfo duplicates collapse to one row per `pert_id` (lists of targets, MoAs, names) |
 | D-03 | The 22 mixed-scale DSS3 compounds are excluded from headline training/eval; one rescaled (×0.01) sensitivity analysis |
 | D-04 | Regression target = rank-transformed DSS3; headline Spearman ρ |

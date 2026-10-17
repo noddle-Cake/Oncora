@@ -9,12 +9,12 @@
   - Learn: molecular graphs, canonical forms, InChIKey as identity
   - _Requirements: 1.2, 2.2, 2.3_
 
-- [ ] 2. Compound featurizer
-- [ ] 2.1 Implement `CompoundFeatureConfig`, `featurize`, and `murcko_scaffold`
+- [x] 2. Compound featurizer
+- [x] 2.1 Implement `CompoundFeatureConfig`, `featurize`, and `murcko_scaffold`
   - _Requirements: 3.1, 3.2, 3.4_
-- [ ] 2.2 Implement `featurize_table` with an InChIKey-keyed Parquet cache; featurize sensitivity and target compounds
+- [x] 2.2 Implement `featurize_table` with an InChIKey-keyed Parquet cache; featurize sensitivity and target compounds
   - _Requirements: 3.3, 3.5_
-- [ ] 2.3 Unit tests for feature determinism and scaffold extraction
+- [x] 2.3 Unit tests for feature determinism and scaffold extraction
   - Learn: ECFP fingerprints, Bemis–Murcko scaffolds
   - _Requirements: 2.3, 3.2_
 

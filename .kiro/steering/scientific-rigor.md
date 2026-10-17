@@ -10,8 +10,8 @@ These rules apply to every modeling, evaluation, and data-prep change. A breach 
 
 - **Never use a random row split for a headline metric.** The same compound would sit in train
   and test, and the model would look good by memorizing it.
-- Headline splits are **compound-disjoint by InChIKey connectivity block** (the first 14
-  characters) for both models. Stereoisomers share that block and have identical achiral
+- Headline splits are **compound-disjoint by the connectivity block of the standardized
+  parent** (`std_inchi_key[:14]`) for both models; salt forms and stereoisomers share it. Stereoisomers share that block and have identical achiral
   fingerprints, so a full-InChIKey split would leak. The sensitivity model also reports a
   **Bemis–Murcko scaffold-disjoint** split.
 - Sensitivity CV is **grouped by compound** (`GroupKFold`-style), never by row.
