@@ -7,6 +7,7 @@ from oncora.config import BOOTSTRAP_N, SEED
 from oncora.evaluation.labels import RankTransform, within_compound_top
 from oncora.evaluation.metrics import (
     bootstrap_ci,
+    bootstrap_ci_multi,
     group_index,
     sensitivity_metrics,
     target_metrics,
@@ -35,12 +36,11 @@ def evaluate_sensitivity(test: pl.DataFrame, pred_t: np.ndarray, rt: RankTransfo
     metrics = sensitivity_metrics(y_t, pred_t, comp, line, labels, label_scores=label_scores)
     ci = {}
     if with_ci:
-        def boot(idx, key):
+        def boot(idx):
             return sensitivity_metrics(y_t[idx], pred_t[idx], comp[idx], line[idx],
                                        {k: v[idx] for k, v in labels.items()},
-                                       label_scores={k: v[idx] for k, v in label_scores.items()})[key]
-        index = group_index(comp)
-        ci = {k: bootstrap_ci(lambda idx, k=k: boot(idx, k), index, n=n_boot, seed=SEED) for k in SENSITIVITY_CI_METRICS}
+                                       label_scores={k: v[idx] for k, v in label_scores.items()})
+        ci = bootstrap_ci_multi(boot, group_index(comp), SENSITIVITY_CI_METRICS, n=n_boot, seed=SEED)
     return metrics, ci
 
 
@@ -52,10 +52,8 @@ def evaluate_target(test: pl.DataFrame, scores: np.ndarray, *, score_matrix: np.
         metrics |= top_k_hit_rate(score_matrix, positives)
     ci = {}
     if with_ci:
-        index = group_index(test["group"].to_numpy())
-        for k in TARGET_CI_METRICS:
-            ci[k] = bootstrap_ci(lambda idx, k=k: target_metrics(y[idx], scores[idx], targets[idx])[k],
-                                 index, n=n_boot, seed=SEED)
+        ci = bootstrap_ci_multi(lambda idx: target_metrics(y[idx], scores[idx], targets[idx]),
+                                group_index(test["group"].to_numpy()), TARGET_CI_METRICS, n=n_boot, seed=SEED)
     return metrics, ci
 
 

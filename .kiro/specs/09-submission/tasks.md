@@ -12,7 +12,7 @@
   - _Requirements: 1.1, 1.3, 1.4, 1.5_
 
 - [ ] 3. Reproducibility pass
-- [ ] 3.1 Write `scripts/reproduce.sh` and `scripts/compare_metrics.py`; commit the reference metrics
+- [x] 3.1 Write `scripts/reproduce.sh` and `scripts/compare_metrics.py`; commit the reference metrics
   - _Requirements: 2.1, 2.3_
 - [ ] 3.2 Run on a fresh clone, offline, with no API key; fix any nondeterminism; document results in the README
   - Learn: deterministic pipelines
