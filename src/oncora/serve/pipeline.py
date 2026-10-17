@@ -89,7 +89,10 @@ class OncoraPipeline:
         with timed("evidence"):
             bundle = build_bundle(
                 input_smiles=smiles, canonical_smiles=parsed.canonical_smiles, inchi_key=parsed.inchi_key,
-                targets=targets, cell_lines=lines, cancer_types=cancer, cancer_types_note=note,
+                # Without a disease map, cancer types are out of scope rather than "missing": keep the
+                # API's note, but leave it out of the evidence the explanation is written from.
+                targets=targets, cell_lines=lines, cancer_types=cancer,
+                cancer_types_note=note if self.disease_map is not None else None,
                 near_seen=near, model_runs=self.model_versions,
                 selectivity_learned=self.sensitivity.card.get("learned_selectivity"),
                 annotations=self.annotations, expression=self.expression,

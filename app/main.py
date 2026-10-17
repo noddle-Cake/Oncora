@@ -41,7 +41,8 @@ EXAMPLES = {
     "Invalid example": "C1CC(",
 }
 SHOW_TARGETS, SHOW_LINES = 20, 25
-TAB_LABELS = ["Targets", "Cell lines", "Measured response", "Database annotations", "Cancer types", "Details"]
+# Cancer types are out of scope: the supplied data has no cell line → disease mapping (decision D-07).
+TAB_LABELS = ["Targets", "Cell lines", "Measured response", "Database annotations", "Details"]
 # What the progress bar says while the API works. It is paced, not measured: the API answers in one
 # call, so the bar eases toward 95% on a time constant matched to typical latency (longer when Claude
 # writes the explanation) and completes when the response lands.
@@ -377,8 +378,7 @@ with st.container(key="explore-card"):
     counts = {"Targets": len(data["targets"][:SHOW_TARGETS]),
               "Cell lines": len(data["sensitive_cell_lines"][:SHOW_LINES]),
               "Measured response": len(ix.neighbors) if sig else None,
-              "Database annotations": len(ix.actives) if ix.ann.get("matched") else None,
-              "Cancer types": len(data["cancer_types"]) or None}
+              "Database annotations": len(ix.actives) if ix.ann.get("matched") else None}
     names = {"Measured response": "Similar drugs", "Database annotations": "Database records"}
     jump_cols = st.columns(len(counts))
     for col, (tab, n) in zip(jump_cols, counts.items()):
@@ -509,14 +509,6 @@ with tabs[3], st.container(border=True):
                 r[2].markdown(f'<span class="bar-label">pChEMBL {a["pchembl"]}</span>', unsafe_allow_html=True)
 
 with tabs[4], st.container(border=True):
-    if data["cancer_types"]:
-        for k in data["cancer_types"]:
-            md(f'<div class="sheet-fact"><span class="rank rank--quiet">{k["rank"]}</span> <b>{esc(k["primary_disease"])}</b> '
-               f'<span class="chip-sub">{k["n_cell_lines"]} lines{" · low support" if k["low_support"] else ""}</span></div>')
-    else:
-        md(f'<div class="onc-muted">{esc(data.get("cancer_types_note") or "No cancer types available.")}</div>')
-
-with tabs[5], st.container(border=True):
     st.json({"model_versions": data["model_versions"], "timings_ms": data["timings_ms"]})
     with st.expander("Raw evidence bundle"):
         st.json(b)
